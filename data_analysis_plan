@@ -1,0 +1,18 @@
+Data analysis plan
+
+A) assess sex-differences in the amount of movements during the breeding season
+  - subset all datasets to the local breeding season period
+
+B) detect nesting activity with movement data
+ - prospective methods:
+  - time-dependent step-length
+    - Rational: when a given sex is on the nest, the distance between consecutive fixes
+      will be small and attributed mainly to GPS error.
+    - Methodoligical steps: 
+      1) link known nesting locations and timing to GPS data sets
+      2) subset GPS datasets to the time each nest was known to be active
+      3) for each dataset calculate the:
+        a) distance between each fix and the nest
+        b) step-length between fixes
+        c) ALDE (autocorrelated kernel density estimation)
+      

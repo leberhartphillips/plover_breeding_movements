@@ -1,0 +1,33 @@
+Product Type: PinPoint-10
+
+Product ID: 48669
+
+Product Status: Active
+
+Current Firmware: V11.09
+
+Current GPS Schedule: Advanced
+
+GPS Schedule Details:
+
+Rolling Interval    Rule Period [yyyy-mm-dd hh:mm]: 2018-04-26 12:00  to 2018-08-14 12:01     Interval [dd hh:mm]: 0 days 09:00
+
+GPS Timeout: 12 seconds
+
+Total GPS On Time [s]: 608
+
+Recharge Counter: 2
+
+Max Number of Successful Fixes: NA
+
+Total Number of GPS Fixes: 121
+
+Product Time [GMT]: 2018-06-27 10:58:24
+
+Next Scheduled Fix [GMT]: 2018-06-27 18:00:00
+
+Next Alarm [GMT]: 0000-00-00 00:00:00
+
+Target Fix: NA
+
+Debugging Info: NA

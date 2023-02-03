@@ -1,0 +1,3636 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:xal="urn:oasis:names:tc:ciq:xsdschema:xAL:2.0">
+  <Document>
+    <kml:Schema xmlns:kml="http://www.opengis.net/kml/2.2" id="schema1">
+      <kml:SimpleField type="uint" name="index"></kml:SimpleField>
+      <kml:SimpleField type="string" name="coord"></kml:SimpleField>
+      <kml:SimpleField type="float" name="hDop"></kml:SimpleField>
+      <kml:SimpleField type="float" name="eRes"></kml:SimpleField>
+      <kml:SimpleField type="string" name="RTC Time"></kml:SimpleField>
+      <kml:SimpleField type="string" name="FIX Time"></kml:SimpleField>
+      <kml:SimpleField type="string" name="inUse"></kml:SimpleField>
+      <kml:SimpleField type="string" name="sats"></kml:SimpleField>
+      <kml:SimpleField type="string" name="temp"></kml:SimpleField>
+      <kml:SimpleField type="string" name="volt"></kml:SimpleField>
+    </kml:Schema>
+    <kml:Folder xmlns:kml="http://www.opengis.net/kml/2.2">
+      <kml:name>Styles</kml:name>
+      <kml:visibility>0</kml:visibility>
+      <kml:Style id="Valid">
+        <kml:IconStyle>
+          <kml:color>FF00FF55</kml:color>
+          <kml:scale>0.5</kml:scale>
+          <kml:heading>0.0</kml:heading>
+          <kml:Icon>
+            <kml:href>http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png</kml:href>
+            <kml:refreshInterval>0.0</kml:refreshInterval>
+            <kml:viewRefreshTime>0.0</kml:viewRefreshTime>
+            <kml:viewBoundScale>0.0</kml:viewBoundScale>
+          </kml:Icon>
+        </kml:IconStyle>
+        <kml:LabelStyle>
+          <kml:color>00000000</kml:color>
+          <kml:colorMode>normal</kml:colorMode>
+          <kml:scale>1.0</kml:scale>
+        </kml:LabelStyle>
+        <kml:LineStyle>
+          <kml:color>FF00FF55</kml:color>
+          <kml:width>0.0</kml:width>
+        </kml:LineStyle>
+        <kml:BalloonStyle>
+          <kml:text>
+<![CDATA[
+<b>Point $[index]</b><br/><br/><b>$[coord]</b><br/><br/><b>RTC time:</b> $[RTC Time]<br/>
+<b>FIX time:</b> $[FIX Time]<br/>
+<b>hDop:</b> $[hDop]<br/>
+<b>eRes:</b> $[eRes]<br/>
+<b>Sats:</b> $[inUse]<br/>
+<b>Temp:</b> $[temp]<br/>
+<b>Volt:</b> $[volt]<br/>
+<table>
+<tr align=right><th>satId</th><th>elevation</th><th>eRes</th><th>inUse</th></tr>$[sats]<br/>
+</table>
+]]>
+</kml:text>
+        </kml:BalloonStyle>
+      </kml:Style>
+      <kml:Style id="Invalid">
+        <kml:IconStyle>
+          <kml:color>ff6775fd</kml:color>
+          <kml:scale>0.5</kml:scale>
+          <kml:heading>0.0</kml:heading>
+          <kml:Icon>
+            <kml:href>http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png</kml:href>
+            <kml:refreshInterval>0.0</kml:refreshInterval>
+            <kml:viewRefreshTime>0.0</kml:viewRefreshTime>
+            <kml:viewBoundScale>0.0</kml:viewBoundScale>
+          </kml:Icon>
+        </kml:IconStyle>
+        <kml:LabelStyle>
+          <kml:color>00000000</kml:color>
+          <kml:colorMode>normal</kml:colorMode>
+          <kml:scale>1.0</kml:scale>
+        </kml:LabelStyle>
+        <kml:LineStyle>
+          <kml:color>ff6775fd</kml:color>
+          <kml:width>0.0</kml:width>
+        </kml:LineStyle>
+        <kml:BalloonStyle>
+          <kml:text>
+<![CDATA[
+<b>Point $[index]</b><br/><br/><b>$[coord]</b><br/><br/><b>RTC time:</b> $[RTC Time]<br/>
+<b>FIX time:</b> $[FIX Time]<br/>
+<b>hDop:</b> $[hDop]<br/>
+<b>eRes:</b> $[eRes]<br/>
+<b>Sats:</b> $[inUse]<br/>
+<b>Temp:</b> $[temp]<br/>
+<b>Volt:</b> $[volt]<br/>
+<table>
+<tr align=right><th>satId</th><th>elevation</th><th>eRes</th><th>inUse</th></tr>$[sats]<br/>
+</table>
+]]>
+</kml:text>
+        </kml:BalloonStyle>
+      </kml:Style>
+      <kml:Style id="multiTrack">
+        <kml:IconStyle>
+          <kml:color>FF00FF55</kml:color>
+          <kml:scale>0.5</kml:scale>
+          <kml:heading>0.0</kml:heading>
+          <kml:Icon>
+            <kml:href>http://earth.google.com/images/kml-icons/track-directional/track-0.png</kml:href>
+            <kml:refreshInterval>0.0</kml:refreshInterval>
+            <kml:viewRefreshTime>0.0</kml:viewRefreshTime>
+            <kml:viewBoundScale>0.0</kml:viewBoundScale>
+          </kml:Icon>
+        </kml:IconStyle>
+        <kml:LabelStyle>
+          <kml:color>00000000</kml:color>
+          <kml:colorMode>normal</kml:colorMode>
+          <kml:scale>1.0</kml:scale>
+        </kml:LabelStyle>
+        <kml:LineStyle>
+          <kml:color>FF00FF55</kml:color>
+          <kml:width>1.0</kml:width>
+        </kml:LineStyle>
+      </kml:Style>
+    </kml:Folder>
+    <Folder>
+      <name>Points</name>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>1: 06-May-22 13:00:08</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-06T13:00:08.715Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>1</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.91227, -106.96094,   -21.57</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>06-May-22 13:00:08</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>06-May-22 13:00:08.715</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.2</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 2.1</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>8/8</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>4</td><td>51.2</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>7</td><td>44.1</td><td> 3.4</td><td>Y</td></tr><tr align=right><td>8</td><td>52.5</td><td> 0.6</td><td>Y</td></tr><tr align=right><td>9</td><td>87.4</td><td> 2.3</td><td>Y</td></tr><tr align=right><td>14</td><td>25.6</td><td> 2.2</td><td>Y</td></tr><tr align=right><td>21</td><td>4.5</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>27</td><td>26.7</td><td> 0.4</td><td>Y</td></tr><tr align=right><td>30</td><td>25.9</td><td> 3.5</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96094,23.91227,-21.57213</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>2: 07-May-22 16:00:05</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-07T16:00:05.987Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>2</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92003, -106.96288,   -30.10</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>07-May-22 16:00:10</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>07-May-22 16:00:05.987</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.5</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 1.0</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>7/7</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>1</td><td>31.1</td><td> 1.2</td><td>Y</td></tr><tr align=right><td>6</td><td>10.6</td><td> 0.9</td><td>Y</td></tr><tr align=right><td>7</td><td>48.9</td><td> 0.4</td><td>Y</td></tr><tr align=right><td>13</td><td>34.8</td><td> 0.5</td><td>Y</td></tr><tr align=right><td>14</td><td>50.6</td><td> 1.5</td><td>Y</td></tr><tr align=right><td>17</td><td>73.0</td><td> 1.2</td><td>Y</td></tr><tr align=right><td>30</td><td>74.8</td><td> 1.2</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96288,23.92003,-30.09553</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>3: 08-May-22 04:00:01</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-08T04:00:01.154Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>3</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92030, -106.96513,   -31.95</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>08-May-22 04:00:06</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>08-May-22 04:00:01.154</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.4</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 1.1</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>8/8</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>8</td><td>12.9</td><td> 1.9</td><td>Y</td></tr><tr align=right><td>10</td><td>48.6</td><td> 1.0</td><td>Y</td></tr><tr align=right><td>18</td><td>44.3</td><td> 0.8</td><td>Y</td></tr><tr align=right><td>22</td><td>43.1</td><td> 1.1</td><td>Y</td></tr><tr align=right><td>23</td><td>42.1</td><td> 0.5</td><td>Y</td></tr><tr align=right><td>24</td><td>25.1</td><td> 1.2</td><td>Y</td></tr><tr align=right><td>27</td><td>36.1</td><td> 1.3</td><td>Y</td></tr><tr align=right><td>32</td><td>62.8</td><td> 0.7</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96513,23.92030,-31.94550</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>4: 08-May-22 16:00:03</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-08T16:00:03.600Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Invalid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>4</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92015, -106.96178,   -31.94</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>08-May-22 16:00:11</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>08-May-22 16:00:03.600</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 4.7</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>3/4</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>6</td><td>0.0</td><td> 0.0</td><td>Y</td></tr><tr align=right><td>17</td><td>0.0</td><td> 0.0</td><td>Y</td></tr><tr align=right><td>19</td><td>0.0</td><td> 0.0</td><td>Y</td></tr><tr align=right><td>28</td><td>0.0</td><td> 0.0</td><td>N</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96178,23.92015,-31.93617</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>5: 09-May-22 04:00:02</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-09T04:00:02.988Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>5</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92011, -106.96519,   -29.12</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>09-May-22 04:00:04</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>09-May-22 04:00:02.988</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.6</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.6</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>6/6</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>10</td><td>48.8</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>18</td><td>42.9</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>22</td><td>44.7</td><td> 0.6</td><td>Y</td></tr><tr align=right><td>27</td><td>36.0</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>31</td><td>7.8</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>32</td><td>64.1</td><td> 1.3</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96519,23.92011,-29.11925</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>6: 09-May-22 16:00:01</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-09T16:00:01.030Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>6</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.91722, -106.95790,   -23.96</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>09-May-22 16:00:04</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>09-May-22 16:00:01.030</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 2.1</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.5</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>6/6</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>1</td><td>30.5</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>7</td><td>46.0</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>17</td><td>75.2</td><td> 0.8</td><td>Y</td></tr><tr align=right><td>19</td><td>51.7</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>21</td><td>10.3</td><td> 0.4</td><td>Y</td></tr><tr align=right><td>30</td><td>73.4</td><td> 0.7</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.95790,23.91722,-23.96462</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>7: 10-May-22 03:59:59</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-10T03:59:59.947Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>7</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92170, -106.96535,   -28.07</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>10-May-22 04:00:04</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>10-May-22 03:59:59.947</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.8</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.5</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>7/7</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>8</td><td>14.4</td><td> 0.5</td><td>Y</td></tr><tr align=right><td>10</td><td>48.9</td><td> 0.7</td><td>Y</td></tr><tr align=right><td>18</td><td>41.4</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>23</td><td>40.9</td><td> 0.4</td><td>Y</td></tr><tr align=right><td>24</td><td>23.6</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>27</td><td>36.0</td><td> 0.5</td><td>Y</td></tr><tr align=right><td>32</td><td>65.2</td><td> 0.4</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96535,23.92170,-28.07094</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>8: 10-May-22 15:59:58</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-10T15:59:58.970Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>8</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92014, -106.96178,   -28.83</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>10-May-22 16:00:05</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>10-May-22 15:59:58.970</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 2.3</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.5</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>6/7</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>6</td><td>15.2</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>7</td><td>44.4</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>14</td><td>50.4</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>17</td><td>76.0</td><td> 0.8</td><td>Y</td></tr><tr align=right><td>19</td><td>53.2</td><td> 0.6</td><td>Y</td></tr><tr align=right><td>28</td><td>0.0</td><td> 0.0</td><td>N</td></tr><tr align=right><td>30</td><td>72.3</td><td> 0.8</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96178,23.92014,-28.83302</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>9: 11-May-22 03:59:56</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-11T03:59:56.792Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>9</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92114, -106.96480,   -23.02</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>11-May-22 04:00:04</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>11-May-22 03:59:56.792</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.5</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.9</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>6/6</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>10</td><td>49.1</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>18</td><td>39.9</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>22</td><td>47.7</td><td> 2.1</td><td>Y</td></tr><tr align=right><td>27</td><td>35.8</td><td> 0.5</td><td>Y</td></tr><tr align=right><td>31</td><td>10.6</td><td> 0.0</td><td>Y</td></tr><tr align=right><td>32</td><td>66.3</td><td> 0.1</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96480,23.92114,-23.02195</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>10: 11-May-22 15:59:54</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-11T15:59:54.764Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>10</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92014, -106.96175,   -25.59</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>11-May-22 16:00:04</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>11-May-22 15:59:54.764</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 2.0</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.8</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>6/7</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>7</td><td>42.8</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>13</td><td>36.8</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>14</td><td>50.3</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>17</td><td>76.5</td><td> 1.3</td><td>Y</td></tr><tr align=right><td>19</td><td>54.7</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>28</td><td>0.0</td><td> 0.0</td><td>N</td></tr><tr align=right><td>30</td><td>71.2</td><td> 1.6</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96175,23.92014,-25.59475</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>11: 12-May-22 03:59:59</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-12T03:59:59.496Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>11</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92735, -106.97449,   -24.19</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>12-May-22 04:00:10</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>12-May-22 03:59:59.496</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.2</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.7</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>7/7</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>10</td><td>49.2</td><td> 0.9</td><td>Y</td></tr><tr align=right><td>18</td><td>38.3</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>22</td><td>49.2</td><td> 0.9</td><td>Y</td></tr><tr align=right><td>23</td><td>39.8</td><td> 1.0</td><td>Y</td></tr><tr align=right><td>27</td><td>35.5</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>31</td><td>12.1</td><td> 0.0</td><td>Y</td></tr><tr align=right><td>32</td><td>67.3</td><td> 0.8</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.97449,23.92735,-24.18547</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>12: 12-May-22 16:00:01</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-12T16:00:01.600Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>12</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92017, -106.96174,   -23.52</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>12-May-22 16:00:04</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>12-May-22 16:00:01.600</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.9</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.7</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>6/7</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>6</td><td>18.4</td><td> 0.7</td><td>Y</td></tr><tr align=right><td>13</td><td>37.0</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>14</td><td>50.2</td><td> 0.0</td><td>Y</td></tr><tr align=right><td>17</td><td>76.6</td><td> 1.5</td><td>Y</td></tr><tr align=right><td>19</td><td>56.2</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>28</td><td>0.0</td><td> 0.0</td><td>N</td></tr><tr align=right><td>30</td><td>69.8</td><td> 0.7</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96174,23.92017,-23.51879</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>13: 13-May-22 04:00:07</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-13T04:00:07.400Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Invalid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>13</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92636, -106.97207,   -23.39</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>13-May-22 04:00:11</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>13-May-22 04:00:07.400</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 2.7</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.3</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>3/3</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>18</td><td>0.0</td><td> 0.5</td><td>Y</td></tr><tr align=right><td>22</td><td>0.0</td><td> 0.0</td><td>Y</td></tr><tr align=right><td>31</td><td>0.0</td><td> 0.2</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.97207,23.92636,-23.39481</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>14: 13-May-22 15:59:58</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-13T15:59:58.480Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>14</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.91957, -106.96041,   -25.36</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>13-May-22 16:00:04</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>13-May-22 15:59:58.480</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.5</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 1.1</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>7/8</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>6</td><td>20.1</td><td> 1.1</td><td>Y</td></tr><tr align=right><td>7</td><td>39.5</td><td> 1.2</td><td>Y</td></tr><tr align=right><td>13</td><td>37.2</td><td> 0.8</td><td>Y</td></tr><tr align=right><td>14</td><td>50.1</td><td> 0.6</td><td>Y</td></tr><tr align=right><td>17</td><td>76.5</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>19</td><td>57.6</td><td> 2.4</td><td>Y</td></tr><tr align=right><td>28</td><td>0.0</td><td> 0.0</td><td>N</td></tr><tr align=right><td>30</td><td>68.4</td><td> 0.3</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96041,23.91957,-25.35859</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>15: 14-May-22 03:59:59</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-14T03:59:59.309Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>15</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92779, -106.97499,   -25.03</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>14-May-22 04:00:06</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>14-May-22 03:59:59.309</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.3</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 1.6</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>9/9</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>8</td><td>16.7</td><td> 1.8</td><td>Y</td></tr><tr align=right><td>10</td><td>49.4</td><td> 0.4</td><td>Y</td></tr><tr align=right><td>18</td><td>35.1</td><td> 1.9</td><td>Y</td></tr><tr align=right><td>21</td><td>5.1</td><td> 1.3</td><td>Y</td></tr><tr align=right><td>22</td><td>52.0</td><td> 3.1</td><td>Y</td></tr><tr align=right><td>23</td><td>38.6</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>24</td><td>19.7</td><td> 1.2</td><td>Y</td></tr><tr align=right><td>27</td><td>34.8</td><td> 1.0</td><td>Y</td></tr><tr align=right><td>32</td><td>68.8</td><td> 1.6</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.97499,23.92779,-25.02704</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>16: 14-May-22 15:59:57</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-14T15:59:57.355Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>16</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92013, -106.96169,   -27.21</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>14-May-22 16:00:06</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>14-May-22 15:59:57.355</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.3</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.6</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>8/9</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>1</td><td>27.6</td><td> 0.8</td><td>Y</td></tr><tr align=right><td>6</td><td>21.8</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>7</td><td>37.9</td><td> 0.4</td><td>Y</td></tr><tr align=right><td>14</td><td>50.0</td><td> 0.5</td><td>Y</td></tr><tr align=right><td>15</td><td>9.9</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>17</td><td>76.1</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>21</td><td>5.1</td><td> 0.7</td><td>Y</td></tr><tr align=right><td>28</td><td>0.0</td><td> 0.0</td><td>N</td></tr><tr align=right><td>30</td><td>66.9</td><td> 1.2</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96169,23.92013,-27.20538</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>17: 15-May-22 03:59:54</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-15T03:59:54.192Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>17</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92998, -106.97701,   -26.85</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>15-May-22 04:00:04</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>15-May-22 03:59:54.192</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.3</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.7</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>6/6</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>10</td><td>49.5</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>18</td><td>33.5</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>22</td><td>53.4</td><td> 1.2</td><td>Y</td></tr><tr align=right><td>27</td><td>34.3</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>31</td><td>16.8</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>32</td><td>69.3</td><td> 1.1</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.97701,23.92998,-26.85494</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>18: 15-May-22 15:59:52</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-15T15:59:52.288Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>18</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92014, -106.96175,   -26.35</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>15-May-22 16:00:04</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>15-May-22 15:59:52.288</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.8</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.7</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>6/7</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>1</td><td>26.8</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>6</td><td>23.5</td><td> 0.4</td><td>Y</td></tr><tr align=right><td>13</td><td>37.3</td><td> 0.9</td><td>Y</td></tr><tr align=right><td>14</td><td>49.9</td><td> 0.6</td><td>Y</td></tr><tr align=right><td>15</td><td>10.3</td><td> 0.5</td><td>Y</td></tr><tr align=right><td>17</td><td>75.4</td><td> 0.9</td><td>Y</td></tr><tr align=right><td>28</td><td>0.0</td><td> 0.0</td><td>N</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96175,23.92014,-26.35477</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>19: 16-May-22 03:59:54</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-16T03:59:54.167Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>19</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92788, -106.97166,   -25.65</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>16-May-22 04:00:07</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>16-May-22 03:59:54.167</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.1</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 1.1</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>8/8</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>10</td><td>49.6</td><td> 1.2</td><td>Y</td></tr><tr align=right><td>18</td><td>31.9</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>22</td><td>54.7</td><td> 1.3</td><td>Y</td></tr><tr align=right><td>23</td><td>37.4</td><td> 1.7</td><td>Y</td></tr><tr align=right><td>24</td><td>17.6</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>27</td><td>33.7</td><td> 0.4</td><td>Y</td></tr><tr align=right><td>31</td><td>18.4</td><td> 0.8</td><td>Y</td></tr><tr align=right><td>32</td><td>69.6</td><td> 1.4</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.97166,23.92788,-25.64939</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>20: 16-May-22 15:59:50</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-16T15:59:50.147Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>20</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92804, -106.97143,   -25.55</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>16-May-22 16:00:05</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>16-May-22 15:59:50.147</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.2</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 1.0</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>8/9</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>1</td><td>25.9</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>6</td><td>25.2</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>7</td><td>34.6</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>13</td><td>37.2</td><td> 0.4</td><td>Y</td></tr><tr align=right><td>14</td><td>49.7</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>17</td><td>74.5</td><td> 1.6</td><td>Y</td></tr><tr align=right><td>19</td><td>61.4</td><td> 2.1</td><td>Y</td></tr><tr align=right><td>28</td><td>0.0</td><td> 0.0</td><td>N</td></tr><tr align=right><td>30</td><td>63.7</td><td> 0.5</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.97143,23.92804,-25.55013</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>21: 17-May-22 03:59:51</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-17T03:59:51.503Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>21</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92648, -106.97099,   -23.66</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>17-May-22 04:00:08</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>17-May-22 03:59:51.503</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.5</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.4</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>6/6</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>10</td><td>49.7</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>21</td><td>9.3</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>22</td><td>55.9</td><td> 0.9</td><td>Y</td></tr><tr align=right><td>27</td><td>33.1</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>31</td><td>20.0</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>32</td><td>69.7</td><td> 0.3</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.97099,23.92648,-23.66215</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>22: 17-May-22 15:59:45</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-17T15:59:45.537Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>22</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92016, -106.96178,   -23.62</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>17-May-22 16:00:04</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>17-May-22 15:59:45.537</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.6</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.4</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>7/8</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>7</td><td>32.9</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>13</td><td>37.0</td><td> 0.8</td><td>Y</td></tr><tr align=right><td>14</td><td>49.5</td><td> 0.5</td><td>Y</td></tr><tr align=right><td>15</td><td>10.9</td><td> 0.4</td><td>Y</td></tr><tr align=right><td>17</td><td>73.4</td><td> 0.6</td><td>Y</td></tr><tr align=right><td>19</td><td>62.4</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>28</td><td>0.0</td><td> 0.0</td><td>N</td></tr><tr align=right><td>30</td><td>62.1</td><td> 0.2</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96178,23.92016,-23.62243</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>23: 18-May-22 03:59:47</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-18T03:59:47.145Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>23</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92664, -106.97140,   -28.64</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>18-May-22 04:00:07</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>18-May-22 03:59:47.145</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.8</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.6</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>8/8</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>8</td><td>18.1</td><td> 0.0</td><td>Y</td></tr><tr align=right><td>10</td><td>49.8</td><td> 0.4</td><td>Y</td></tr><tr align=right><td>21</td><td>10.7</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>22</td><td>57.0</td><td> 0.4</td><td>Y</td></tr><tr align=right><td>23</td><td>36.2</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>24</td><td>15.2</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>27</td><td>32.4</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>32</td><td>69.7</td><td> 1.5</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.97140,23.92664,-28.63690</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>24: 18-May-22 15:59:42</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-18T15:59:42.184Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>24</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92016, -106.96172,   -28.05</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>18-May-22 16:00:04</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>18-May-22 15:59:42.184</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.5</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 1.0</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>6/7</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>6</td><td>28.7</td><td> 1.0</td><td>Y</td></tr><tr align=right><td>13</td><td>36.8</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>14</td><td>49.3</td><td> 0.6</td><td>Y</td></tr><tr align=right><td>17</td><td>72.2</td><td> 1.9</td><td>Y</td></tr><tr align=right><td>19</td><td>63.4</td><td> 0.7</td><td>Y</td></tr><tr align=right><td>28</td><td>0.0</td><td> 0.0</td><td>N</td></tr><tr align=right><td>30</td><td>60.4</td><td> 0.7</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96172,23.92016,-28.05276</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>25: 19-May-22 03:59:44</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-19T03:59:44.913Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>25</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92642, -106.97180,   -24.97</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>19-May-22 04:00:08</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>19-May-22 03:59:44.913</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.1</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.5</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>8/8</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>8</td><td>18.3</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>10</td><td>49.8</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>18</td><td>27.0</td><td> 0.6</td><td>Y</td></tr><tr align=right><td>21</td><td>12.1</td><td> 0.4</td><td>Y</td></tr><tr align=right><td>22</td><td>58.1</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>27</td><td>31.7</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>31</td><td>23.3</td><td> 0.7</td><td>Y</td></tr><tr align=right><td>32</td><td>69.6</td><td> 0.7</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.97180,23.92642,-24.96748</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>26: 19-May-22 15:59:39</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-19T15:59:39.956Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>26</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.91995, -106.96160,   -28.51</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>19-May-22 16:00:05</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>19-May-22 15:59:39.956</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.3</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 1.4</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>7/7</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>1</td><td>23.0</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>6</td><td>30.5</td><td> 0.8</td><td>Y</td></tr><tr align=right><td>7</td><td>29.5</td><td> 0.7</td><td>Y</td></tr><tr align=right><td>13</td><td>36.4</td><td> 0.7</td><td>Y</td></tr><tr align=right><td>17</td><td>70.9</td><td> 1.3</td><td>Y</td></tr><tr align=right><td>19</td><td>64.3</td><td> 3.1</td><td>Y</td></tr><tr align=right><td>30</td><td>58.6</td><td> 0.4</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96160,23.91995,-28.51418</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>27: 20-May-22 03:59:40</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-20T03:59:40.611Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>27</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92640, -106.97116,   -24.52</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>20-May-22 04:00:07</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>20-May-22 03:59:40.611</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.0</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.9</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>7/7</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>10</td><td>49.9</td><td> 0.0</td><td>Y</td></tr><tr align=right><td>18</td><td>25.4</td><td> 1.1</td><td>Y</td></tr><tr align=right><td>21</td><td>13.5</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>23</td><td>35.0</td><td> 1.6</td><td>Y</td></tr><tr align=right><td>24</td><td>12.8</td><td> 0.7</td><td>Y</td></tr><tr align=right><td>27</td><td>30.9</td><td> 0.7</td><td>Y</td></tr><tr align=right><td>31</td><td>25.1</td><td> 0.6</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.97116,23.92640,-24.52468</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>28: 20-May-22 15:59:36</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-20T15:59:36.647Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>28</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92015, -106.96170,   -25.59</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>20-May-22 16:00:05</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>20-May-22 15:59:36.647</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.8</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.8</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>6/7</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>1</td><td>21.9</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>6</td><td>32.3</td><td> 0.8</td><td>Y</td></tr><tr align=right><td>14</td><td>48.9</td><td> 1.3</td><td>Y</td></tr><tr align=right><td>17</td><td>69.5</td><td> 0.6</td><td>Y</td></tr><tr align=right><td>19</td><td>65.1</td><td> 0.6</td><td>Y</td></tr><tr align=right><td>28</td><td>0.0</td><td> 0.0</td><td>N</td></tr><tr align=right><td>30</td><td>56.9</td><td> 1.1</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96170,23.92015,-25.59283</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>29: 21-May-22 03:59:33</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-21T03:59:33.997Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>29</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92664, -106.97146,   -26.95</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>21-May-22 04:00:04</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>21-May-22 03:59:33.997</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 2.4</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.5</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>6/6</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>8</td><td>18.5</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>10</td><td>49.9</td><td> 0.5</td><td>Y</td></tr><tr align=right><td>22</td><td>60.1</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>23</td><td>34.4</td><td> 0.0</td><td>Y</td></tr><tr align=right><td>27</td><td>30.1</td><td> 0.5</td><td>Y</td></tr><tr align=right><td>32</td><td>68.8</td><td> 0.8</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.97146,23.92664,-26.94877</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>30: 21-May-22 15:59:33</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-21T15:59:33.041Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>30</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92013, -106.96177,   -26.39</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>21-May-22 16:00:05</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>21-May-22 15:59:33.041</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.4</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 1.0</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>6/7</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>6</td><td>34.2</td><td> 0.9</td><td>Y</td></tr><tr align=right><td>13</td><td>35.5</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>14</td><td>48.7</td><td> 0.8</td><td>Y</td></tr><tr align=right><td>17</td><td>68.1</td><td> 1.9</td><td>Y</td></tr><tr align=right><td>19</td><td>65.8</td><td> 0.8</td><td>Y</td></tr><tr align=right><td>28</td><td>0.0</td><td> 0.0</td><td>N</td></tr><tr align=right><td>30</td><td>55.1</td><td> 0.5</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96177,23.92013,-26.38868</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>31: 22-May-22 03:59:33</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-22T03:59:33.616Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>31</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.93216, -106.97426,   -23.90</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>22-May-22 04:00:07</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>22-May-22 03:59:33.616</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 0.9</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.6</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>9/9</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>8</td><td>18.6</td><td> 1.1</td><td>Y</td></tr><tr align=right><td>10</td><td>49.9</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>18</td><td>22.3</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>21</td><td>16.3</td><td> 1.0</td><td>Y</td></tr><tr align=right><td>22</td><td>60.9</td><td> 0.6</td><td>Y</td></tr><tr align=right><td>23</td><td>33.7</td><td> 0.4</td><td>Y</td></tr><tr align=right><td>27</td><td>29.3</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>31</td><td>28.6</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>32</td><td>68.2</td><td> 0.8</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.97426,23.93216,-23.89952</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>32: 22-May-22 15:59:29</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-22T15:59:29.658Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>32</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92011, -106.96165,   -25.20</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>22-May-22 16:00:05</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>22-May-22 15:59:29.658</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.6</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 1.0</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>7/8</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>1</td><td>19.5</td><td> 0.8</td><td>Y</td></tr><tr align=right><td>6</td><td>36.1</td><td> 0.5</td><td>Y</td></tr><tr align=right><td>7</td><td>24.4</td><td> 0.7</td><td>Y</td></tr><tr align=right><td>14</td><td>48.4</td><td> 2.0</td><td>Y</td></tr><tr align=right><td>17</td><td>66.6</td><td> 0.8</td><td>Y</td></tr><tr align=right><td>19</td><td>66.3</td><td> 0.9</td><td>Y</td></tr><tr align=right><td>28</td><td>0.0</td><td> 0.0</td><td>N</td></tr><tr align=right><td>30</td><td>53.3</td><td> 0.4</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96165,23.92011,-25.19690</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>33: 23-May-22 03:59:27</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-23T03:59:27.174Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>33</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92630, -106.97137,   -25.81</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>23-May-22 04:00:04</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>23-May-22 03:59:27.174</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.2</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.3</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>6/6</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>8</td><td>18.5</td><td> 0.0</td><td>Y</td></tr><tr align=right><td>18</td><td>20.7</td><td> 0.5</td><td>Y</td></tr><tr align=right><td>22</td><td>61.6</td><td> 0.4</td><td>Y</td></tr><tr align=right><td>23</td><td>33.1</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>27</td><td>28.4</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>31</td><td>30.3</td><td> 0.4</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.97137,23.92630,-25.80863</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>34: 23-May-22 15:59:26</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-23T15:59:26.197Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>34</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92006, -106.96166,   -15.07</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>23-May-22 16:00:05</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>23-May-22 15:59:26.197</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.8</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.6</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>7/8</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>1</td><td>18.3</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>6</td><td>38.0</td><td> 0.0</td><td>Y</td></tr><tr align=right><td>13</td><td>34.3</td><td> 0.7</td><td>Y</td></tr><tr align=right><td>14</td><td>48.1</td><td> 1.0</td><td>Y</td></tr><tr align=right><td>15</td><td>11.4</td><td> 0.4</td><td>Y</td></tr><tr align=right><td>17</td><td>65.1</td><td> 0.5</td><td>Y</td></tr><tr align=right><td>19</td><td>66.7</td><td> 0.8</td><td>Y</td></tr><tr align=right><td>28</td><td>0.0</td><td> 0.0</td><td>N</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96166,23.92006,-15.06662</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>35: 24-May-22 03:59:29</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-24T03:59:29.531Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>35</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92665, -106.97437,   -21.52</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>24-May-22 04:00:10</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>24-May-22 03:59:29.531</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 0.8</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 2.4</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>9/9</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>10</td><td>49.9</td><td> 1.1</td><td>Y</td></tr><tr align=right><td>18</td><td>19.1</td><td> 1.4</td><td>Y</td></tr><tr align=right><td>21</td><td>19.2</td><td> 0.5</td><td>Y</td></tr><tr align=right><td>23</td><td>32.4</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>24</td><td>7.5</td><td> 3.2</td><td>Y</td></tr><tr align=right><td>25</td><td>3.3</td><td> 3.4</td><td>Y</td></tr><tr align=right><td>27</td><td>27.4</td><td> 0.9</td><td>Y</td></tr><tr align=right><td>31</td><td>32.2</td><td> 4.5</td><td>Y</td></tr><tr align=right><td>32</td><td>66.6</td><td> 2.1</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.97437,23.92665,-21.51995</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>36: 24-May-22 16:00:01</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-24T16:00:01.559Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>36</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.91801, -106.96188,   -22.40</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>24-May-22 16:00:04</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>24-May-22 16:00:01.559</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.1</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 1.2</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>8/9</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>6</td><td>40.2</td><td> 0.6</td><td>Y</td></tr><tr align=right><td>7</td><td>20.7</td><td> 0.8</td><td>Y</td></tr><tr align=right><td>13</td><td>33.5</td><td> 1.4</td><td>Y</td></tr><tr align=right><td>14</td><td>47.8</td><td> 1.6</td><td>Y</td></tr><tr align=right><td>15</td><td>11.3</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>17</td><td>63.4</td><td> 1.5</td><td>Y</td></tr><tr align=right><td>19</td><td>66.9</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>28</td><td>0.0</td><td> 0.0</td><td>N</td></tr><tr align=right><td>30</td><td>49.4</td><td> 2.0</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96188,23.91801,-22.39686</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>37: 25-May-22 04:00:02</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-25T04:00:02.819Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>37</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92735, -106.97098,   -25.58</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>25-May-22 04:00:07</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>25-May-22 04:00:02.819</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.2</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 1.3</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>8/8</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>10</td><td>49.8</td><td> 1.6</td><td>Y</td></tr><tr align=right><td>18</td><td>17.3</td><td> 1.0</td><td>Y</td></tr><tr align=right><td>21</td><td>20.8</td><td> 0.5</td><td>Y</td></tr><tr align=right><td>22</td><td>62.9</td><td> 1.8</td><td>Y</td></tr><tr align=right><td>23</td><td>31.6</td><td> 0.8</td><td>Y</td></tr><tr align=right><td>24</td><td>6.0</td><td> 1.0</td><td>Y</td></tr><tr align=right><td>31</td><td>34.3</td><td> 1.3</td><td>Y</td></tr><tr align=right><td>32</td><td>65.6</td><td> 2.0</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.97098,23.92735,-25.57645</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>38: 25-May-22 16:00:02</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-25T16:00:02.888Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>38</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.91908, -106.96283,   -19.60</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>25-May-22 16:00:09</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>25-May-22 16:00:02.888</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.7</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.8</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>7/9</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>2</td><td>7.0</td><td> 0.5</td><td>Y</td></tr><tr align=right><td>6</td><td>42.2</td><td> 1.5</td><td>Y</td></tr><tr align=right><td>7</td><td>19.0</td><td> 0.7</td><td>Y</td></tr><tr align=right><td>11</td><td>0.0</td><td> 0.0</td><td>N</td></tr><tr align=right><td>14</td><td>47.4</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>17</td><td>61.8</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>19</td><td>67.0</td><td> 1.1</td><td>Y</td></tr><tr align=right><td>28</td><td>0.0</td><td> 0.0</td><td>N</td></tr><tr align=right><td>30</td><td>47.5</td><td> 0.8</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96283,23.91908,-19.59635</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>39: 26-May-22 03:59:57</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-26T03:59:57.097Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>39</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92880, -106.97790,   -24.86</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>26-May-22 04:00:05</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>26-May-22 03:59:57.097</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.2</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.6</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>7/7</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>8</td><td>18.1</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>10</td><td>49.7</td><td> 0.4</td><td>Y</td></tr><tr align=right><td>21</td><td>22.2</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>22</td><td>63.3</td><td> 0.5</td><td>Y</td></tr><tr align=right><td>27</td><td>25.4</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>31</td><td>36.1</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>32</td><td>64.6</td><td> 1.4</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.97790,23.92880,-24.85510</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>40: 26-May-22 15:59:55</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-26T15:59:55.140Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>40</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.91926, -106.96279,   -25.81</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>26-May-22 16:00:05</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>26-May-22 15:59:55.140</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 2.4</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.4</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>6/7</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>1</td><td>14.2</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>6</td><td>44.1</td><td> 0.0</td><td>Y</td></tr><tr align=right><td>7</td><td>17.3</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>14</td><td>47.1</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>17</td><td>60.3</td><td> 0.0</td><td>Y</td></tr><tr align=right><td>28</td><td>0.0</td><td> 0.0</td><td>N</td></tr><tr align=right><td>30</td><td>45.7</td><td> 0.8</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96279,23.91926,-25.80721</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>41: 27-May-22 03:59:55</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-27T03:59:55.425Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>41</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92807, -106.97779,   -17.72</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>27-May-22 04:00:07</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>27-May-22 03:59:55.425</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.0</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.5</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>8/8</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>8</td><td>17.8</td><td> 0.5</td><td>Y</td></tr><tr align=right><td>10</td><td>49.6</td><td> 0.8</td><td>Y</td></tr><tr align=right><td>18</td><td>14.1</td><td> 0.4</td><td>Y</td></tr><tr align=right><td>22</td><td>63.6</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>23</td><td>30.2</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>25</td><td>5.4</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>27</td><td>24.4</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>31</td><td>38.0</td><td> 0.8</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.97779,23.92807,-17.71859</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>42: 27-May-22 15:59:50</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-27T15:59:50.467Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>42</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.91919, -106.96293,   -17.62</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>27-May-22 16:00:04</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>27-May-22 15:59:50.467</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.6</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.3</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>5/6</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>6</td><td>46.1</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>13</td><td>31.2</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>17</td><td>58.8</td><td> 0.0</td><td>Y</td></tr><tr align=right><td>19</td><td>66.8</td><td> 0.4</td><td>Y</td></tr><tr align=right><td>28</td><td>0.0</td><td> 0.0</td><td>N</td></tr><tr align=right><td>30</td><td>43.9</td><td> 0.4</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96293,23.91919,-17.61720</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>43: 28-May-22 03:59:51</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-28T03:59:51.800Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>43</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.93225, -106.97407,   -21.53</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>28-May-22 04:00:07</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>28-May-22 03:59:51.800</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.1</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.7</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>7/7</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>8</td><td>17.5</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>10</td><td>49.4</td><td> 1.6</td><td>Y</td></tr><tr align=right><td>21</td><td>25.1</td><td> 0.4</td><td>Y</td></tr><tr align=right><td>23</td><td>29.4</td><td> 0.7</td><td>Y</td></tr><tr align=right><td>25</td><td>6.0</td><td> 0.0</td><td>Y</td></tr><tr align=right><td>31</td><td>39.9</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>32</td><td>62.5</td><td> 0.1</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.97407,23.93225,-21.52631</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>44: 28-May-22 15:59:46</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-28T15:59:46.785Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Invalid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>44</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.91875, -106.96261,   -21.29</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>28-May-22 16:00:04</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>28-May-22 15:59:46.785</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value>13.5</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.4</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>5/6</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>2</td><td>12.0</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>6</td><td>48.0</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>11</td><td>12.3</td><td> 0.9</td><td>Y</td></tr><tr align=right><td>17</td><td>57.3</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>19</td><td>66.4</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>28</td><td>0.0</td><td> 0.0</td><td>N</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96261,23.91875,-21.28817</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>45: 29-May-22 03:59:51</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-29T03:59:51.215Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>45</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92979, -106.97741,   -19.62</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>29-May-22 04:00:10</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>29-May-22 03:59:51.215</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.2</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 2.0</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>8/8</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>8</td><td>17.2</td><td> 2.0</td><td>Y</td></tr><tr align=right><td>10</td><td>49.2</td><td> 0.5</td><td>Y</td></tr><tr align=right><td>22</td><td>63.9</td><td> 1.8</td><td>Y</td></tr><tr align=right><td>23</td><td>28.7</td><td> 2.8</td><td>Y</td></tr><tr align=right><td>25</td><td>6.7</td><td> 2.7</td><td>Y</td></tr><tr align=right><td>27</td><td>22.4</td><td> 1.6</td><td>Y</td></tr><tr align=right><td>31</td><td>41.9</td><td> 2.5</td><td>Y</td></tr><tr align=right><td>32</td><td>61.4</td><td> 0.7</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.97741,23.92979,-19.61509</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>46: 29-May-22 16:00:02</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-29T16:00:02.308Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>46</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.91939, -106.96262,   -23.91</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>29-May-22 16:00:05</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>29-May-22 16:00:02.308</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.1</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 1.1</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>7/8</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>6</td><td>50.2</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>7</td><td>12.1</td><td> 0.9</td><td>Y</td></tr><tr align=right><td>13</td><td>29.3</td><td> 0.8</td><td>Y</td></tr><tr align=right><td>14</td><td>45.9</td><td> 0.9</td><td>Y</td></tr><tr align=right><td>17</td><td>55.7</td><td> 0.4</td><td>Y</td></tr><tr align=right><td>19</td><td>65.9</td><td> 2.2</td><td>Y</td></tr><tr align=right><td>28</td><td>0.0</td><td> 0.0</td><td>N</td></tr><tr align=right><td>30</td><td>40.1</td><td> 1.0</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96262,23.91939,-23.90592</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>47: 30-May-22 03:59:59</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-30T03:59:59.529Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>47</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92913, -106.97743,   -25.26</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>30-May-22 04:00:04</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>30-May-22 03:59:59.529</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.2</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 1.0</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>6/6</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>8</td><td>16.8</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>18</td><td>9.3</td><td> 1.4</td><td>Y</td></tr><tr align=right><td>22</td><td>63.9</td><td> 1.4</td><td>Y</td></tr><tr align=right><td>23</td><td>27.9</td><td> 0.9</td><td>Y</td></tr><tr align=right><td>27</td><td>21.3</td><td> 1.1</td><td>Y</td></tr><tr align=right><td>31</td><td>44.0</td><td> 0.1</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.97743,23.92913,-25.26481</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>48: 30-May-22 15:59:57</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-30T15:59:57.625Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>48</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.91733, -106.96130,   -23.49</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>30-May-22 16:00:04</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>30-May-22 15:59:57.625</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.2</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 1.4</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>8/8</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>2</td><td>15.6</td><td> 1.7</td><td>Y</td></tr><tr align=right><td>6</td><td>52.2</td><td> 2.4</td><td>Y</td></tr><tr align=right><td>11</td><td>15.8</td><td> 1.3</td><td>Y</td></tr><tr align=right><td>13</td><td>28.3</td><td> 1.4</td><td>Y</td></tr><tr align=right><td>14</td><td>45.4</td><td> 0.7</td><td>Y</td></tr><tr align=right><td>17</td><td>54.2</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>19</td><td>65.4</td><td> 1.1</td><td>Y</td></tr><tr align=right><td>30</td><td>38.3</td><td> 1.1</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96130,23.91733,-23.49312</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>49: 31-May-22 03:59:56</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-31T03:59:56.793Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>49</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.91405, -106.96176,   -29.13</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>31-May-22 04:00:05</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>31-May-22 03:59:56.793</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 2.3</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 1.4</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>6/6</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>8</td><td>16.3</td><td> 1.9</td><td>Y</td></tr><tr align=right><td>10</td><td>48.8</td><td> 1.0</td><td>Y</td></tr><tr align=right><td>21</td><td>29.3</td><td> 0.8</td><td>Y</td></tr><tr align=right><td>22</td><td>63.8</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>27</td><td>20.2</td><td> 1.8</td><td>Y</td></tr><tr align=right><td>32</td><td>59.0</td><td> 1.9</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96176,23.91405,-29.13445</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>50: 31-May-22 15:59:53</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-05-31T15:59:53.912Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>50</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92481, -106.97293,   -28.92</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>31-May-22 16:00:04</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>31-May-22 15:59:53.912</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.8</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.3</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>5/6</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>6</td><td>54.2</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>14</td><td>44.9</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>17</td><td>52.8</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>19</td><td>64.7</td><td> 0.0</td><td>Y</td></tr><tr align=right><td>28</td><td>0.0</td><td> 0.0</td><td>N</td></tr><tr align=right><td>30</td><td>36.5</td><td> 0.5</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.97293,23.92481,-28.91828</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>51: 01-Jun-22 03:59:52</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-06-01T03:59:52.098Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>51</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.93195, -106.97476,   -26.65</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>01-Jun-22 04:00:04</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>01-Jun-22 03:59:52.098</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.2</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 1.8</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>7/7</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>8</td><td>15.8</td><td> 2.7</td><td>Y</td></tr><tr align=right><td>10</td><td>48.5</td><td> 0.5</td><td>Y</td></tr><tr align=right><td>21</td><td>30.6</td><td> 1.2</td><td>Y</td></tr><tr align=right><td>22</td><td>63.6</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>27</td><td>19.2</td><td> 2.7</td><td>Y</td></tr><tr align=right><td>31</td><td>47.9</td><td> 1.9</td><td>Y</td></tr><tr align=right><td>32</td><td>57.8</td><td> 1.3</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.97476,23.93195,-26.65129</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>52: 01-Jun-22 15:59:51</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-06-01T15:59:51.129Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>52</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.91409, -106.96102,   -28.83</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>01-Jun-22 16:00:05</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>01-Jun-22 15:59:51.129</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.3</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 1.7</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>8/8</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>2</td><td>19.2</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>6</td><td>56.3</td><td> 1.4</td><td>Y</td></tr><tr align=right><td>7</td><td>7.2</td><td> 2.3</td><td>Y</td></tr><tr align=right><td>11</td><td>19.3</td><td> 2.1</td><td>Y</td></tr><tr align=right><td>13</td><td>26.4</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>17</td><td>51.3</td><td> 1.8</td><td>Y</td></tr><tr align=right><td>19</td><td>64.0</td><td> 2.8</td><td>Y</td></tr><tr align=right><td>30</td><td>34.7</td><td> 0.8</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96102,23.91409,-28.83396</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>53: 02-Jun-22 03:59:51</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-06-02T03:59:51.300Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>53</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.93214, -106.97472,   -34.34</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>02-Jun-22 04:00:07</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>02-Jun-22 03:59:51.300</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.0</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 2.8</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>8/8</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>8</td><td>15.3</td><td> 5.1</td><td>Y</td></tr><tr align=right><td>10</td><td>48.1</td><td> 3.1</td><td>Y</td></tr><tr align=right><td>21</td><td>32.0</td><td> 3.3</td><td>Y</td></tr><tr align=right><td>22</td><td>63.3</td><td> 0.5</td><td>Y</td></tr><tr align=right><td>23</td><td>25.5</td><td> 1.7</td><td>Y</td></tr><tr align=right><td>27</td><td>18.2</td><td> 3.1</td><td>Y</td></tr><tr align=right><td>31</td><td>50.0</td><td> 1.5</td><td>Y</td></tr><tr align=right><td>32</td><td>56.6</td><td> 0.8</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.97472,23.93214,-34.33755</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>54: 02-Jun-22 15:59:46</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-06-02T15:59:46.331Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>54</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.91461, -106.96121,   -33.23</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>02-Jun-22 16:00:04</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>02-Jun-22 15:59:46.331</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.2</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.7</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>6/7</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>2</td><td>21.0</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>13</td><td>25.3</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>14</td><td>43.9</td><td> 0.6</td><td>Y</td></tr><tr align=right><td>17</td><td>49.9</td><td> 1.1</td><td>Y</td></tr><tr align=right><td>19</td><td>63.1</td><td> 0.9</td><td>Y</td></tr><tr align=right><td>24</td><td>16.5</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>28</td><td>0.0</td><td> 0.0</td><td>N</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96121,23.91461,-33.22766</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>55: 03-Jun-22 03:59:48</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-06-03T03:59:48.487Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>55</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.93175, -106.97428,   -28.24</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>03-Jun-22 04:00:08</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>03-Jun-22 03:59:48.487</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.0</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 2.9</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>8/8</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>8</td><td>14.8</td><td> 1.7</td><td>Y</td></tr><tr align=right><td>10</td><td>47.8</td><td> 5.8</td><td>Y</td></tr><tr align=right><td>21</td><td>33.3</td><td> 1.4</td><td>Y</td></tr><tr align=right><td>22</td><td>62.9</td><td> 3.3</td><td>Y</td></tr><tr align=right><td>23</td><td>24.6</td><td> 3.9</td><td>Y</td></tr><tr align=right><td>25</td><td>9.8</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>27</td><td>17.1</td><td> 0.6</td><td>Y</td></tr><tr align=right><td>31</td><td>52.0</td><td> 0.8</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.97428,23.93175,-28.24392</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>56: 03-Jun-22 15:59:42</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-06-03T15:59:42.523Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>56</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.91422, -106.96194,   -22.06</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>03-Jun-22 16:00:04</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>03-Jun-22 15:59:42.523</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 2.2</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.9</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>6/7</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>2</td><td>22.8</td><td> 1.7</td><td>Y</td></tr><tr align=right><td>11</td><td>22.8</td><td> 0.0</td><td>Y</td></tr><tr align=right><td>13</td><td>24.3</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>15</td><td>8.2</td><td> 0.6</td><td>Y</td></tr><tr align=right><td>17</td><td>48.5</td><td> 0.6</td><td>Y</td></tr><tr align=right><td>19</td><td>62.3</td><td> 1.1</td><td>Y</td></tr><tr align=right><td>28</td><td>0.0</td><td> 0.0</td><td>N</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96194,23.91422,-22.05843</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>57: 04-Jun-22 03:59:40</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-06-04T03:59:40.704Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>57</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.93206, -106.97457,   -31.01</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>04-Jun-22 04:00:04</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>04-Jun-22 03:59:40.704</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.6</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.9</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>8/8</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>1</td><td>9.7</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>8</td><td>14.2</td><td> 0.9</td><td>Y</td></tr><tr align=right><td>10</td><td>47.4</td><td> 1.1</td><td>Y</td></tr><tr align=right><td>21</td><td>34.5</td><td> 0.4</td><td>Y</td></tr><tr align=right><td>22</td><td>62.4</td><td> 1.7</td><td>Y</td></tr><tr align=right><td>23</td><td>23.8</td><td> 0.9</td><td>Y</td></tr><tr align=right><td>27</td><td>16.1</td><td> 0.9</td><td>Y</td></tr><tr align=right><td>32</td><td>54.2</td><td> 0.1</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.97457,23.93206,-31.01187</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>58: 04-Jun-22 15:59:42</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-06-04T15:59:42.811Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>58</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.91414, -106.96140,   -23.05</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>04-Jun-22 16:00:08</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>04-Jun-22 15:59:42.811</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.2</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 1.0</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>8/8</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>2</td><td>24.7</td><td> 1.9</td><td>Y</td></tr><tr align=right><td>6</td><td>62.5</td><td> 1.8</td><td>Y</td></tr><tr align=right><td>11</td><td>24.7</td><td> 0.9</td><td>Y</td></tr><tr align=right><td>15</td><td>7.7</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>17</td><td>47.1</td><td> 0.0</td><td>Y</td></tr><tr align=right><td>19</td><td>61.3</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>24</td><td>19.4</td><td> 0.4</td><td>Y</td></tr><tr align=right><td>30</td><td>29.3</td><td> 0.8</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96140,23.91414,-23.04677</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>59: 05-Jun-22 03:59:37</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-06-05T03:59:37.961Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>59</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.93263, -106.97326,   -22.00</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>05-Jun-22 04:00:05</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>05-Jun-22 03:59:37.961</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.0</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 1.8</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>8/8</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>1</td><td>11.2</td><td> 3.0</td><td>Y</td></tr><tr align=right><td>8</td><td>13.6</td><td> 0.9</td><td>Y</td></tr><tr align=right><td>10</td><td>47.0</td><td> 1.2</td><td>Y</td></tr><tr align=right><td>21</td><td>35.7</td><td> 2.4</td><td>Y</td></tr><tr align=right><td>23</td><td>22.9</td><td> 1.3</td><td>Y</td></tr><tr align=right><td>25</td><td>10.9</td><td> 1.6</td><td>Y</td></tr><tr align=right><td>31</td><td>56.1</td><td> 1.8</td><td>Y</td></tr><tr align=right><td>32</td><td>53.0</td><td> 0.9</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.97326,23.93263,-22.00318</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>60: 05-Jun-22 15:59:38</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-06-05T15:59:38.030Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Invalid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>60</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.91614, -106.96488,   -21.68</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>05-Jun-22 16:00:07</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>05-Jun-22 15:59:38.030</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 7.0</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>3/4</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>17</td><td>0.0</td><td> 0.0</td><td>Y</td></tr><tr align=right><td>19</td><td>0.0</td><td> 0.0</td><td>Y</td></tr><tr align=right><td>24</td><td>0.0</td><td> 0.0</td><td>Y</td></tr><tr align=right><td>28</td><td>0.0</td><td> 0.0</td><td>N</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96488,23.91614,-21.68318</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>61: 06-Jun-22 03:59:36</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-06-06T03:59:36.235Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>61</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.93161, -106.97367,   -25.58</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>06-Jun-22 04:00:07</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>06-Jun-22 03:59:36.235</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.9</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.9</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>6/6</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>10</td><td>46.5</td><td> 2.0</td><td>Y</td></tr><tr align=right><td>21</td><td>37.0</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>23</td><td>22.0</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>25</td><td>11.4</td><td> 0.6</td><td>Y</td></tr><tr align=right><td>31</td><td>58.2</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>32</td><td>51.8</td><td> 0.5</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.97367,23.93161,-25.58235</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>62: 06-Jun-22 15:59:33</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-06-06T15:59:33.339Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>62</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.91452, -106.96188,   -27.37</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>06-Jun-22 16:00:06</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>06-Jun-22 15:59:33.339</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.1</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 1.3</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>7/8</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>6</td><td>66.5</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>13</td><td>21.2</td><td> 0.7</td><td>Y</td></tr><tr align=right><td>14</td><td>41.4</td><td> 1.4</td><td>Y</td></tr><tr align=right><td>17</td><td>44.4</td><td> 1.5</td><td>Y</td></tr><tr align=right><td>19</td><td>59.3</td><td> 2.5</td><td>Y</td></tr><tr align=right><td>24</td><td>22.2</td><td> 0.6</td><td>Y</td></tr><tr align=right><td>28</td><td>0.0</td><td> 0.0</td><td>N</td></tr><tr align=right><td>30</td><td>25.8</td><td> 0.1</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96188,23.91452,-27.37481</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>63: 07-Jun-22 03:59:32</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-06-07T03:59:32.561Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>63</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.92854, -106.97298,   -28.08</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>07-Jun-22 04:00:07</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>07-Jun-22 03:59:32.561</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.1</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.9</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>8/8</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>1</td><td>14.3</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>8</td><td>12.4</td><td> 1.4</td><td>Y</td></tr><tr align=right><td>10</td><td>46.0</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>21</td><td>38.1</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>22</td><td>60.7</td><td> 1.0</td><td>Y</td></tr><tr align=right><td>27</td><td>13.1</td><td> 1.7</td><td>Y</td></tr><tr align=right><td>31</td><td>60.2</td><td> 0.4</td><td>Y</td></tr><tr align=right><td>32</td><td>50.7</td><td> 0.2</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.97298,23.92854,-28.08305</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>64: 07-Jun-22 15:59:29</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-06-07T15:59:29.663Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>64</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.91369, -106.96114,   -26.93</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>07-Jun-22 16:00:06</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>07-Jun-22 15:59:29.663</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.6</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.8</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>6/6</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>2</td><td>30.2</td><td> 0.6</td><td>Y</td></tr><tr align=right><td>6</td><td>68.5</td><td> 1.2</td><td>Y</td></tr><tr align=right><td>11</td><td>30.2</td><td> 1.2</td><td>Y</td></tr><tr align=right><td>13</td><td>20.1</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>19</td><td>58.3</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>30</td><td>24.0</td><td> 0.7</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96114,23.91369,-26.93263</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>65: 08-Jun-22 03:59:28</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-06-08T03:59:28.835Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>65</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.91493, -106.95941,   -27.91</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>08-Jun-22 04:00:07</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>08-Jun-22 03:59:28.835</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.6</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.6</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>6/6</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>8</td><td>11.7</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>10</td><td>45.4</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>21</td><td>39.2</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>22</td><td>59.9</td><td> 1.3</td><td>Y</td></tr><tr align=right><td>27</td><td>12.2</td><td> 0.4</td><td>Y</td></tr><tr align=right><td>32</td><td>49.5</td><td> 0.4</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.95941,23.91493,-27.91217</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>66: 08-Jun-22 15:59:30</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-06-08T15:59:30.408Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>66</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.91389, -106.96149,   -29.18</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>08-Jun-22 16:00:11</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>08-Jun-22 15:59:30.408</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.2</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.8</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>8/9</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>2</td><td>32.1</td><td> 1.1</td><td>Y</td></tr><tr align=right><td>6</td><td>70.6</td><td> 0.6</td><td>Y</td></tr><tr align=right><td>11</td><td>32.1</td><td> 1.4</td><td>Y</td></tr><tr align=right><td>13</td><td>19.0</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>14</td><td>40.0</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>17</td><td>41.7</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>19</td><td>57.2</td><td> 0.6</td><td>Y</td></tr><tr align=right><td>28</td><td>0.0</td><td> 0.0</td><td>N</td></tr><tr align=right><td>30</td><td>22.3</td><td> 0.9</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96149,23.91389,-29.17790</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>67: 09-Jun-22 04:00:06</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-06-09T04:00:06.174Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>67</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.91516, -106.95967,   -23.31</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>09-Jun-22 04:00:08</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>09-Jun-22 04:00:06.174</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.7</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.3</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>7/7</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>1</td><td>17.6</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>10</td><td>44.7</td><td> 0.6</td><td>Y</td></tr><tr align=right><td>22</td><td>59.1</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>23</td><td>19.1</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>25</td><td>12.9</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>31</td><td>64.8</td><td> 0.5</td><td>Y</td></tr><tr align=right><td>32</td><td>48.1</td><td> 0.3</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.95967,23.91516,-23.31439</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>68: 09-Jun-22 16:00:00</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-06-09T16:00:00.330Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Invalid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>68</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.91411, -106.96100,   -21.72</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>09-Jun-22 16:00:04</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>09-Jun-22 16:00:00.330</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 9.5</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.6</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>6/7</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>2</td><td>34.2</td><td> 0.5</td><td>Y</td></tr><tr align=right><td>6</td><td>72.8</td><td> 1.1</td><td>Y</td></tr><tr align=right><td>11</td><td>34.3</td><td> 0.5</td><td>Y</td></tr><tr align=right><td>14</td><td>39.1</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>17</td><td>40.3</td><td> 0.5</td><td>Y</td></tr><tr align=right><td>19</td><td>56.0</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>28</td><td>0.0</td><td> 0.0</td><td>N</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96100,23.91411,-21.71833</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>69: 10-Jun-22 04:00:00</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-06-10T04:00:00.492Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>69</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.91608, -106.95975,   -21.14</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>10-Jun-22 04:00:06</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>10-Jun-22 04:00:00.492</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.1</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 1.4</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>8/8</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>1</td><td>19.0</td><td> 1.9</td><td>Y</td></tr><tr align=right><td>8</td><td>10.2</td><td> 2.2</td><td>Y</td></tr><tr align=right><td>21</td><td>41.5</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>22</td><td>58.4</td><td> 1.1</td><td>Y</td></tr><tr align=right><td>26</td><td>9.1</td><td> 0.9</td><td>Y</td></tr><tr align=right><td>27</td><td>10.1</td><td> 2.1</td><td>Y</td></tr><tr align=right><td>31</td><td>66.8</td><td> 1.3</td><td>Y</td></tr><tr align=right><td>32</td><td>47.0</td><td> 0.0</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.95975,23.91608,-21.13976</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>70: 10-Jun-22 15:59:56</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-06-10T15:59:56.580Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Invalid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>70</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.91393, -106.96108,   -20.97</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>10-Jun-22 16:00:04</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>10-Jun-22 15:59:56.580</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 4.7</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.6</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>6/7</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>2</td><td>36.1</td><td> 0.6</td><td>Y</td></tr><tr align=right><td>6</td><td>74.7</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>11</td><td>36.2</td><td> 1.1</td><td>Y</td></tr><tr align=right><td>17</td><td>39.0</td><td> 0.4</td><td>Y</td></tr><tr align=right><td>19</td><td>54.9</td><td> 0.6</td><td>Y</td></tr><tr align=right><td>24</td><td>27.7</td><td> 0.0</td><td>Y</td></tr><tr align=right><td>28</td><td>0.0</td><td> 0.0</td><td>N</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96108,23.91393,-20.97276</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>71: 11-Jun-22 03:59:54</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-06-11T03:59:54.890Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>71</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.93020, -106.97716,   -16.12</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>11-Jun-22 04:00:04</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>11-Jun-22 03:59:54.890</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.0</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 3.4</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>8/8</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>10</td><td>43.3</td><td> 1.0</td><td>Y</td></tr><tr align=right><td>21</td><td>42.4</td><td> 3.4</td><td>Y</td></tr><tr align=right><td>22</td><td>57.6</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>23</td><td>17.1</td><td> 5.5</td><td>Y</td></tr><tr align=right><td>25</td><td>13.5</td><td> 4.9</td><td>Y</td></tr><tr align=right><td>26</td><td>10.2</td><td> 3.0</td><td>Y</td></tr><tr align=right><td>27</td><td>9.2</td><td> 3.8</td><td>Y</td></tr><tr align=right><td>31</td><td>68.9</td><td> 1.1</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.97716,23.93020,-16.11870</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>72: 11-Jun-22 15:59:52</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-06-11T15:59:52.991Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>72</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.91401, -106.96102,   -24.57</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>11-Jun-22 16:00:04</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>11-Jun-22 15:59:52.991</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.2</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.8</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>8/9</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>2</td><td>38.0</td><td> 0.9</td><td>Y</td></tr><tr align=right><td>6</td><td>76.4</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>11</td><td>38.1</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>13</td><td>15.8</td><td> 0.7</td><td>Y</td></tr><tr align=right><td>17</td><td>37.8</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>19</td><td>53.8</td><td> 1.6</td><td>Y</td></tr><tr align=right><td>24</td><td>29.0</td><td> 1.1</td><td>Y</td></tr><tr align=right><td>28</td><td>0.0</td><td> 0.0</td><td>N</td></tr><tr align=right><td>30</td><td>17.0</td><td> 0.2</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96102,23.91401,-24.56640</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>73: 12-Jun-22 03:59:53</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-06-12T03:59:53.469Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>73</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.94212, -106.98194,   -23.67</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>12-Jun-22 04:00:06</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>12-Jun-22 03:59:53.469</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 0.9</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.6</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>9/9</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>1</td><td>22.0</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>8</td><td>8.8</td><td> 0.4</td><td>Y</td></tr><tr align=right><td>10</td><td>42.6</td><td> 0.5</td><td>Y</td></tr><tr align=right><td>21</td><td>43.3</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>22</td><td>56.8</td><td> 1.6</td><td>Y</td></tr><tr align=right><td>26</td><td>11.3</td><td> 0.5</td><td>Y</td></tr><tr align=right><td>27</td><td>8.3</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>31</td><td>70.9</td><td> 0.5</td><td>Y</td></tr><tr align=right><td>32</td><td>44.7</td><td> 0.3</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.98194,23.94212,-23.67004</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>74: 12-Jun-22 15:59:53</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-06-12T15:59:53.529Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>74</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.91388, -106.96114,   -23.51</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>12-Jun-22 16:00:08</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>12-Jun-22 15:59:53.529</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.4</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.7</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>8/9</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>2</td><td>39.9</td><td> 0.7</td><td>Y</td></tr><tr align=right><td>6</td><td>78.1</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>11</td><td>40.1</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>13</td><td>14.7</td><td> 0.4</td><td>Y</td></tr><tr align=right><td>17</td><td>36.6</td><td> 0.8</td><td>Y</td></tr><tr align=right><td>19</td><td>52.7</td><td> 1.2</td><td>Y</td></tr><tr align=right><td>20</td><td>7.1</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>28</td><td>0.0</td><td> 0.0</td><td>N</td></tr><tr align=right><td>30</td><td>15.3</td><td> 0.7</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96114,23.91388,-23.50556</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>75: 13-Jun-22 03:59:53</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-06-13T03:59:53.131Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>75</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.94710, -106.98455,   -25.63</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>13-Jun-22 04:00:09</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>13-Jun-22 03:59:53.131</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 0.9</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 1.1</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>9/9</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>10</td><td>41.8</td><td> 0.9</td><td>Y</td></tr><tr align=right><td>21</td><td>44.1</td><td> 0.6</td><td>Y</td></tr><tr align=right><td>22</td><td>56.0</td><td> 0.8</td><td>Y</td></tr><tr align=right><td>23</td><td>15.0</td><td> 1.2</td><td>Y</td></tr><tr align=right><td>25</td><td>14.1</td><td> 1.3</td><td>Y</td></tr><tr align=right><td>26</td><td>12.4</td><td> 1.3</td><td>Y</td></tr><tr align=right><td>27</td><td>7.4</td><td> 1.4</td><td>Y</td></tr><tr align=right><td>31</td><td>73.0</td><td> 1.7</td><td>Y</td></tr><tr align=right><td>32</td><td>43.6</td><td> 0.6</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.98455,23.94710,-25.63494</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>76: 13-Jun-22 16:00:02</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-06-13T16:00:02.257Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>76</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.91388, -106.96119,   -23.86</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>13-Jun-22 16:00:05</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>13-Jun-22 16:00:02.257</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.3</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.7</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>8/9</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>2</td><td>41.9</td><td> 0.5</td><td>Y</td></tr><tr align=right><td>6</td><td>79.6</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>11</td><td>42.2</td><td> 1.5</td><td>Y</td></tr><tr align=right><td>13</td><td>13.7</td><td> 0.5</td><td>Y</td></tr><tr align=right><td>14</td><td>35.7</td><td> 0.6</td><td>Y</td></tr><tr align=right><td>19</td><td>51.5</td><td> 0.0</td><td>Y</td></tr><tr align=right><td>20</td><td>8.4</td><td> 0.5</td><td>Y</td></tr><tr align=right><td>28</td><td>0.0</td><td> 0.0</td><td>N</td></tr><tr align=right><td>30</td><td>13.6</td><td> 0.3</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96119,23.91388,-23.86002</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>77: 14-Jun-22 04:00:02</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-06-14T04:00:02.692Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>77</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.94809, -106.98539,   -32.79</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>14-Jun-22 04:00:07</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>14-Jun-22 04:00:02.692</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.0</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 1.7</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>9/9</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>1</td><td>24.9</td><td> 0.7</td><td>Y</td></tr><tr align=right><td>10</td><td>40.9</td><td> 4.0</td><td>Y</td></tr><tr align=right><td>21</td><td>44.9</td><td> 0.6</td><td>Y</td></tr><tr align=right><td>22</td><td>55.1</td><td> 0.9</td><td>Y</td></tr><tr align=right><td>23</td><td>13.9</td><td> 2.4</td><td>Y</td></tr><tr align=right><td>26</td><td>13.6</td><td> 0.4</td><td>Y</td></tr><tr align=right><td>27</td><td>6.5</td><td> 1.1</td><td>Y</td></tr><tr align=right><td>31</td><td>75.1</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>32</td><td>42.5</td><td> 0.1</td><td>Y</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.98539,23.94809,-32.79079</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+      <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+        <kml:name>78: 14-Jun-22 15:59:58</kml:name>
+        <kml:TimeStamp>
+          <kml:when>2022-06-14T15:59:58.817Z</kml:when>
+        </kml:TimeStamp>
+        <kml:styleUrl>#Valid</kml:styleUrl>
+        <kml:ExtendedData>
+          <kml:Data name="index">
+            <kml:value>78</kml:value>
+          </kml:Data>
+          <kml:Data name="coord">
+            <kml:value>23.91386, -106.96122,   -18.84</kml:value>
+          </kml:Data>
+          <kml:Data name="RTC Time">
+            <kml:value>14-Jun-22 16:00:05</kml:value>
+          </kml:Data>
+          <kml:Data name="FIX Time">
+            <kml:value>14-Jun-22 15:59:58.817</kml:value>
+          </kml:Data>
+          <kml:Data name="hDop">
+            <kml:value> 1.5</kml:value>
+          </kml:Data>
+          <kml:Data name="eRes">
+            <kml:value> 0.9</kml:value>
+          </kml:Data>
+          <kml:Data name="inUse">
+            <kml:value>7/8</kml:value>
+          </kml:Data>
+          <kml:Data name="sats">
+            <kml:value><![CDATA[<tr align=right><td>2</td><td>43.7</td><td> 0.6</td><td>Y</td></tr><tr align=right><td>6</td><td>80.8</td><td> 0.2</td><td>Y</td></tr><tr align=right><td>11</td><td>44.2</td><td> 2.2</td><td>Y</td></tr><tr align=right><td>13</td><td>12.7</td><td> 0.3</td><td>Y</td></tr><tr align=right><td>14</td><td>34.8</td><td> 0.5</td><td>Y</td></tr><tr align=right><td>19</td><td>50.4</td><td> 0.1</td><td>Y</td></tr><tr align=right><td>20</td><td>9.7</td><td> 0.7</td><td>Y</td></tr><tr align=right><td>28</td><td>0.0</td><td> 0.0</td><td>N</td></tr>]]></kml:value>
+          </kml:Data>
+          <kml:Data name="temp">
+            <kml:value>0.0</kml:value>
+          </kml:Data>
+          <kml:Data name="volt">
+            <kml:value>0.00</kml:value>
+          </kml:Data>
+        </kml:ExtendedData>
+        <kml:Point>
+          <kml:altitudeMode>clampToGround</kml:altitudeMode>
+          <kml:coordinates>-106.96122,23.91386,-18.83879</kml:coordinates>
+        </kml:Point>
+      </kml:Placemark>
+    </Folder>
+    <kml:Placemark xmlns:kml="http://www.opengis.net/kml/2.2">
+      <kml:name>Track</kml:name>
+      <kml:styleUrl>#multiTrack</kml:styleUrl>
+      <gx:MultiTrack>
+        <gx:altitudeMode>clampToGround</gx:altitudeMode>
+        <gx:Track>
+          <gx:altitudeMode>clampToGround</gx:altitudeMode>
+          <kml:when>2022-05-06T13:00:08.715Z</kml:when>
+          <kml:when>2022-05-07T16:00:05.987Z</kml:when>
+          <kml:when>2022-05-08T04:00:01.154Z</kml:when>
+          <kml:when>2022-05-09T04:00:02.988Z</kml:when>
+          <kml:when>2022-05-09T16:00:01.030Z</kml:when>
+          <kml:when>2022-05-10T03:59:59.947Z</kml:when>
+          <kml:when>2022-05-10T15:59:58.970Z</kml:when>
+          <kml:when>2022-05-11T03:59:56.792Z</kml:when>
+          <kml:when>2022-05-11T15:59:54.764Z</kml:when>
+          <kml:when>2022-05-12T03:59:59.496Z</kml:when>
+          <kml:when>2022-05-12T16:00:01.600Z</kml:when>
+          <kml:when>2022-05-13T15:59:58.480Z</kml:when>
+          <kml:when>2022-05-14T03:59:59.309Z</kml:when>
+          <kml:when>2022-05-14T15:59:57.355Z</kml:when>
+          <kml:when>2022-05-15T03:59:54.192Z</kml:when>
+          <kml:when>2022-05-15T15:59:52.288Z</kml:when>
+          <kml:when>2022-05-16T03:59:54.167Z</kml:when>
+          <kml:when>2022-05-16T15:59:50.147Z</kml:when>
+          <kml:when>2022-05-17T03:59:51.503Z</kml:when>
+          <kml:when>2022-05-17T15:59:45.537Z</kml:when>
+          <kml:when>2022-05-18T03:59:47.145Z</kml:when>
+          <kml:when>2022-05-18T15:59:42.184Z</kml:when>
+          <kml:when>2022-05-19T03:59:44.913Z</kml:when>
+          <kml:when>2022-05-19T15:59:39.956Z</kml:when>
+          <kml:when>2022-05-20T03:59:40.611Z</kml:when>
+          <kml:when>2022-05-20T15:59:36.647Z</kml:when>
+          <kml:when>2022-05-21T03:59:33.997Z</kml:when>
+          <kml:when>2022-05-21T15:59:33.041Z</kml:when>
+          <kml:when>2022-05-22T03:59:33.616Z</kml:when>
+          <kml:when>2022-05-22T15:59:29.658Z</kml:when>
+          <kml:when>2022-05-23T03:59:27.174Z</kml:when>
+          <kml:when>2022-05-23T15:59:26.197Z</kml:when>
+          <kml:when>2022-05-24T03:59:29.531Z</kml:when>
+          <kml:when>2022-05-24T16:00:01.559Z</kml:when>
+          <kml:when>2022-05-25T04:00:02.819Z</kml:when>
+          <kml:when>2022-05-25T16:00:02.888Z</kml:when>
+          <kml:when>2022-05-26T03:59:57.097Z</kml:when>
+          <kml:when>2022-05-26T15:59:55.140Z</kml:when>
+          <kml:when>2022-05-27T03:59:55.425Z</kml:when>
+          <kml:when>2022-05-27T15:59:50.467Z</kml:when>
+          <kml:when>2022-05-28T03:59:51.800Z</kml:when>
+          <kml:when>2022-05-28T15:59:46.785Z</kml:when>
+          <kml:when>2022-05-29T03:59:51.215Z</kml:when>
+          <kml:when>2022-05-29T16:00:02.308Z</kml:when>
+          <kml:when>2022-05-30T03:59:59.529Z</kml:when>
+          <kml:when>2022-05-30T15:59:57.625Z</kml:when>
+          <kml:when>2022-05-31T03:59:56.793Z</kml:when>
+          <kml:when>2022-05-31T15:59:53.912Z</kml:when>
+          <kml:when>2022-06-01T03:59:52.098Z</kml:when>
+          <kml:when>2022-06-01T15:59:51.129Z</kml:when>
+          <kml:when>2022-06-02T03:59:51.300Z</kml:when>
+          <kml:when>2022-06-02T15:59:46.331Z</kml:when>
+          <kml:when>2022-06-03T03:59:48.487Z</kml:when>
+          <kml:when>2022-06-03T15:59:42.523Z</kml:when>
+          <kml:when>2022-06-04T03:59:40.704Z</kml:when>
+          <kml:when>2022-06-04T15:59:42.811Z</kml:when>
+          <kml:when>2022-06-05T03:59:37.961Z</kml:when>
+          <kml:when>2022-06-06T03:59:36.235Z</kml:when>
+          <kml:when>2022-06-06T15:59:33.339Z</kml:when>
+          <kml:when>2022-06-07T03:59:32.561Z</kml:when>
+          <kml:when>2022-06-07T15:59:29.663Z</kml:when>
+          <kml:when>2022-06-08T03:59:28.835Z</kml:when>
+          <kml:when>2022-06-08T15:59:30.408Z</kml:when>
+          <kml:when>2022-06-09T04:00:06.174Z</kml:when>
+          <kml:when>2022-06-09T16:00:00.330Z</kml:when>
+          <kml:when>2022-06-10T04:00:00.492Z</kml:when>
+          <kml:when>2022-06-10T15:59:56.580Z</kml:when>
+          <kml:when>2022-06-11T03:59:54.890Z</kml:when>
+          <kml:when>2022-06-11T15:59:52.991Z</kml:when>
+          <kml:when>2022-06-12T03:59:53.469Z</kml:when>
+          <kml:when>2022-06-12T15:59:53.529Z</kml:when>
+          <kml:when>2022-06-13T03:59:53.131Z</kml:when>
+          <kml:when>2022-06-13T16:00:02.257Z</kml:when>
+          <kml:when>2022-06-14T04:00:02.692Z</kml:when>
+          <kml:when>2022-06-14T15:59:58.817Z</kml:when>
+          <gx:coord>-106.96094 23.91227 -21.57213</gx:coord>
+          <gx:coord>-106.96288 23.92003 -30.09553</gx:coord>
+          <gx:coord>-106.96513 23.92030 -31.94550</gx:coord>
+          <gx:coord>-106.96519 23.92011 -29.11925</gx:coord>
+          <gx:coord>-106.95790 23.91722 -23.96462</gx:coord>
+          <gx:coord>-106.96535 23.92170 -28.07094</gx:coord>
+          <gx:coord>-106.96178 23.92014 -28.83302</gx:coord>
+          <gx:coord>-106.96480 23.92114 -23.02195</gx:coord>
+          <gx:coord>-106.96175 23.92014 -25.59475</gx:coord>
+          <gx:coord>-106.97449 23.92735 -24.18547</gx:coord>
+          <gx:coord>-106.96174 23.92017 -23.51879</gx:coord>
+          <gx:coord>-106.96041 23.91957 -25.35859</gx:coord>
+          <gx:coord>-106.97499 23.92779 -25.02704</gx:coord>
+          <gx:coord>-106.96169 23.92013 -27.20538</gx:coord>
+          <gx:coord>-106.97701 23.92998 -26.85494</gx:coord>
+          <gx:coord>-106.96175 23.92014 -26.35477</gx:coord>
+          <gx:coord>-106.97166 23.92788 -25.64939</gx:coord>
+          <gx:coord>-106.97143 23.92804 -25.55013</gx:coord>
+          <gx:coord>-106.97099 23.92648 -23.66215</gx:coord>
+          <gx:coord>-106.96178 23.92016 -23.62243</gx:coord>
+          <gx:coord>-106.97140 23.92664 -28.63690</gx:coord>
+          <gx:coord>-106.96172 23.92016 -28.05276</gx:coord>
+          <gx:coord>-106.97180 23.92642 -24.96748</gx:coord>
+          <gx:coord>-106.96160 23.91995 -28.51418</gx:coord>
+          <gx:coord>-106.97116 23.92640 -24.52468</gx:coord>
+          <gx:coord>-106.96170 23.92015 -25.59283</gx:coord>
+          <gx:coord>-106.97146 23.92664 -26.94877</gx:coord>
+          <gx:coord>-106.96177 23.92013 -26.38868</gx:coord>
+          <gx:coord>-106.97426 23.93216 -23.89952</gx:coord>
+          <gx:coord>-106.96165 23.92011 -25.19690</gx:coord>
+          <gx:coord>-106.97137 23.92630 -25.80863</gx:coord>
+          <gx:coord>-106.96166 23.92006 -15.06662</gx:coord>
+          <gx:coord>-106.97437 23.92665 -21.51995</gx:coord>
+          <gx:coord>-106.96188 23.91801 -22.39686</gx:coord>
+          <gx:coord>-106.97098 23.92735 -25.57645</gx:coord>
+          <gx:coord>-106.96283 23.91908 -19.59635</gx:coord>
+          <gx:coord>-106.97790 23.92880 -24.85510</gx:coord>
+          <gx:coord>-106.96279 23.91926 -25.80721</gx:coord>
+          <gx:coord>-106.97779 23.92807 -17.71859</gx:coord>
+          <gx:coord>-106.96293 23.91919 -17.61720</gx:coord>
+          <gx:coord>-106.97407 23.93225 -21.52631</gx:coord>
+          <gx:coord>-106.96261 23.91875 -21.28817</gx:coord>
+          <gx:coord>-106.97741 23.92979 -19.61509</gx:coord>
+          <gx:coord>-106.96262 23.91939 -23.90592</gx:coord>
+          <gx:coord>-106.97743 23.92913 -25.26481</gx:coord>
+          <gx:coord>-106.96130 23.91733 -23.49312</gx:coord>
+          <gx:coord>-106.96176 23.91405 -29.13445</gx:coord>
+          <gx:coord>-106.97293 23.92481 -28.91828</gx:coord>
+          <gx:coord>-106.97476 23.93195 -26.65129</gx:coord>
+          <gx:coord>-106.96102 23.91409 -28.83396</gx:coord>
+          <gx:coord>-106.97472 23.93214 -34.33755</gx:coord>
+          <gx:coord>-106.96121 23.91461 -33.22766</gx:coord>
+          <gx:coord>-106.97428 23.93175 -28.24392</gx:coord>
+          <gx:coord>-106.96194 23.91422 -22.05843</gx:coord>
+          <gx:coord>-106.97457 23.93206 -31.01187</gx:coord>
+          <gx:coord>-106.96140 23.91414 -23.04677</gx:coord>
+          <gx:coord>-106.97326 23.93263 -22.00318</gx:coord>
+          <gx:coord>-106.97367 23.93161 -25.58235</gx:coord>
+          <gx:coord>-106.96188 23.91452 -27.37481</gx:coord>
+          <gx:coord>-106.97298 23.92854 -28.08305</gx:coord>
+          <gx:coord>-106.96114 23.91369 -26.93263</gx:coord>
+          <gx:coord>-106.95941 23.91493 -27.91217</gx:coord>
+          <gx:coord>-106.96149 23.91389 -29.17790</gx:coord>
+          <gx:coord>-106.95967 23.91516 -23.31439</gx:coord>
+          <gx:coord>-106.96100 23.91411 -21.71833</gx:coord>
+          <gx:coord>-106.95975 23.91608 -21.13976</gx:coord>
+          <gx:coord>-106.96108 23.91393 -20.97276</gx:coord>
+          <gx:coord>-106.97716 23.93020 -16.11870</gx:coord>
+          <gx:coord>-106.96102 23.91401 -24.56640</gx:coord>
+          <gx:coord>-106.98194 23.94212 -23.67004</gx:coord>
+          <gx:coord>-106.96114 23.91388 -23.50556</gx:coord>
+          <gx:coord>-106.98455 23.94710 -25.63494</gx:coord>
+          <gx:coord>-106.96119 23.91388 -23.86002</gx:coord>
+          <gx:coord>-106.98539 23.94809 -32.79079</gx:coord>
+          <gx:coord>-106.96122 23.91386 -18.83879</gx:coord>
+        </gx:Track>
+      </gx:MultiTrack>
+    </kml:Placemark>
+  </Document>
+</kml>
