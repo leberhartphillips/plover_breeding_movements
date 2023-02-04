@@ -21,4 +21,5 @@ B) detect nesting activity with movement data
         1) subset all datasets to the local breeding season period
         2) remove the timeperiods of nesting determined in (i) above
         3) visulize results and compare to the patterns shown in (i)
+        
       
