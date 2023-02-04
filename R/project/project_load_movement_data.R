@@ -146,7 +146,7 @@ PP48671_ceuta <-
   import_plover_tag_spatial(data_loc = "data/SNPL/lotek/PinPoint_Tag_48671/Swift GPS Data Files/PinPoint 48671 2019-05-09 12-07-57.txt",
                             tag_ID = "PP48671", projection = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
                             time_zone = "America/Mazatlan", tag_model = "PinPoint-10", n_slice = 0,
-                            bird_ID = "CA3315", bird_code = "GX.MR|BX.GX", bird_sex = "M", species = "SNPL", population = "ceuta")
+                            bird_ID = "CA3315", bird_code = "GX.MR|GX.BX", bird_sex = "M", species = "SNPL", population = "ceuta")
 
 PP48672_ceuta <- 
   import_plover_tag_spatial(data_loc = "data/SNPL/lotek/PinPoint_Tag_48672/Swift GPS Data FIles/PinPoint 48672 2019-06-02 23-57-11.txt",
@@ -200,7 +200,7 @@ PP51070a_ceuta <-
   import_plover_tag_spatial(data_loc = "data/SNPL/lotek/PinPoint_Tag_51070a/Swift GPS Data Files/PinPoint 51070 2022-06-14 19-19-55_NestC402_FemaleCN0423.txt",
                                 tag_ID = "PP51070a", projection = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
                                 time_zone = "GMT", tag_model = "PinPoint-10", n_slice = 1,
-                                bird_ID = "CM0423", bird_code = "OX.RM|OX.LX", bird_sex = "F", species = "SNPL", population = "ceuta")
+                                bird_ID = "CN0423", bird_code = "OX.RM|OX.LX", bird_sex = "F", species = "SNPL", population = "ceuta")
 
 PP51073_ceuta <- 
   import_plover_tag_spatial(data_loc = "data/SNPL/lotek/PinPoint_Tag_51073/Swift GPS Data Files/PinPoint 51073 2022-05-06 22-39-50_NestC301_FemaleCN0937.txt",

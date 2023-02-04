@@ -9,30 +9,43 @@ deploy_info <-
   summarise(first_fix = min(timestamp_simple)) %>% 
   arrange(ring, first_fix)
 
-plover_tagging_df %>% 
+rings_tags <- 
+  plover_tagging_df %>% 
   filter(species == "SNPL") %>%
-  select(ring, tag_ID) %>% 
-  distinct() %>% 
-  length()
+  select(ring, tag_ID) %>%
+  distinct()
+  # filter(ring == "CN0520")
 
 ceuta_list$Captures %>% 
-  filter(ring == "CN0130")
+  filter(ring == "CN0423") %>%
+  # filter(code == "OX.RM|OX.LX")
+  arrange(date)
 
 ceuta_list$Captures %>% 
+  filter(str_detect(comments, "55650"))
+  # filter(lubridate::year(date) == "2021")#date == as.Date("2021-05-16", format = "%Y-%m-%d"))
+
+tagging_data <- 
+  ceuta_list$Captures %>% 
   mutate(sex = ifelse(ring == "CA3340" & ID == "2019_D_203", "M", sex)) %>% 
   mutate(code = ifelse(ring == "CA3314", "GX.RM|BX.WX", code)) %>% 
+  mutate(code = ifelse(ring == "CA3315", "GX.MR|GX.BX", code)) %>% 
   dplyr::select(ring, ID, code, date) %>% 
   left_join(deploy_info,., by = c("ring")) %>% 
+  # filter(ring == "CN0161") %>%
   filter(code.x == code.y & species == "SNPL") %>% 
   select(-code.y) %>% 
   rename(code = code.x) %>% 
   mutate(time_diff = first_fix - date) %>% 
-  filter(time_diff > -100 & time_diff < 100) %>% 
+  filter(time_diff > -1) %>%
+  # filter(time_diff > -100 & time_diff < 100) %>%
   arrange(ring, time_diff) %>% 
-  group_by(ring) %>% 
-  slice(1)
+  group_by(ring, tag_ID) %>% 
+  # filter(ring == "CN0161")
+  slice(1) %>% 
+  # arrange(time_diff)
+  arrange(desc(time_diff))
   
-
 ceuta_list$Nests %>% 
   dplyr::select("ID", "female", "male", "easting", "northing", 
                 "nest_initiation_date",  "end_date", 
