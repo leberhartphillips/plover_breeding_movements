@@ -1,6 +1,5 @@
 import_plover_tag_spatial <- 
-  function(data_loc, tag_ID, projection,
-           time_zone = "America/Mazatlan",
+  function(data_loc, tag_ID, projection, collect_time_zone, local_time_zone,
            tag_model, bird_ID, bird_sex, bird_code, 
            species, population, n_slice){
     
@@ -28,7 +27,7 @@ import_plover_tag_spatial <-
           # convert to a useable POSIX time/date string
           timestamp = as.POSIXct(strptime(as.character(timestamp), 
                                           format = "%y-%m-%d %H:%M:%S"), 
-                                 tz = time_zone),
+                                 tz = collect_time_zone),
           
           # assign name of tag
           tag_ID = tag_ID,
@@ -70,6 +69,9 @@ import_plover_tag_spatial <-
           
           satellites = as.character(satellites)) %>% 
         
+        # make a local timestamp
+        mutate(timestamp_local = with_tz(timestamp_gmt, local_time_zone)) %>% 
+        
         # make the dataframe a simple feature, define coordinates and projection
         st_as_sf(., 
                  coords = c("longitude", "latitude"),
@@ -100,7 +102,7 @@ import_plover_tag_spatial <-
             # Merge the time and date columns together to formulate the time stamp for a given row
             timestamp = ISOdate(year = year, month = month, day = day, 
                                 hour = hour, min = minute, sec = second, 
-                                tz = time_zone),
+                                tz = collect_time_zone),
             
             # Tag$datetime[nrow(Tag)] = Tag$datetime[nrow(Tag)] + 8 * 60 * 60,
             # 
@@ -148,6 +150,9 @@ import_plover_tag_spatial <-
                  population = population,
                  
                  satellites = as.character(satellites)) %>% 
+          
+          # make a local timestamp
+          mutate(timestamp_local = with_tz(timestamp_gmt, local_time_zone)) %>% 
           
           # remove observations without a reliable location
           filter(latitude != 0 | !is.na(latitude)) %>% 
@@ -183,7 +188,7 @@ import_plover_tag_spatial <-
             # Merge the time and date columns together to formulate the time stamp for a given row
             timestamp = ISOdate(year = year, month = month, day = day, 
                                 hour = hour, min = minute, sec = second, 
-                                tz = time_zone),
+                                tz = collect_time_zone),
             
             # Tag$datetime[nrow(Tag)] = Tag$datetime[nrow(Tag)] + 8 * 60 * 60,
             # 
@@ -231,6 +236,9 @@ import_plover_tag_spatial <-
                  population = population,
                  
                  satellites = as.character(satellites)) %>% 
+          
+          # make a local timestamp
+          mutate(timestamp_local = with_tz(timestamp_gmt, local_time_zone)) %>% 
           
           # remove observations without a reliable location
           filter(latitude != 0 | !is.na(latitude)) %>% 

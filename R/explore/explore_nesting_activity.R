@@ -3,64 +3,62 @@ source("R/project/project_libraries.R")
 source("R/project/project_load_movement_data.R")
 source("R/project/project_load_breeding_data.R")
 
+# Determine the first fix for each tagging dataset
 deploy_info <- 
   plover_tagging_df %>% 
   group_by(species, ring, tag_ID, code, sex) %>% 
-  summarise(first_fix = min(timestamp_simple)) %>% 
+  summarise(first_fix = min(timestamp_simple),
+            last_fix = max(timestamp_simple)) %>% 
   arrange(ring, first_fix)
 
+# extract the ring and tagIDs from the tagging dataset
 rings_tags <- 
   plover_tagging_df %>% 
-  filter(species == "SNPL") %>%
+  filter(species %in% c("SNPL", "WIPL","KEPL")) %>%
   select(ring, tag_ID) %>%
   distinct()
-  # filter(ring == "CN0520")
 
-ceuta_list$Captures %>% 
-  filter(ring == "CN0423") %>%
-  # filter(code == "OX.RM|OX.LX")
-  arrange(date)
-
-ceuta_list$Captures %>% 
-  filter(str_detect(comments, "55650"))
-  # filter(lubridate::year(date) == "2021")#date == as.Date("2021-05-16", format = "%Y-%m-%d"))
-
-tagging_data <- 
+# wrangle the deployment dates and deployment nest IDs for each tagging dataset
+tagging_data_ceuta <- 
   ceuta_list$Captures %>% 
   mutate(sex = ifelse(ring == "CA3340" & ID == "2019_D_203", "M", sex)) %>% 
   mutate(code = ifelse(ring == "CA3314", "GX.RM|BX.WX", code)) %>% 
   mutate(code = ifelse(ring == "CA3315", "GX.MR|GX.BX", code)) %>% 
   dplyr::select(ring, ID, code, date) %>% 
   left_join(deploy_info,., by = c("ring")) %>% 
-  # filter(ring == "CN0161") %>%
-  filter(code.x == code.y & species == "SNPL") %>% 
+  filter(code.x == code.y) %>% 
   select(-code.y) %>% 
   rename(code = code.x) %>% 
   mutate(time_diff = first_fix - date) %>% 
   filter(time_diff > -1) %>%
-  # filter(time_diff > -100 & time_diff < 100) %>%
   arrange(ring, time_diff) %>% 
   group_by(ring, tag_ID) %>% 
-  # filter(ring == "CN0161")
   slice(1) %>% 
-  # arrange(time_diff)
-  arrange(desc(time_diff))
+  arrange(desc(time_diff)) %>% 
+  rename(deploy_nest_ID = ID)
   
-ceuta_list$Nests %>% 
+# wrangle the nest information associated with each deployment nest
+tag_nest_data_ceuta <- 
+  ceuta_list$Nests %>% 
   dplyr::select("ID", "female", "male", "easting", "northing", 
                 "nest_initiation_date",  "end_date", 
                 "last_observation_alive", "fate") %>% 
   pivot_longer(cols = c("female", "male"), names_to = "sex", values_to = "code") %>% 
-  left_join(dplyr::select(ceuta_list$Captures, ID, ring, code, date), ., by = c("code", "ID")) %>% 
+  mutate(sex = ifelse(sex == "female", "F", ifelse(sex == "male", "M", NA))) %>% 
+  left_join(tagging_data_ceuta, ., by = c("sex", "code")) %>% 
   distinct() %>% 
   rename(cap_date = date) %>% 
-  left_join(deploy_info, ., by = "ring") %>% 
-  mutate(time_diff = nest_initiation_date - first_fix) %>%
-  arrange(abs(time_diff)) %>% 
-  group_by(ring) %>% 
-  slice(1)
+  st_as_sf(x = .,                         
+           coords = c("easting", "northing"),
+           crs = "+proj=utm +zone=13") %>% 
+  st_transform(., crs = "+proj=longlat +datum=WGS84") %>% 
+  sfc_as_cols(., names = c("lon", "lat")) %>% 
+  st_drop_geometry() %>% 
+  filter(end_date >= first_fix & nest_initiation_date <= last_fix) %>% 
+  arrange(first_fix)
 
-# tagus_nest_data <- 
+# wrangle the nest information associated with each deployment nest
+tag_nest_data_tagus <-
   tagus_list$Nests %>% 
   mutate(end_date = ifelse(is.na(`HATCH DATE`), as.character(`INACTIVE DATE`), 
                            as.character(`HATCH DATE`)) %>% 
@@ -71,8 +69,39 @@ ceuta_list$Nests %>%
          male = MALE,
          lat = LAT,
          lon = LON,
-         nest_intiation_date = "LAY DATE",
+         nest_initiation_date = "LAY DATE",
          fate = "FATE") %>% 
-    mutate(nest_intiation_date = as.Date(nest_intiation_date),
-           fate = tolower(ifelse(str_detect(fate, "hatch"), "Hatch", fate)))
-  
+    mutate(nest_initiation_date = as.Date(nest_initiation_date),
+           fate = tolower(ifelse(str_detect(fate, "hatch"), "Hatch", fate))) %>% 
+  pivot_longer(cols = c("female", "male"), names_to = "sex", values_to = "ring") %>% 
+  mutate(sex = ifelse(sex == "female", "F", ifelse(sex == "male", "M", NA)),
+         ring = str_replace_all(ring, regex("\\s*"), "")) %>% 
+  left_join(deploy_info,., by = c("ring")) %>% 
+  select(-sex.y) %>% 
+  rename(sex = sex.x) %>% 
+  filter(species == "KEPL" & !is.na(lat))
+
+# bind ceuta and tagus data
+tag_nest_data <- 
+  tag_nest_data_ceuta %>% 
+  dplyr::select(species, ring, tag_ID, code, sex, first_fix, last_fix, ID, lat, lon, nest_initiation_date, end_date, fate) %>% 
+  bind_rows(., tag_nest_data_tagus) %>% 
+  rename(nest_lat = lat,
+         nest_lon = lon,
+         nest_ID = ID)
+
+# check that all ring and tag_ID data has been added
+tag_nest_data %>% 
+  select(ring, tag_ID) %>% 
+  distinct() %>% 
+  mutate(check = "X") %>% 
+  right_join(rings_tags,., by = c("ring", "tag_ID"))
+
+# merge nest data with tagging data
+plover_tagging_df %>% 
+  filter(species %in% c("SNPL", "WIPL","KEPL")) %>%
+  left_join(., tag_nest_data, by = c("ring", "tag_ID", "sex", "species", "code")) %>% 
+  filter(timestamp_local <= end_date & timestamp_local >= nest_initiation_date) %>% 
+  mutate(days_recorded = end_date - as.Date(str_sub(as.character(timestamp_local), 
+                                                    start = 1, end = 10), 
+                                            format = "%Y-%m-%d"))
