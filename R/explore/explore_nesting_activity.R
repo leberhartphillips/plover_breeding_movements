@@ -5,10 +5,10 @@ source("R/project/project_load_breeding_data.R")
 
 # Determine the first fix for each tagging dataset
 deploy_info <- 
-  plover_tagging_sf %>% 
+  plover_tagging_df %>% 
   group_by(species, ring, tag_ID, code, sex) %>% 
-  summarise(first_fix = min(timestamp_simple),
-            last_fix = max(timestamp_simple)) %>% 
+  summarise(first_fix = min(timestamp_date),
+            last_fix = max(timestamp_date)) %>% 
   arrange(ring, first_fix)
 
 # extract the ring and tagIDs from the tagging dataset
@@ -35,9 +35,10 @@ tagging_data_ceuta <-
   group_by(ring, tag_ID) %>% 
   slice(1) %>% 
   arrange(desc(time_diff)) %>% 
-  rename(deploy_nest_ID = ID)
+  rename(deploy_nest_ID = ID) %>% 
+  rename(cap_date = date)
   
-# wrangle the nest information associated with each deployment nest
+# wrangle the nest information associated with each known nesting attempt of tagged birds
 tag_nest_data_ceuta <- 
   ceuta_list$Nests %>% 
   dplyr::select("ID", "female", "male", "easting", "northing", 
@@ -47,7 +48,6 @@ tag_nest_data_ceuta <-
   mutate(sex = ifelse(sex == "female", "F", ifelse(sex == "male", "M", NA))) %>% 
   left_join(tagging_data_ceuta, ., by = c("sex", "code")) %>% 
   distinct() %>% 
-  rename(cap_date = date) %>% 
   st_as_sf(x = .,                         
            coords = c("easting", "northing"),
            crs = "+proj=utm +zone=13") %>% 
@@ -57,7 +57,7 @@ tag_nest_data_ceuta <-
   filter(end_date >= first_fix & nest_initiation_date <= last_fix) %>% 
   arrange(first_fix)
 
-# wrangle the nest information associated with each deployment nest
+# wrangle the nest information associated with each known nesting attempt of tagged birds
 tag_nest_data_tagus <-
   tagus_list$Nests %>% 
   mutate(end_date = ifelse(is.na(`HATCH DATE`), as.character(`INACTIVE DATE`), 
@@ -80,6 +80,60 @@ tag_nest_data_tagus <-
   select(-sex.y) %>% 
   rename(sex = sex.x) %>% 
   filter(species == "KEPL" & !is.na(lat))
+
+# wrangle the brooding information associated with each known brood of tagged birds
+tag_brood_data_ceuta <- 
+  ceuta_list$Broods %>% 
+  dplyr::select("ID", "female", "male", "easting", "northing", 
+                "date",  "time", "chicks") %>% 
+  pivot_longer(cols = c("female", "male"), names_to = "sex", values_to = "code") %>% 
+  mutate(sex = ifelse(sex == "female", "F", ifelse(sex == "male", "M", NA))) %>% 
+  left_join(tagging_data_ceuta, ., by = c("sex", "code")) %>% 
+  distinct() %>% 
+  rename(resight_date = date,
+         brood_ID = ID) %>%
+  filter(!is.na(easting)) %>% 
+  st_as_sf(x = .,                         
+           coords = c("easting", "northing"),
+           crs = "+proj=utm +zone=13") %>% 
+  st_transform(., crs = "+proj=longlat +datum=WGS84") %>% 
+  sfc_as_cols(., names = c("lon", "lat")) %>% 
+  st_drop_geometry() %>% 
+  filter(resight_date >= first_fix & resight_date <= last_fix) %>% 
+  arrange(first_fix) %>% 
+  mutate(timestamp_brood = paste(as.character(resight_date),
+                                 paste(str_sub(time, 1, 2), 
+                                       str_sub(time, 3, 4), 
+                                       "00", sep = ":"), sep = "-") %>% 
+           ymd_hms(., tz = "America/Mazatlan")) %>% 
+  select(-c(resight_date, time))
+
+# wrangle the resighting information associated with each tagged bird
+tag_resight_data_ceuta <-
+  ceuta_list$Resights %>% 
+  dplyr::select("code", "easting", "northing", "date", "time", "distance", "degree", "comments") %>% 
+  left_join(tagging_data_ceuta, ., by = "code") %>% 
+  distinct() %>% 
+  rename(resight_date = date) %>%
+  filter(!is.na(easting)) %>% 
+  filter(resight_date >= first_fix & resight_date <= last_fix) %>% 
+  arrange(first_fix) %>% 
+  mutate(timestamp_resight = paste(as.character(resight_date),
+                                 paste(str_sub(time, 1, 2), 
+                                       str_sub(time, 3, 4), 
+                                       "00", sep = ":"), sep = "-") %>% 
+           ymd_hms(., tz = "America/Mazatlan")) %>% 
+  mutate(bird_easting = ifelse(!is.na(distance) & !is.na(degree), as.numeric(easting) + (as.numeric(distance) * cos(as.numeric(degree))), as.numeric(easting)),
+         bird_northing = ifelse(!is.na(distance) & !is.na(degree), as.numeric(northing) + (as.numeric(distance) * sin(as.numeric(degree))), as.numeric(northing))) %>% 
+  st_as_sf(x = .,                         
+           coords = c("bird_easting", "bird_northing"),
+           crs = "+proj=utm +zone=13") %>% 
+  st_transform(., crs = "+proj=longlat +datum=WGS84") %>% 
+  sfc_as_cols(., names = c("bird_lon", "bird_lat")) %>% 
+  # st_drop_geometry() %>% 
+  select(-c(resight_date, time, easting, northing, distance, degree))
+    
+mapview(tag_resight_data_ceuta)
 
 # bind ceuta and tagus data
 tag_nest_data <- 
@@ -113,103 +167,120 @@ plover_tagging_sf_nest <-
            format(., format = "%H:%M:%S"),
          time_of_day = format(timestamp_local, format = "%H:%M:%S"))
 
-as.ltraj(xy = coordinates(tag_df),
-         date = tag_df@data$timestamp,
-         id = tag_df@data$tag_ID)
-
-#### Fit GAM to mass data ----
-daily_dist_mod <- 
-  gam(dist_from_nest ~ s(time_of_day, bs = "cc"), 
-      data = st_drop_geometry(plover_tagging_sf_nest))
-
-#### estimate model predictions ----
-newdata_jul_days <- 
-  data.frame(JulianDay = seq(1, 365))
-
-annual_mass_mod_fits <- 
-  predict(annual_mass_mod, 
-          newdata = newdata_jul_days, 
-          type = 'response', se = TRUE)
-
-annual_mass_mod_predicts <-  
-  data.frame(newdata_jul_days, annual_mass_mod_fits) %>% 
-  mutate(lower = fit - 1.96 * se.fit,
-         upper = fit + 1.96 * se.fit,
-         JulianDay2 = as.Date(JulianDay, 
-                              format = "%j", 
-                              origin = as.Date("2018-01-01")))
-
-plover_tagging_sf_nest_summary <- 
-  plover_tagging_sf_nest %>%
-  st_drop_geometry() %>% 
-  mutate(rounded_hour = round(timestamp_local, "hours") %>% 
-           format(., format = "%H:%M:%S")) %>% 
-  mutate(six_hour_bin = ifelse(rounded_hour >= format("00:00:00", format = "%H:%M:%S") & rounded_hour < format("06:00:01", format = "%H:%M:%S"), "midnight to 0600",
-                               ifelse(rounded_hour > format("06:00:00", format = "%H:%M:%S") & rounded_hour < format("12:00:01", format = "%H:%M:%S"), "0600 to noon",
-                                      ifelse(rounded_hour > format("12:00:00", format = "%H:%M:%S") & rounded_hour < format("18:00:01", format = "%H:%M:%S"), "noon to 1800",
-                                             ifelse(rounded_hour > format("18:00:00", format = "%H:%M:%S") & rounded_hour <= format("23:59:59", format = "%H:%M:%S"), "1800 to midnight", "XXX"))))) %>% 
-  mutate(six_hour_bin = factor(six_hour_bin, levels = c("midnight to 0600", "0600 to noon", "noon to 1800", "1800 to midnight")))
-  # group_by(species, sex, rounded_hour) %>% 
-  # summarise(mean_dist = mean(dist_from_nest, na.rm = TRUE),
-  #           sd_dist = sd(dist_from_nest, na.rm = TRUE))
 
 
-plover_tagging_sf_nest_summary %>% 
-  filter(fate != "Abandoned") %>% 
-  ggplot(.) +
-  # geom_boxplot(aes(x = hms::as_hms(rounded_hour),
-  #                  y = log(dist_from_nest), group = rounded_hour)) +
-  geom_boxplot(aes(x = six_hour_bin,
-                   y = log(dist_from_nest), group = six_hour_bin)) +
-  facet_grid(sex ~ species)
-
-v41_pair_ODBA <-
-  behav_data %>%
-  filter(UUID %in% c("14000002d5", "14000002ea")) %>%
-  ggplot() +
-  geom_rect(data = behav_data_sun_times, 
-            aes(xmin = 0, xmax = hms::as_hms(nauticalDawn), ymin = 0, ymax = 7000), 
-            fill = "#023858", alpha = 0.15) +
-  geom_rect(data = behav_data_sun_times, 
-            aes(xmin = hms::as_hms(nauticalDawn), xmax = hms::as_hms(dawn), ymin = 0, ymax = 7000),
-            fill = "#045a8d", alpha = 0.15) +
-  geom_rect(data = behav_data_sun_times, 
-            aes(xmin = hms::as_hms(dawn), xmax = hms::as_hms(sunrise), ymin = 0, ymax = 7000), 
-            fill = "#0570b0", alpha = 0.15) +
-  geom_rect(data = behav_data_sun_times, 
-            aes(xmin = hms::as_hms(sunrise), xmax = hms::as_hms(goldenHourEnd), ymin = 0, ymax = 7000), 
-            fill = "#3690c0", alpha = 0.15) +
-  geom_rect(data = behav_data_sun_times, 
-            aes(xmin = hms::as_hms(dusk), xmax = hms::as_hms(nauticalDusk), ymin = 0, ymax = 7000), 
-            fill = "#045a8d", alpha = 0.15) +
-  geom_rect(data = behav_data_sun_times, 
-            aes(xmin = hms::as_hms(sunset), xmax = hms::as_hms(dusk), ymin = 0, ymax = 7000), 
-            fill = "#0570b0", alpha = 0.15) +
-  geom_rect(data = behav_data_sun_times, 
-            aes(xmin = hms::as_hms(goldenHour), xmax = hms::as_hms(sunset), ymin = 0, ymax = 7000), 
-            fill = "#3690c0", alpha = 0.15) +
-  geom_rect(data = behav_data_sun_times, 
-            aes(xmin = hms::as_hms(nauticalDusk), xmax = Inf, ymin = 0, ymax = 7000), 
-            fill = "#023858", alpha = 0.15) +
-  geom_line(aes(x = hms, y = ODBA, color = UUID)) +
-  # geom_line(data = filter(temp_data_HUB, UUID == "2a2000026b"),
-  #           aes(x = hms::as_hms(timestamp),
-  #               y = as.numeric(Temperature) / coef), color = "green", linetype = "longdash") +
-  geom_rect(data = behav_data_sun_times, 
-            aes(xmin = hms::as_hms(moonrise), xmax = hms::as_hms(moonset), 
-                ymin = 0, ymax = fraction / coef), 
-            fill = "white", alpha = 0.15) +
-  facet_wrap(. ~ format(as.Date(timestamp, tz = "America/Santiago"), "%d-%B"), ncol = 1) +
-  luke_theme +
-  theme(legend.position = "none",
-        strip.background = element_blank(),
-        strip.text = element_text(size = 8, face = "italic"),
-        plot.title = element_text(hjust = 0.5, size = 11),
-        plot.subtitle = element_text(hjust = 0.5, size = 9, face = "italic")) +
-  ylab("overall dynamic body acceleration index\n (30-min intervals)") +
-  xlab("local time of day") +
-  scale_x_time(expand = c(0, 0)) +
-  scale_color_manual(values = c("#ff7f00", "#000000")) +
-  ggtitle(label = "Circadian activity of Vega 41 breeding pair (YG|GR and YG|BO)", 
-          subtitle = "Pair was caught tending two fledglings on 1 December.\n(blue regions show the local transition between night and day)") +
-  scale_y_continuous(sec.axis = sec_axis(~.*coef, name = "temperature (°C, dashed green)"))
+# plover_tagging_sf_nest %>% 
+#   # filter(fate != "Abandoned") %>% 
+#   # filter(str_detect(tag_ID, "NF")) %>% 
+#   filter(tag_ID == "PP48669") %>% 
+#   ggplot(.) +
+#   geom_boxplot(aes(x = hms::as_hms(rounded_hour),
+#                    y = dist_from_nest, group = rounded_hour)) +
+#   # geom_boxplot(aes(x = six_hour_bin,
+#   #                  y = dist_from_nest, group = six_hour_bin)) +
+#   facet_grid(sex ~ species)
+# 
+# as.ltraj(xy = coordinates(tag_df),
+#          date = tag_df@data$timestamp,
+#          id = tag_df@data$tag_ID)
+# 
+# #### Fit GAM to mass data ----
+# daily_dist_mod <- 
+#   gam(dist_from_nest ~ s(time_of_day, bs = "cc"), 
+#       data = st_drop_geometry(plover_tagging_sf_nest))
+# 
+# #### estimate model predictions ----
+# newdata_jul_days <- 
+#   data.frame(JulianDay = seq(1, 365))
+# 
+# annual_mass_mod_fits <- 
+#   predict(annual_mass_mod, 
+#           newdata = newdata_jul_days, 
+#           type = 'response', se = TRUE)
+# 
+# annual_mass_mod_predicts <-  
+#   data.frame(newdata_jul_days, annual_mass_mod_fits) %>% 
+#   mutate(lower = fit - 1.96 * se.fit,
+#          upper = fit + 1.96 * se.fit,
+#          JulianDay2 = as.Date(JulianDay, 
+#                               format = "%j", 
+#                               origin = as.Date("2018-01-01")))
+# 
+# plover_tagging_sf_nest_summary <- 
+#   plover_tagging_sf_nest %>%
+#   st_drop_geometry() %>% 
+#   mutate(rounded_hour = round(timestamp_local, "hours") %>% 
+#            format(., format = "%H:%M:%S")) %>% 
+#   mutate(six_hour_bin = ifelse(rounded_hour >= format("00:00:00", format = "%H:%M:%S") & rounded_hour < format("06:00:01", format = "%H:%M:%S"), "midnight to 0600",
+#                                ifelse(rounded_hour > format("06:00:00", format = "%H:%M:%S") & rounded_hour < format("12:00:01", format = "%H:%M:%S"), "0600 to noon",
+#                                       ifelse(rounded_hour > format("12:00:00", format = "%H:%M:%S") & rounded_hour < format("18:00:01", format = "%H:%M:%S"), "noon to 1800",
+#                                              ifelse(rounded_hour > format("18:00:00", format = "%H:%M:%S") & rounded_hour <= format("23:59:59", format = "%H:%M:%S"), "1800 to midnight", "XXX"))))) %>% 
+#   mutate(six_hour_bin = factor(six_hour_bin, levels = c("midnight to 0600", "0600 to noon", "noon to 1800", "1800 to midnight")))
+#   # group_by(species, sex, rounded_hour) %>% 
+#   # summarise(mean_dist = mean(dist_from_nest, na.rm = TRUE),
+#   #           sd_dist = sd(dist_from_nest, na.rm = TRUE))
+# 
+# plover_tagging_sf_nest_summary %>% 
+#   # filter(fate != "Abandoned") %>% 
+#   # filter(str_detect(tag_ID, "NF")) %>% 
+#   filter(tag_ID == "PP48669") %>% 
+#   ggplot(.) +
+#   geom_boxplot(aes(x = hms::as_hms(rounded_hour),
+#                    y = log(dist_from_nest), group = rounded_hour)) +
+#   # geom_boxplot(aes(x = six_hour_bin,
+#   #                  y = dist_from_nest, group = six_hour_bin)) +
+#   facet_grid(sex ~ species)
+# 
+# plover_tagging_sf_nest_summary %>% 
+#   filter(species == "SNPL" & sex == "M" & as.character(rounded_hour) %in% c("01:00:00", "02:00:00", "03:00:00"))
+# 
+# v41_pair_ODBA <-
+#   behav_data %>%
+#   filter(UUID %in% c("14000002d5", "14000002ea")) %>%
+#   ggplot() +
+#   geom_rect(data = behav_data_sun_times, 
+#             aes(xmin = 0, xmax = hms::as_hms(nauticalDawn), ymin = 0, ymax = 7000), 
+#             fill = "#023858", alpha = 0.15) +
+#   geom_rect(data = behav_data_sun_times, 
+#             aes(xmin = hms::as_hms(nauticalDawn), xmax = hms::as_hms(dawn), ymin = 0, ymax = 7000),
+#             fill = "#045a8d", alpha = 0.15) +
+#   geom_rect(data = behav_data_sun_times, 
+#             aes(xmin = hms::as_hms(dawn), xmax = hms::as_hms(sunrise), ymin = 0, ymax = 7000), 
+#             fill = "#0570b0", alpha = 0.15) +
+#   geom_rect(data = behav_data_sun_times, 
+#             aes(xmin = hms::as_hms(sunrise), xmax = hms::as_hms(goldenHourEnd), ymin = 0, ymax = 7000), 
+#             fill = "#3690c0", alpha = 0.15) +
+#   geom_rect(data = behav_data_sun_times, 
+#             aes(xmin = hms::as_hms(dusk), xmax = hms::as_hms(nauticalDusk), ymin = 0, ymax = 7000), 
+#             fill = "#045a8d", alpha = 0.15) +
+#   geom_rect(data = behav_data_sun_times, 
+#             aes(xmin = hms::as_hms(sunset), xmax = hms::as_hms(dusk), ymin = 0, ymax = 7000), 
+#             fill = "#0570b0", alpha = 0.15) +
+#   geom_rect(data = behav_data_sun_times, 
+#             aes(xmin = hms::as_hms(goldenHour), xmax = hms::as_hms(sunset), ymin = 0, ymax = 7000), 
+#             fill = "#3690c0", alpha = 0.15) +
+#   geom_rect(data = behav_data_sun_times, 
+#             aes(xmin = hms::as_hms(nauticalDusk), xmax = Inf, ymin = 0, ymax = 7000), 
+#             fill = "#023858", alpha = 0.15) +
+#   geom_line(aes(x = hms, y = ODBA, color = UUID)) +
+#   # geom_line(data = filter(temp_data_HUB, UUID == "2a2000026b"),
+#   #           aes(x = hms::as_hms(timestamp),
+#   #               y = as.numeric(Temperature) / coef), color = "green", linetype = "longdash") +
+#   geom_rect(data = behav_data_sun_times, 
+#             aes(xmin = hms::as_hms(moonrise), xmax = hms::as_hms(moonset), 
+#                 ymin = 0, ymax = fraction / coef), 
+#             fill = "white", alpha = 0.15) +
+#   facet_wrap(. ~ format(as.Date(timestamp, tz = "America/Santiago"), "%d-%B"), ncol = 1) +
+#   luke_theme +
+#   theme(legend.position = "none",
+#         strip.background = element_blank(),
+#         strip.text = element_text(size = 8, face = "italic"),
+#         plot.title = element_text(hjust = 0.5, size = 11),
+#         plot.subtitle = element_text(hjust = 0.5, size = 9, face = "italic")) +
+#   ylab("overall dynamic body acceleration index\n (30-min intervals)") +
+#   xlab("local time of day") +
+#   scale_x_time(expand = c(0, 0)) +
+#   scale_color_manual(values = c("#ff7f00", "#000000")) +
+#   ggtitle(label = "Circadian activity of Vega 41 breeding pair (YG|GR and YG|BO)", 
+#           subtitle = "Pair was caught tending two fledglings on 1 December.\n(blue regions show the local transition between night and day)") +
+#   scale_y_continuous(sec.axis = sec_axis(~.*coef, name = "temperature (°C, dashed green)"))

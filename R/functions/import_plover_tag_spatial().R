@@ -25,20 +25,18 @@ import_plover_tag_spatial <-
                                   second, sep = ":"), sep = " ")) %>% 
         mutate(
           # convert to a useable POSIX time/date string
-          timestamp = as.POSIXct(strptime(as.character(timestamp), 
-                                          format = "%y-%m-%d %H:%M:%S"), 
-                                 tz = collect_time_zone),
+          timestamp_collect = 
+            ymd_hms(as.character(timestamp), tz = collect_time_zone),
           
           # assign name of tag
           tag_ID = tag_ID,
           
           # make a simplified version of the time sting
-          timestamp_simple = as.Date(str_sub(as.character(timestamp), 
-                                             start = 1, end = 10), 
+          timestamp_date = as.Date(paste0("20", year, "-", month, "-", day), 
                                      format = "%Y-%m-%d")) %>% 
         
         # make a GMT timestamp
-        mutate(timestamp_gmt = with_tz(timestamp, "GMT")) %>% 
+        mutate(timestamp_utc = with_tz(timestamp_collect, "UTC")) %>% 
         
         # remove observations without a reliable location
         dplyr::filter(latitude != 0 & !is.na(latitude)) %>%
@@ -49,8 +47,9 @@ import_plover_tag_spatial <-
         # names() %>% 
         # as.data.frame()
         
-        dplyr::select(tag_ID, timestamp_simple, fix_number, timestamp, timestamp_gmt,
-                      satellites, latitude, longitude, elevation, battery) %>% 
+        dplyr::select(tag_ID, timestamp_date, fix_number, timestamp_collect, 
+                      timestamp_utc, satellites, latitude, longitude, 
+                      elevation, battery) %>% 
         
         mutate(# assign bird ring
           ring = bird_ID,
@@ -70,7 +69,7 @@ import_plover_tag_spatial <-
           satellites = as.character(satellites)) %>% 
         
         # make a local timestamp
-        mutate(timestamp_local = with_tz(timestamp_gmt, local_time_zone)) %>% 
+        mutate(timestamp_local = with_tz(timestamp_utc, local_time_zone)) %>% 
         
         # make the dataframe a simple feature, define coordinates and projection
         st_as_sf(., 
@@ -98,33 +97,59 @@ import_plover_tag_spatial <-
             second = paste0(str_sub(string = RTC.time, start = 7, end = 8))
           ) %>% 
           
+          # mutate(
+          #   # Merge the time and date columns together to formulate the time stamp for a given row
+          #   timestamp = ISOdate(year = year, month = month, day = day, 
+          #                       hour = hour, min = minute, sec = second, 
+          #                       tz = collect_time_zone),
+          #   timestamp_collect = 
+          #     ymd_hms(as.character(timestamp), tz = collect_time_zone),
+          #   
+          #   # Tag$datetime[nrow(Tag)] = Tag$datetime[nrow(Tag)] + 8 * 60 * 60,
+          #   # 
+          #   # Tag$hour[nrow(Tag)] = as.character(as.numeric(Tag$hour[nrow(Tag)]) + 8),
+          #   # 
+          #   # timestamp = paste0(year, "-", month, "-", day, " ", hour, ":", minute, ":", second)
+          #   
+          #   timestamp_simple = as.Date(str_sub(as.character(timestamp), 
+          #                                      start = 1, end = 10), 
+          #                              format = "%Y-%m-%d"),          
+          #   # make a fix number column
+          #   fix_number = str_pad(row.names(.), 2, pad = "0"),
+          #   
+          #   # assign name of tag
+          #   tag_ID = tag_ID
+          # ) %>% 
+          # 
+          # # make a GMT timestamp
+          # mutate(timestamp_gmt = with_tz(timestamp, "GMT")) %>% 
+          
           mutate(
-            # Merge the time and date columns together to formulate the time stamp for a given row
-            timestamp = ISOdate(year = year, month = month, day = day, 
-                                hour = hour, min = minute, sec = second, 
-                                tz = collect_time_zone),
-            
-            # Tag$datetime[nrow(Tag)] = Tag$datetime[nrow(Tag)] + 8 * 60 * 60,
-            # 
-            # Tag$hour[nrow(Tag)] = as.character(as.numeric(Tag$hour[nrow(Tag)]) + 8),
-            # 
-            # timestamp = paste0(year, "-", month, "-", day, " ", hour, ":", minute, ":", second)
-            
-            timestamp_simple = as.Date(str_sub(as.character(timestamp), 
-                                               start = 1, end = 10), 
-                                       format = "%Y-%m-%d"),          
             # make a fix number column
             fix_number = str_pad(row.names(.), 2, pad = "0"),
             
+            # make a timestamp column
+            timestamp = paste(paste(year, month, 
+                                    day, sep = "-"), 
+                              paste(hour, minute, 
+                                    second, sep = ":"), sep = " ")) %>% 
+          mutate(
+            # convert to a useable POSIX time/date string
+            timestamp_collect = 
+              ymd_hms(as.character(timestamp), tz = collect_time_zone),
+            
             # assign name of tag
-            tag_ID = tag_ID
-          ) %>% 
+            tag_ID = tag_ID,
+            
+            # make a simplified version of the time sting
+            timestamp_date = as.Date(paste0(year, "-", month, "-", day), 
+                                     format = "%Y-%m-%d")) %>% 
           
           # make a GMT timestamp
-          mutate(timestamp_gmt = with_tz(timestamp, "GMT")) %>% 
+          mutate(timestamp_utc = with_tz(timestamp_collect, "UTC")) %>% 
           
           # remove observations without a reliable location
-          dplyr::select(tag_ID, timestamp_simple, fix_number, timestamp, timestamp_gmt,
+          dplyr::select(tag_ID, timestamp_date, fix_number, timestamp_collect, timestamp_utc,
                         Sats, Latitude, Longitude, Altitude.m.) %>% 
           
           `colnames<-` (tolower(names(.))) %>% 
@@ -152,7 +177,7 @@ import_plover_tag_spatial <-
                  satellites = as.character(satellites)) %>% 
           
           # make a local timestamp
-          mutate(timestamp_local = with_tz(timestamp_gmt, local_time_zone)) %>% 
+          mutate(timestamp_local = with_tz(timestamp_utc, local_time_zone)) %>% 
           
           # remove observations without a reliable location
           filter(latitude != 0 | !is.na(latitude)) %>% 
@@ -185,32 +210,31 @@ import_plover_tag_spatial <-
           ) %>% 
           
           mutate(
-            # Merge the time and date columns together to formulate the time stamp for a given row
-            timestamp = ISOdate(year = year, month = month, day = day, 
-                                hour = hour, min = minute, sec = second, 
-                                tz = collect_time_zone),
-            
-            # Tag$datetime[nrow(Tag)] = Tag$datetime[nrow(Tag)] + 8 * 60 * 60,
-            # 
-            # Tag$hour[nrow(Tag)] = as.character(as.numeric(Tag$hour[nrow(Tag)]) + 8),
-            # 
-            # timestamp = paste0(year, "-", month, "-", day, " ", hour, ":", minute, ":", second)
-            
-            timestamp_simple = as.Date(str_sub(as.character(timestamp), 
-                                               start = 1, end = 10), 
-                                       format = "%Y-%m-%d"),          
             # make a fix number column
             fix_number = str_pad(row.names(.), 2, pad = "0"),
             
+            # make a timestamp column
+            timestamp = paste(paste(year, month, 
+                                    day, sep = "-"), 
+                              paste(hour, minute, 
+                                    second, sep = ":"), sep = " ")) %>% 
+          mutate(
+            # convert to a useable POSIX time/date string
+            timestamp_collect = 
+              ymd_hms(as.character(timestamp), tz = collect_time_zone),
+            
             # assign name of tag
-            tag_ID = tag_ID
-          ) %>% 
+            tag_ID = tag_ID,
+            
+            # make a simplified version of the time sting
+            timestamp_date = as.Date(paste0(year, "-", month, "-", day), 
+                                     format = "%Y-%m-%d")) %>% 
           
           # make a GMT timestamp
-          mutate(timestamp_gmt = with_tz(timestamp, "GMT")) %>% 
+          mutate(timestamp_utc = with_tz(timestamp_collect, "UTC")) %>% 
           
           # remove observations without a reliable location
-          dplyr::select(tag_ID, timestamp_simple, fix_number, timestamp, timestamp_gmt,
+          dplyr::select(tag_ID, timestamp_date, fix_number, timestamp_collect, timestamp_utc,
                         Sats, Latitude, Longitude, Altitude.m.) %>% 
           
           `colnames<-` (tolower(names(.))) %>% 
@@ -238,7 +262,7 @@ import_plover_tag_spatial <-
                  satellites = as.character(satellites)) %>% 
           
           # make a local timestamp
-          mutate(timestamp_local = with_tz(timestamp_gmt, local_time_zone)) %>% 
+          mutate(timestamp_local = with_tz(timestamp_utc, local_time_zone)) %>% 
           
           # remove observations without a reliable location
           filter(latitude != 0 | !is.na(latitude)) %>% 

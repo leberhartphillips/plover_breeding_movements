@@ -9,7 +9,7 @@ packages_required_in_project <-
     #"multcomp", "multipanelfigure", "parallel", "parameters", "partR2", 
     #"patchwork", "RColorBrewer", "rptR", "RSQLite", "scales", "snowfall", "sp", 
     #"standardize", "tidybayes", 
-    "adehabitatLT", "lubridate", "RSQLite", "tidyverse", "sf", "ctmm", "readxl", "geosphere", "hms", "mgcv"#, "rmdformats", "webshot2"
+    "adehabitatLT", "lubridate", "RSQLite", "tidyverse", "sf", "ctmm", "readxl", "geosphere", "hms", "mgcv", "mapview"#, "rmdformats", "webshot2"
     )
 
 # of the required packages, check if some need to be installed
