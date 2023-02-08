@@ -321,6 +321,4 @@ plover_tagging_sf <-
             NF21050_tagus, NFTag55843_nz,
             NFTag20865_nz, NFTag21146_nz,
             NFTag55687_nz, NFTag55660_nz,
-            NFTag55795_nz) %>% 
-  sfc_as_cols(., names = c("lon", "lat")) %>% 
-  st_drop_geometry()
+            NFTag55795_nz)

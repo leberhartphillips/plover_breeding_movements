@@ -22,13 +22,152 @@ tagged_broods_summary <-
   arrange(post_hatch_days_with_tag_data) %>% 
   mutate(status = "brooding")
 
-ceuta_list$Nests %>% 
-  filter(ID %in% c("2019_D_2", "2019_D_3"))
+# summary of hatched nests that have at least one of the parents tagged but no
+# known brooding information
+tagged_hatched_nests_summary <- 
+  tag_breeding_data_ceuta$nests %>% 
+  group_by(family_ID) %>% 
+  filter(fate == "Hatch") %>% 
+  mutate(post_hatch_days_with_tag_data = last_fix - end_date) %>% 
+  filter(post_hatch_days_with_tag_data > 0) %>% 
+  select(family_ID, post_hatch_days_with_tag_data, ring, code, sex, end_date) %>% 
+  filter(family_ID %!in% tagged_broods_summary$family_ID) %>% 
+  mutate(status = "potential")
 
-ceuta_list$Broods %>% 
-  filter(ID %in% c("2019_D_2", "2019_D_3")) %>% 
-  select(ID, male) %>% 
-  distinct()
+# bind two data summaries together
+tagged_brooding_summary <- 
+  bind_rows(tagged_broods_summary, tagged_hatched_nests_summary)
+
+# subset tagging data to birds and time-periods of interest
+tagged_brooding_subset <- 
+  tag_breeding_data_ceuta$tagging %>% 
+  left_join(tagged_brooding_summary, ., by = c("ring", "sex")) %>% 
+  filter(end_date <= as.Date(timestamp_local) & (end_date + 30) >= as.Date(timestamp_local)) %>% 
+  ungroup()
+
+# tagged_brooding_subset %>% 
+#   ungroup() %>% 
+#   select(ring, tag_ID) %>% 
+#   distinct() %>% 
+#   arrange(ring)
+# 
+# tagged_brooding_subset %>% 
+#   filter(ring == "CA3340") %>% 
+#   group_by(tag_ID) %>% 
+#   summarise(n())
+
+#### AKDE ----
+CN0918_telemetry <- 
+  df2move(df = arrange(filter(tagged_brooding_subset, ring == "CN0918"), timestamp_local), track_id = "ring", 
+          proj = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
+          x = "lon", y = "lat", time = "timestamp_local") %>% 
+  as.telemetry()
+
+# RX.RM|RX.WX
+
+CN0318_telemetry <- 
+  df2move(df = arrange(filter(tagged_brooding_subset, ring == "CN0318"), timestamp_local), track_id = "ring", 
+          proj = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
+          x = "lon", y = "lat", time = "timestamp_local") %>% 
+  as.telemetry()
+
+CN0138_telemetry <- 
+  df2move(df = arrange(filter(tagged_brooding_subset, ring == "CN0138"), timestamp_local), track_id = "ring", 
+          proj = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
+          x = "lon", y = "lat", time = "timestamp_local") %>% 
+  as.telemetry()
+
+CN0138_sf <- 
+  arrange(filter(tagged_brooding_subset, ring == "CN0138"), timestamp_local) %>% 
+  st_as_sf(., 
+           coords = c("lon", "lat"),
+           crs = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0")
+
+mapviewOptions(basemaps = c("Esri.WorldImagery"),
+               # raster.palette = colorRampPalette(brewer.pal(9, "Greys")),
+               # vector.palette = colorRampPalette(brewer.pal(9, "BrBG")[9:1]),
+               # na.color = "magenta",
+               layers.control.pos = "topright")
+
+tagged_brooding_subset %>% 
+  st_as_sf(., 
+           coords = c("lon", "lat"),
+           crs = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0") %>% 
+  filter(ring == "CN0918") %>% 
+  mutate(timestamp_simp = as.character(timestamp_local)) %>% 
+  mapview(zcol = "timestamp_simp", layer.name = "CN0918")
+
+mapview(filter(plover_tagging_sf, ring == "CN0138") %>% mutate(), zcol = "timestamp_date", layer.name = "CN0138")
+
+telemetry_object <- CN0138_telemetry
+M.IID <- ctmm.fit(telemetry_object)
+GUESS <- ctmm.guess(telemetry_object, interactive = FALSE)
+M.OUF <- ctmm.fit(telemetry_object, GUESS)
+KDE <- akde(telemetry_object, M.IID) # KDE
+AKDE <- akde(telemetry_object, M.OUF) # AKDE
+wAKDE <- akde(telemetry_object, M.OUF, weights = TRUE)
+EXT <- extent(list(KDE, AKDE, wAKDE), level = 0.95)
+plot(telemetry_object, UD = KDE, xlim = EXT$x, ylim = EXT$y)
+title(expression("IID KDE"["C"]))
+plot(telemetry_object, UD = AKDE, xlim = EXT$x, ylim = EXT$y)
+title(expression("OUF AKDE"["C"]))
+plot(telemetry_object, UD = wAKDE, xlim = EXT$x, ylim = EXT$y)
+title(expression("weighted OUF AKDE"["C"]))
+summary(KDE)
+summary(wAKDE)
+
+known_brooders_telemetry <- 
+  df2move(df = arrange(filter(tagged_brooding_subset, status == "brooding"), timestamp_local), track_id = "ring", 
+          proj = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
+          x = "lon", y = "lat", time = "timestamp_local") %>% 
+  as.telemetry()
+
+SVF_all <- lapply(known_brooders_telemetry, variogram)
+SVF_all <- mean(SVF_all)
+plot(SVF_all, fraction = 0.35 , level = level)
+title("Population variogram")
+
+
+arrange(filter(tagged_brooding_subset, status == "brooding"), timestamp_local) %>% 
+filter(timestamp_local == ymd_hms("2019-05-12 23:00:27", tz = "America/Mazatlan")) %>% 
+  select(ring, family_ID, code.x, code.y, tag_ID, end_date)
+
+zoom(SVF)
+
+plot(CN0918_telemetry)
+SVF <- variogram(CN0918_telemetry)
+variogram.fit(SVF)
+level <- c(0.5,0.95) # 50% and 95% CIs
+xlim <- c(0,12 %#% "hour") # 0-12 hour window
+plot(SVF,xlim=xlim,level=level)
+title("zoomed in")
+plot(SVF,fraction=0.65,level=level)
+title("zoomed out")
+  
+
+tagged_brooding_subset %>% 
+  filter(ring == "CN0918") %>%
+  ungroup() %>% 
+  select(timestamp_local, lat, lon) %>% 
+  as.telemetry()
+
+data("buffalo")
+Cilla <- buffalo$Cilla
+
+tagged_brooding_subset %>% 
+  # filter(str_detect(tag_ID, "NF") & species == "KEPL") %>%
+  # filter(year(timestamp_local) == 2020) %>% 
+  # filter(month(timestamp_local) %in% c(4, 5, 6, 7)) %>% 
+  mutate(rounded_hour = round(timestamp_local, "hours") %>% 
+           format(., format = "%H:%M:%S") %>% hms::as_hms(.)) %>%
+  select(ring, sex, rounded_hour) %>% 
+  distinct() %>% 
+  # arrange(rounded_hour)
+  # mutate(time_hms = hms::as_hms(format(timestamp_local, format = "%H:%M:%S"))) %>% 
+  # str()
+  ggplot() +
+  geom_histogram(aes(x = rounded_hour), stat = "count") +
+  facet_grid(sex ~ .)
 
 #### error checks ----
 # check if there are obvious errors in the color combos reported in brood data
@@ -53,6 +192,41 @@ broods_with_multiple_females <-
 
 tagged_brooding_summary %>% 
   filter(family_ID %in% broods_with_multiple_males$ID & family_ID %in% broods_with_multiple_females$ID)
+
+# other checks
+ceuta_list$Nests %>% 
+  filter(ID %in% c("2019_D_2", "2019_D_3"))
+
+ceuta_list$Captures %>% 
+  filter(ID %in% c("2019_D_2", "2019_D_3") & age == "A")
+
+ceuta_list$Captures %>% 
+  filter(code == "OX.RM|LX.BX" & year == "2019")
+
+ceuta_list$Captures %>% 
+  filter(ID %in% c("2019_D_2", "2019_D_3") & age == "J") %>% 
+  select(ID, date, time, code, observer, comments) %>% 
+  mutate(chick_codes = str_extract(code, "[BGROWLY]")) %>% 
+  filter(!is.na(chick_codes)) %>% 
+  arrange(ID, date)
+
+ceuta_list$BirdRef %>% 
+  filter(ID %in% c("2019_D_2", "2019_D_3"))
+
+ceuta_list$Broods %>% 
+  filter(ID %in% c("2019_D_2", "2019_D_3")) %>% 
+  select(ID, date, time, male, chicks, chick_codes, observer, comments) %>% 
+  mutate(chick_codes_simp = str_extract_all(chick_codes, "[BGROWLY]")) %>% 
+  arrange(ID, date) %>% 
+  select(ID, male) %>%
+  distinct()
+
+ceuta_list$Broods %>% 
+  filter(ID == "SNPL_2022_C_4") %>% 
+  mutate(chick_codes_simp = str_extract_all(chick_codes, "[BGROWLY]")) %>% 
+  select(ID, date, male, female, chick_codes_simp) %>% 
+  distinct() %>% 
+  arrange(date)
 
 # check if some combos are reported to have more than one nest at a time
 codes_with_multiple_nests_in_tagging_dataset <-
@@ -83,7 +257,7 @@ ceuta_list$Nests %>%
   mutate(code_year = paste(code, year(found_date), sep = "_")) %>% 
   filter(code_year %in% codes_with_multiple_nests_in_tagging_dataset$code_year) %>% 
   arrange(code, found_date)
-  
+
 
 ceuta_list$Captures %>% 
   # mutate(code = ifelse(ID == "SNPL_2022_E_3" & code == "OX.RM|WX.GX", "OX.RM|WX.GX_male", code)) %>%
@@ -99,104 +273,11 @@ ceuta_list$Nests %>%
 ceuta_list$Nests %>% 
   filter(ID == "2018_C_301")
 
-MX.RW|GX.GX
+# MX.RW|GX.GX
 
 ceuta_list$Captures %>% 
   filter(ring == "CN0138")
-  # filter(code == "GX.MR|GX.BX")
-
-# summary of hatched nests that have at least one of the parents tagged but no
-# known brooding information
-tagged_hatched_nests_summary <- 
-  tag_breeding_data_ceuta$nests %>% 
-  group_by(family_ID) %>% 
-  filter(fate == "Hatch") %>% 
-  mutate(post_hatch_days_with_tag_data = last_fix - end_date) %>% 
-  filter(post_hatch_days_with_tag_data > 0) %>% 
-  select(family_ID, post_hatch_days_with_tag_data, ring, code, sex, end_date) %>% 
-  filter(family_ID %!in% tagged_broods_summary$family_ID) %>% 
-  mutate(status = "potential")
-
-# bind two data summaries together
-tagged_brooding_summary <- 
-  bind_rows(tagged_broods_summary, tagged_hatched_nests_summary)
-
-tagged_brooding_summary %>% 
-  arrange(ring)
-
-# subset tagging data to birds and time-periods of interest
-tagged_brooding_subset <- 
-  tag_breeding_data_ceuta$tagging %>% 
-  left_join(tagged_brooding_summary, ., by = c("ring", "sex")) %>% 
-  filter(end_date <= as.Date(timestamp_local) & (end_date + 30) >= as.Date(timestamp_local)) %>% 
-  ungroup()
-
-tagged_brooding_subset %>% 
-  ungroup() %>% 
-  select(ring, tag_ID) %>% 
-  distinct() %>% 
-  arrange(ring)
-
-tagged_brooding_subset %>% 
-  filter(ring == "CA3340") %>% 
-  group_by(tag_ID) %>% 
-  summarise(n())
-
-CN0918_telemetry <- 
-  df2move(df = arrange(filter(tagged_brooding_subset, ring == "CN0918"), timestamp_local), track_id = "ring", 
-          proj = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
-          x = "lon", y = "lat", time = "timestamp_local") %>% 
-  as.telemetry()
-
-known_brooders_telemetry <- 
-  df2move(df = arrange(filter(tagged_brooding_subset, status == "brooding"), timestamp_local), track_id = "ring", 
-          proj = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
-          x = "lon", y = "lat", time = "timestamp_local") %>% 
-  as.telemetry()
-
-arrange(filter(tagged_brooding_subset, status == "brooding"), timestamp_local) %>% 
-filter(timestamp_local == ymd_hms("2019-05-12 23:00:27", tz = "America/Mazatlan")) %>% 
-  select(ring, family_ID, code.x, code.y, tag_ID, end_date)
-
-zoom(SVF)
-
-plot(CN0918_telemetry)
-SVF <- variogram(CN0918_telemetry)
-variogram.fit(SVF)
-level <- c(0.5,0.95) # 50% and 95% CIs
-xlim <- c(0,12 %#% "hour") # 0-12 hour window
-plot(SVF,xlim=xlim,level=level)
-title("zoomed in")
-plot(SVF,fraction=0.65,level=level)
-title("zoomed out")
-  
-
-tagged_brooding_subset %>% 
-  filter(ring == "CN0918") %>%
-  ungroup() %>% 
-  select(timestamp_local, lat, lon) %>% 
-  as.telemetry()
-
-data("buffalo")
-Cilla <- buffalo$Cilla
-
-
-tagged_brooding_subset %>% 
-  # filter(str_detect(tag_ID, "NF") & species == "KEPL") %>%
-  # filter(year(timestamp_local) == 2020) %>% 
-  # filter(month(timestamp_local) %in% c(4, 5, 6, 7)) %>% 
-  mutate(rounded_hour = round(timestamp_local, "hours") %>% 
-           format(., format = "%H:%M:%S") %>% hms::as_hms(.)) %>%
-  select(ring, sex, rounded_hour) %>% 
-  distinct() %>% 
-  # arrange(rounded_hour)
-  # mutate(time_hms = hms::as_hms(format(timestamp_local, format = "%H:%M:%S"))) %>% 
-  # str()
-  ggplot() +
-  geom_histogram(aes(x = rounded_hour), stat = "count") +
-  facet_grid(sex ~ .)
-
-
+# filter(code == "GX.MR|GX.BX")
 
 ######### Junk ############
 lapply(tag_breeding_data_ceuta$nests, function(x) 

@@ -14,7 +14,8 @@ B) detect nesting activity with movement data
         3) for each dataset calculate the:
           a) distance between each fix and the nest
           b) step-length between fixes
-          c) ALDE (autocorrelated kernel density estimation)
+          c) 
+          (autocorrelated kernel density estimation)
         4) facet each of the three metrics by circadian windows reflective of
           presumed sexroles durign incubation
     - ii) Methodological steps to determine unknown nesting attempts:
@@ -35,4 +36,15 @@ c) Assess spatial use during brood-care
     
   - analytical steps:
     - for known broods, assess 1) cumulative distance trav
+    
+    
+potential issues:
+-  (DONE) BX.RM|OX.YX female has repeated combo (end date of SNPL_2022_A_2 overlaps start date of SNPL_2022_D_211)
+
+- where was MX.RW|YX.LX (F) between 2018-05-07 and 2018-06-27?
+- where was OX.RM|GX.GX (F) between 2019-05-19 and 2019-06-16?
+- OX.RM|WX.GX male has repeated combo with female (end date of SNPL_2022_C_201 overlaps start date of SNPL_2022_E_3)
+- OX.RM|WX.GX (F): end date of SNPL_2022_C_201 overlaps with start date of SNPL_2022_D_205
+
+
       

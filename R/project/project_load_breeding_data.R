@@ -35,6 +35,10 @@ ceuta_list <- list(Nests = dbReadTable(CeutaCLOSED, "Nests") %>%
                    Broods = dbReadTable(CeutaCLOSED, "Broods") %>% 
                      # corrections that need to be done to the next version of CeutaCLOSED
                      mutate(male = ifelse(ID == "2018_C_301" & male == "GX.RM|GX.BX", "GX.MR|GX.BX", male)) %>% 
+                     mutate(ID = ifelse(ID == "2019_D_3" & male == "OX.RM|LX.BX", "2019_C_102", ID)) %>% 
+                     mutate(male = ifelse(ID == "2019_D_3" & male == "MX.RW|GX.GX", "BX.RM|WX.GX", male)) %>% 
+                     mutate(male = ifelse(ID == "2019_D_3" & male == "BX.RM|WX.LX", "BX.RM|WX.GX", male)) %>% 
+                     mutate(male = ifelse(ID == "2019_D_2" & male == "MX.RW|GX.LX", "MX.RW|GX.GX", male)) %>% 
                      plover_date_convert(input = "mdd"),
                    
                    Resights = dbReadTable(CeutaCLOSED, "Resights") %>% 
