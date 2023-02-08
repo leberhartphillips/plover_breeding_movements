@@ -21,5 +21,18 @@ B) detect nesting activity with movement data
         1) subset all datasets to the local breeding season period
         2) remove the timeperiods of nesting determined in (i) above
         3) visulize results and compare to the patterns shown in (i)
-        
+
+c) Assess spatial use during brood-care
+  - wrangling steps:
+    - extract all GPS tracking data from periods of known brood-care
+      - subset tagging data to family_IDs with brood observations
+    - extract all GPS tracking data from periods of potential brood-care
+      - subset tagging data to nests that were determined as "Hatched" and the
+      end_date < than the last_fix
+    - in both of the above datasets, attempt to standardize the data given the
+    varied temporal resolution of the datasets (e.g., downsample to time of day 
+    that is most common across datasets)
+    
+  - analytical steps:
+    - for known broods, assess 1) cumulative distance trav
       

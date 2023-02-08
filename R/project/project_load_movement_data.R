@@ -284,29 +284,20 @@ NFTag55795_nz <-
 
 # merge ----
 plover_tagging_df <- 
-  bind_rows(as.data.frame(NF21163_ceuta), as.data.frame(NF21065_ceuta), 
-            as.data.frame(NF20996_ceuta), as.data.frame(NF21117_ceuta), 
-            as.data.frame(NF21166_ceuta), as.data.frame(NF21176_ceuta),
-            as.data.frame(NF21094_ceuta), as.data.frame(NF20849_ceuta), 
-            as.data.frame(NF21261_ceuta), as.data.frame(NF20805_ceuta), 
-            as.data.frame(NF55650_ceuta), as.data.frame(NF21263_ceuta),
-            as.data.frame(PP51070b_ceuta), as.data.frame(PP51065a_ceuta),
-            as.data.frame(PP51065b_ceuta), as.data.frame(PP51076a_ceuta),
-            as.data.frame(PP51076b_ceuta), as.data.frame(PP51075_ceuta),
-            as.data.frame(PP51073_ceuta), as.data.frame(PP51070a_ceuta),
-            as.data.frame(PP51069b_ceuta), as.data.frame(PP51069a_ceuta),
-            as.data.frame(PP51067b_ceuta), as.data.frame(PP51067a_ceuta),
-            as.data.frame(PP51064_ceuta), as.data.frame(PP51063_ceuta),
-            as.data.frame(PP51060_ceuta), as.data.frame(PP48672_ceuta),
-            as.data.frame(PP48671_ceuta), as.data.frame(PP48670_ceuta),
-            as.data.frame(PP48669_ceuta), as.data.frame(NF55833_tagus),
-            as.data.frame(NF55831_tagus), as.data.frame(NF55808_tagus),
-            as.data.frame(NF55719_tagus), as.data.frame(NF21200_tagus),
-            as.data.frame(NF55584b_tagus), as.data.frame(NF55584a_tagus),
-            as.data.frame(NF21050_tagus), as.data.frame(NFTag55843_nz),
-            as.data.frame(NFTag20865_nz), as.data.frame(NFTag21146_nz),
-            as.data.frame(NFTag55687_nz), as.data.frame(NFTag55660_nz),
-            as.data.frame(NFTag55795_nz))
+  bind_rows(NF21163_ceuta, NF21065_ceuta, NF20996_ceuta, NF21117_ceuta, 
+            NF21166_ceuta, NF21176_ceuta, NF21094_ceuta, NF20849_ceuta, 
+            NF21261_ceuta, NF20805_ceuta, NF55650_ceuta, NF21263_ceuta,
+            PP51070b_ceuta, PP51065a_ceuta, PP51065b_ceuta, PP51076a_ceuta,
+            PP51076b_ceuta, PP51075_ceuta, PP51073_ceuta, PP51070a_ceuta,
+            PP51069b_ceuta, PP51069a_ceuta, PP51067b_ceuta, PP51067a_ceuta,
+            PP51064_ceuta, PP51063_ceuta, PP51060_ceuta, PP48672_ceuta,
+            PP48671_ceuta, PP48670_ceuta, PP48669_ceuta, NF55833_tagus,
+            NF55831_tagus, NF55808_tagus, NF55719_tagus, NF21200_tagus,
+            NF55584b_tagus, NF55584a_tagus, NF21050_tagus, NFTag55843_nz,
+            NFTag20865_nz, NFTag21146_nz, NFTag55687_nz, NFTag55660_nz,
+            NFTag55795_nz) %>% 
+  sfc_as_cols(., names = c("lon", "lat")) %>% 
+  st_drop_geometry()
 
 plover_tagging_sf <- 
   rbind(NF21163_ceuta, NF21065_ceuta, NF20996_ceuta, NF21117_ceuta, 
@@ -330,4 +321,6 @@ plover_tagging_sf <-
             NF21050_tagus, NFTag55843_nz,
             NFTag20865_nz, NFTag21146_nz,
             NFTag55687_nz, NFTag55660_nz,
-            NFTag55795_nz)
+            NFTag55795_nz) %>% 
+  sfc_as_cols(., names = c("lon", "lat")) %>% 
+  st_drop_geometry()

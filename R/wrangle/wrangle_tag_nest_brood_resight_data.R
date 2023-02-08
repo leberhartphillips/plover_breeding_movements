@@ -18,6 +18,7 @@ rings_tags <-
   select(ring, tag_ID) %>%
   distinct()
 
+#### Ceuta breeding data ----
 # wrangle the deployment dates and deployment nest IDs for each tagging dataset
 tagging_data_ceuta <- 
   ceuta_list$Captures %>% 
@@ -41,6 +42,8 @@ tagging_data_ceuta <-
 # wrangle the nest information associated with each known nesting attempt of tagged birds
 tag_nest_data_ceuta <- 
   ceuta_list$Nests %>% 
+  mutate(female = ifelse(ID == "SNPL_2022_C_402", "OX.RM|OX.LX", female),
+         fate = ifelse(fate == "Hatched", "Hatch", fate)) %>% 
   dplyr::select("ID", "female", "male", "easting", "northing", 
                 "nest_initiation_date",  "end_date", 
                 "last_observation_alive", "fate") %>% 
@@ -55,31 +58,8 @@ tag_nest_data_ceuta <-
   sfc_as_cols(., names = c("lon", "lat")) %>% 
   st_drop_geometry() %>% 
   filter(end_date >= first_fix & nest_initiation_date <= last_fix) %>% 
-  arrange(first_fix)
-
-# wrangle the nest information associated with each known nesting attempt of tagged birds
-tag_nest_data_tagus <-
-  tagus_list$Nests %>% 
-  mutate(end_date = ifelse(is.na(`HATCH DATE`), as.character(`INACTIVE DATE`), 
-                           as.character(`HATCH DATE`)) %>% 
-           as.Date(., format = "%Y-%m-%d")) %>%
-  select("NEST ID", "FEMALE", "MALE", "LAT", "LON", "LAY DATE", end_date, "FATE") %>% 
-  rename(ID = "NEST ID",
-         female = FEMALE,
-         male = MALE,
-         lat = LAT,
-         lon = LON,
-         nest_initiation_date = "LAY DATE",
-         fate = "FATE") %>% 
-    mutate(nest_initiation_date = as.Date(nest_initiation_date),
-           fate = tolower(ifelse(str_detect(fate, "hatch"), "Hatch", fate))) %>% 
-  pivot_longer(cols = c("female", "male"), names_to = "sex", values_to = "ring") %>% 
-  mutate(sex = ifelse(sex == "female", "F", ifelse(sex == "male", "M", NA)),
-         ring = str_replace_all(ring, regex("\\s*"), "")) %>% 
-  left_join(deploy_info,., by = c("ring")) %>% 
-  select(-sex.y) %>% 
-  rename(sex = sex.x) %>% 
-  filter(species == "KEPL" & !is.na(lat))
+  arrange(first_fix) %>% 
+  rename(family_ID = ID)
 
 # wrangle the brooding information associated with each known brood of tagged birds
 tag_brood_data_ceuta <- 
@@ -91,7 +71,7 @@ tag_brood_data_ceuta <-
   left_join(tagging_data_ceuta, ., by = c("sex", "code")) %>% 
   distinct() %>% 
   rename(resight_date = date,
-         brood_ID = ID) %>%
+         family_ID = ID) %>%
   filter(!is.na(easting)) %>% 
   st_as_sf(x = .,                         
            coords = c("easting", "northing"),
@@ -151,6 +131,32 @@ tag_breeding_data_ceuta <-
        broods = tag_brood_data_ceuta,
        resights = tag_resight_data_ceuta,
        tagging = plover_tagging_df %>% filter(population == "ceuta" & species == "SNPL"))
+
+
+#### Tagus breeding data ----
+# wrangle the nest information associated with each known nesting attempt of tagged birds
+tag_nest_data_tagus <-
+  tagus_list$Nests %>% 
+  mutate(end_date = ifelse(is.na(`HATCH DATE`), as.character(`INACTIVE DATE`), 
+                           as.character(`HATCH DATE`)) %>% 
+           as.Date(., format = "%Y-%m-%d")) %>%
+  select("NEST ID", "FEMALE", "MALE", "LAT", "LON", "LAY DATE", end_date, "FATE") %>% 
+  rename(ID = "NEST ID",
+         female = FEMALE,
+         male = MALE,
+         lat = LAT,
+         lon = LON,
+         nest_initiation_date = "LAY DATE",
+         fate = "FATE") %>% 
+  mutate(nest_initiation_date = as.Date(nest_initiation_date),
+         fate = tolower(ifelse(str_detect(fate, "hatch"), "Hatch", fate))) %>% 
+  pivot_longer(cols = c("female", "male"), names_to = "sex", values_to = "ring") %>% 
+  mutate(sex = ifelse(sex == "female", "F", ifelse(sex == "male", "M", NA)),
+         ring = str_replace_all(ring, regex("\\s*"), "")) %>% 
+  left_join(deploy_info,., by = c("ring")) %>% 
+  select(-sex.y) %>% 
+  rename(sex = sex.x) %>% 
+  filter(species == "KEPL" & !is.na(lat))
 
 # # bind ceuta and tagus data
 # tag_nest_data <- 
