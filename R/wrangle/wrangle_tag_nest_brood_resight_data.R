@@ -64,6 +64,7 @@ tag_nest_data_ceuta <-
 # wrangle the brooding information associated with each known brood of tagged birds
 tag_brood_data_ceuta <- 
   ceuta_list$Broods %>% 
+  mutate(male = ifelse(ID == "2018_C_301" & male == "GX.RM|GX.BX", "GX.MR|GX.BX", male)) %>% 
   dplyr::select("ID", "female", "male", "easting", "northing", 
                 "date",  "time", "chicks", "distance", "degree") %>% 
   pivot_longer(cols = c("female", "male"), names_to = "sex", values_to = "code") %>% 

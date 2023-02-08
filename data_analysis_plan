@@ -24,11 +24,11 @@ B) detect nesting activity with movement data
 
 c) Assess spatial use during brood-care
   - wrangling steps:
-    - extract all GPS tracking data from periods of known brood-care
-      - subset tagging data to family_IDs with brood observations
-    - extract all GPS tracking data from periods of potential brood-care
+    - extract all GPS tracking data from periods of known brood-care DONE
+      - subset tagging data to family_IDs with brood observations DONE
+    - extract all GPS tracking data from periods of potential brood-care DONE
       - subset tagging data to nests that were determined as "Hatched" and the
-      end_date < than the last_fix
+      end_date < than the last_fix DONE
     - in both of the above datasets, attempt to standardize the data given the
     varied temporal resolution of the datasets (e.g., downsample to time of day 
     that is most common across datasets)
