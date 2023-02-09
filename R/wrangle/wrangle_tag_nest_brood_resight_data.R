@@ -48,7 +48,7 @@ tag_nest_data_ceuta <-
                 "nest_initiation_date",  "end_date", 
                 "last_observation_alive", "fate") %>% 
   pivot_longer(cols = c("female", "male"), names_to = "sex", values_to = "code") %>% 
-  mutate(sex = ifelse(sex == "female", "F", ifelse(sex == "male", "M", NA))) %>% 
+  mutate(sex = ifelse(sex == "female", "F", ifelse(sex == "male", "M", NA))) %>%
   left_join(tagging_data_ceuta, ., by = c("sex", "code")) %>% 
   distinct() %>% 
   st_as_sf(x = .,                         
@@ -57,7 +57,7 @@ tag_nest_data_ceuta <-
   st_transform(., crs = "+proj=longlat +datum=WGS84") %>% 
   sfc_as_cols(., names = c("lon", "lat")) %>% 
   st_drop_geometry() %>% 
-  filter(end_date >= first_fix & nest_initiation_date <= last_fix) %>% 
+  filter(end_date >= first_fix | nest_initiation_date <= last_fix) %>% 
   arrange(first_fix) %>% 
   rename(family_ID = ID)
 
@@ -82,8 +82,6 @@ tag_brood_data_ceuta <-
   bind_cols(., destPoint(p = cbind(as.numeric(.$obs_lon), as.numeric(.$obs_lat)),
                          b = as.numeric(.$degree),
                          d = as.numeric(.$distance))) %>% 
-  # rename(brood_lat = lat,
-  #        brood_lon = lon) %>% 
   filter(resight_date >= first_fix & resight_date <= last_fix) %>% 
   arrange(first_fix) %>% 
   mutate(timestamp_brood = paste(as.character(resight_date),
@@ -119,8 +117,6 @@ tag_resight_data_ceuta <-
   bind_cols(., destPoint(p = cbind(as.numeric(.$obs_lon), as.numeric(.$obs_lat)),
                          b = as.numeric(.$degree),
                          d = as.numeric(.$distance))) %>% 
-  # rename(bird_lat = lat,
-  #        bird_lon = lon) %>% 
   mutate(lat = ifelse(is.na(lat), obs_lat, lat),
          lon = ifelse(is.na(lon), obs_lon, lon)) %>% 
   select(-c(resight_date, time, obs_lon, obs_lat, distance, degree)) %>% 

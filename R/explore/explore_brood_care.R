@@ -49,32 +49,105 @@ tagged_brooding_subset <-
 tag_breeding_data_ceuta$tagging %>% 
   group_by(ring, year(timestamp_local)) %>% 
   summarise(fixes = n()) %>% 
-  arrange(desc(fixes))
+  arrange(desc(fixes)) %>% 
+  View()
 
-tag_and_breeding_data_mapper(tag_data = tag_breeding_data_ceuta$tagging,
-                             nest_data = tag_breeding_data_ceuta$nests,
-                             brood_data = tag_breeding_data_ceuta$broods,
-                             resight_data = tag_breeding_data_ceuta$resights,
-                             bird_ring = "CN0937")
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CA3340", map_year = 2022)
 
-tag_and_breeding_data_mapper(tag_data = tag_breeding_data_ceuta$tagging,
-                             nest_data = tag_breeding_data_ceuta$nests,
-                             brood_data = tag_breeding_data_ceuta$broods,
-                             resight_data = tag_breeding_data_ceuta$resights,
-                             bird_ring = "CA3340")
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CN0161", map_year = 2018)
 
-tag_and_breeding_data_mapper(tag_data = tag_breeding_data_ceuta$tagging,
-                             nest_data = tag_breeding_data_ceuta$nests,
-                             brood_data = tag_breeding_data_ceuta$broods,
-                             resight_data = tag_breeding_data_ceuta$resights,
-                             bird_ring = "CN0161")
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CN0937", map_year = 2022)
 
-tag_and_breeding_data_mapper(tag_data = tag_breeding_data_ceuta$tagging,
-                             nest_data = tag_breeding_data_ceuta$nests,
-                             brood_data = tag_breeding_data_ceuta$broods,
-                             resight_data = tag_breeding_data_ceuta$resights,
-                             bird_ring = "CA3224")
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CN0423", map_year = 2022)
 
+# confirmed that the bird was foraging in I away from nest, 
+# remarkable foraging dispersal south to a big bay by Playa las labradas
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CN0916", map_year = 2022)
+
+# migration north near Culiacan, resightings back in Ceuta in winter
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CN0155", map_year = 2019)
+
+# migration north near Culiacan and back to Ceuta in winter
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CA3314", map_year = 2019)
+
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CN0930", map_year = 2022)
+
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CN0609", map_year = 2022)
+
+# lots of good brood resightings
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CN0918", map_year = 2022)
+
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CA3224", map_year = 2022)
+
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CM1858", map_year = 2022)
+
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CN0306", map_year = 2019)
+
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CN0312", map_year = 2019)
+
+# need to remove data from La Cruz
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CN0066", map_year = 2022)
+
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CN0520", map_year = 2021)
+
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CN0517", map_year = 2019)
+
+# full migration
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CA3315", map_year = 2018)
+
+# good brood resightings
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CN0138", map_year = 2019)
+
+# migration north to Culiacan and then south to Mazatlan
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CA2100", map_year = 2018)
+
+# two nests with good tagging coverage
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CA3224", map_year = 2019)
+
+# good brood resightings, desertion captured in tagging data
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CN0318", map_year = 2019)
+
+# desertion captured in tagging data
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CN0422", map_year = 2019)
+
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CN0130", map_year = 2019)
+
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CA2100", map_year = 2019)
+
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CN0311", map_year = 2019)
+
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CA3315", map_year = 2019)
+
+# need to remove data from La Cruz
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CN0118", map_year = 2018)
 
 # tagged_brooding_subset %>% 
 #   ungroup() %>% 

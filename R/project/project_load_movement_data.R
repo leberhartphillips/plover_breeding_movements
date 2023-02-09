@@ -208,7 +208,7 @@ PP51073_ceuta <- # short-term (every 20 mins)
                             collect_time_zone = "GMT", tag_model = "PinPoint-10", n_slice = 1, local_time_zone = "America/Mazatlan",
                             bird_ID = "CN0937", bird_code = "RX.RM|GX.WX", bird_sex = "F", species = "SNPL", population = "ceuta")
 
-PP51075_ceuta <- # short-term (every 20 mins), but data looks weird
+PP51075_ceuta <- # short-term (every 20 mins)
   import_plover_tag_spatial(data_loc = "data/SNPL/lotek/PinPoint_Tag_51075/Swift GPS Data Files/PinPoint 51075 2022-06-14 19-30-21_Nestd211_FemaleCN0916.txt",
                                 tag_ID = "PP51075", projection = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
                                 collect_time_zone = "GMT", tag_model = "PinPoint-10", n_slice = 1, local_time_zone = "America/Mazatlan",
