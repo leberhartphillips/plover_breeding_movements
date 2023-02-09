@@ -7,6 +7,9 @@ source("R/wrangle/wrangle_tag_nest_brood_resight_data.R")
 lapply(tag_breeding_data_ceuta$nests, function(x) 
   subset(x, family_ID %in% c("SNPL_2022_C_4")))
 
+lapply(tag_breeding_data_ceuta$nests, function(x) 
+  subset(x, ring %in% c("SNPL_2022_C_4")))
+
 tag_breeding_data_ceuta$nests %>% 
   filter(family_ID == "SNPL_2022_C_4")
 

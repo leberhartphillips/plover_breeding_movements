@@ -45,6 +45,37 @@ tagged_brooding_subset <-
   filter(end_date <= as.Date(timestamp_local) & (end_date + 30) >= as.Date(timestamp_local)) %>% 
   ungroup()
 
+#### inspect spatial data of tags and breeding information ----
+tag_breeding_data_ceuta$tagging %>% 
+  group_by(ring, year(timestamp_local)) %>% 
+  summarise(fixes = n()) %>% 
+  arrange(desc(fixes))
+
+tag_and_breeding_data_mapper(tag_data = tag_breeding_data_ceuta$tagging,
+                             nest_data = tag_breeding_data_ceuta$nests,
+                             brood_data = tag_breeding_data_ceuta$broods,
+                             resight_data = tag_breeding_data_ceuta$resights,
+                             bird_ring = "CN0937")
+
+tag_and_breeding_data_mapper(tag_data = tag_breeding_data_ceuta$tagging,
+                             nest_data = tag_breeding_data_ceuta$nests,
+                             brood_data = tag_breeding_data_ceuta$broods,
+                             resight_data = tag_breeding_data_ceuta$resights,
+                             bird_ring = "CA3340")
+
+tag_and_breeding_data_mapper(tag_data = tag_breeding_data_ceuta$tagging,
+                             nest_data = tag_breeding_data_ceuta$nests,
+                             brood_data = tag_breeding_data_ceuta$broods,
+                             resight_data = tag_breeding_data_ceuta$resights,
+                             bird_ring = "CN0161")
+
+tag_and_breeding_data_mapper(tag_data = tag_breeding_data_ceuta$tagging,
+                             nest_data = tag_breeding_data_ceuta$nests,
+                             brood_data = tag_breeding_data_ceuta$broods,
+                             resight_data = tag_breeding_data_ceuta$resights,
+                             bird_ring = "CA3224")
+
+
 # tagged_brooding_subset %>% 
 #   ungroup() %>% 
 #   select(ring, tag_ID) %>% 
@@ -93,9 +124,9 @@ tagged_brooding_subset %>%
   st_as_sf(., 
            coords = c("lon", "lat"),
            crs = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0") %>% 
-  filter(ring == "CN0918") %>% 
+  filter(ring == "CN0318") %>% 
   mutate(timestamp_simp = as.character(timestamp_local)) %>% 
-  mapview(zcol = "timestamp_simp", layer.name = "CN0918")
+  mapview(zcol = "timestamp_simp", layer.name = "CN0318")
 
 mapview(filter(plover_tagging_sf, ring == "CN0138") %>% mutate(), zcol = "timestamp_date", layer.name = "CN0138")
 
@@ -278,6 +309,279 @@ ceuta_list$Nests %>%
 ceuta_list$Captures %>% 
   filter(ring == "CN0138")
 # filter(code == "GX.MR|GX.BX")
+
+# check that female CN0318 YX.RM|BX.GX has 21 days of brood care for 2019_D_14
+# Looks good: 2 chicks, is indeed a female
+ceuta_list$Nests %>%
+  filter(ID == "2019_D_14") %>% 
+  select(ID, easting, northing, nest_initiation_date, 
+         end_date, fate, male, female, no_chicks, comments)
+
+ceuta_list$Nests %>%
+  filter(female == "YX.RM|BX.GX") %>% 
+  select(ID, easting, northing, nest_initiation_date, 
+         end_date, fate, male, female, no_chicks, comments)
+
+ceuta_list$Broods %>%
+  filter(ID == "2019_D_14") %>% 
+  select(ID, easting, northing, date, time, distance, degree,
+         male, female, chicks, comments, observer)
+
+ceuta_list$Captures %>%
+  filter(code == "YX.RM|BX.GX" | ring == "CN0318") %>% 
+  select(ID, easting, northing, nest_initiation_date, 
+         end_date, fate, male, female, no_chicks, comments)
+
+CN0318_2019_D_14_brood_sf <- 
+  tag_breeding_data_ceuta$broods %>% 
+  filter(ring == "CN0318" & family_ID == "2019_D_14") %>% 
+  st_as_sf(., 
+           coords = c("brood_lon", "brood_lat"),
+           crs = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0") %>% 
+  mutate(timestamp_simp = as.character(timestamp_brood))
+
+CN0318_2019_D_14_tag_sf <- 
+  tagged_brooding_subset %>% 
+  filter(ring == "CN0318") %>% 
+  st_as_sf(., 
+           coords = c("lon", "lat"),
+           crs = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0") %>% 
+  mutate(timestamp_simp = as.character(timestamp_local)) 
+
+mapviewOptions(basemaps = c("Esri.WorldImagery"),
+               # raster.palette = colorRampPalette(brewer.pal(9, "Greys")),
+               # vector.palette = colorRampPalette(brewer.pal(9, "BrBG")[9:1]),
+               # na.color = "magenta",
+               layers.control.pos = "topright")
+
+mapview(list(CN0318_2019_D_14_brood_sf, CN0318_2019_D_14_tag_sf),
+        layer.name = (c("brood_sightings", "tag_data")),
+        zcol = c("timestamp_simp", "timestamp_simp"))
+
+lapply(tag_breeding_data_ceuta, function(x) 
+  subset(x, ring %in% c("CN0318"))) 
+
+tag_data = tag_breeding_data_ceuta$tagging
+nest_data = tag_breeding_data_ceuta$nests
+brood_data = tag_breeding_data_ceuta$broods
+resight_data = tag_breeding_data_ceuta$resights
+tag = TRUE
+nest = TRUE
+brood = TRUE
+resight = TRUE
+bird_ring = "CA3224"
+map_year = 2018
+
+tag_breeding_data_ceuta
+
+tag_and_breeding_data_mapper <- 
+  function(tag_data, nest_data, brood_data, resight_data, 
+           # tag = FALSE, nest = FALSE, brood = FALSE, resight = FALSE,
+           bird_ring, map_year = NULL, 
+           breeding = TRUE){
+    
+    if(is.null(map_year)){
+      map_year = tag_data %>% 
+        filter(ring == bird_ring) %>% 
+        pull(timestamp_local) %>% 
+        min(.) %>% year()
+    } else {map_year = map_year}
+
+    
+    if (nrow(tag_data) > nrow(brood_data)){
+      pal <- 
+        colorNumeric(
+          palette = "Blues", 
+          domain = tag_data %>% 
+            filter(ring == bird_ring & 
+                     year(timestamp_local) == map_year) %>% pull(timestamp_local))
+    } else if (nrow(brood_data) > nrow(resight_data)){
+      pal <- 
+        colorNumeric(
+          palette = "Blues", 
+          domain = brood_data %>% 
+            filter(ring == bird_ring & 
+                     year(timestamp_brood) == map_year) %>% pull(timestamp_brood))
+    } else if (nrow(resight_data) > nrow(nest_data)){
+      pal <- 
+        colorNumeric(
+          palette = "Blues", 
+          domain = resight_data %>% 
+            filter(ring == bird_ring & 
+                     year(timestamp_resight) == map_year) %>% pull(timestamp_resight))
+    } else {
+      pal <- 
+        colorNumeric(
+          palette = "Blues", 
+          domain = nest_data %>% 
+            filter(ring == bird_ring & 
+                     year(nest_initiation_date) == map_year) %>% pull(nest_initiation_date) %>% 
+            ymd_hms(paste(as.character(.), "00:00:00"), tz = "America/Mazatlan") %>% 
+            subset(!is.na(.)))
+    } 
+    
+    title = paste0("
+        function() {
+            $('.leaflet-control-layers-overlays').prepend('<label style=\"text-align:center\">", 
+                   tag_data %>% 
+                     filter(ring == bird_ring & 
+                              year(timestamp_local) == map_year) %>% pull(species) %>% unique(), ", ",
+                   tag_data %>% 
+                     filter(ring == bird_ring & 
+                              year(timestamp_local) == map_year) %>% pull(sex) %>% unique(), ", ",
+                   bird_ring, ", ", 
+                   map_year, 
+                   "</label>');
+        }
+    ")
+    
+    # if(tag == TRUE & nest = TRUE & brood = TRUE & resight = TRUE){
+      leaflet() %>% 
+        addProviderTiles('Esri.WorldImagery') %>% 
+        # tag data
+        addCircleMarkers(data = tag_data %>% 
+                           filter(ring == bird_ring & 
+                                    year(timestamp_local) == map_year), 
+                         ~lon, ~lat,
+                         radius = ~6,
+                         color = "white",
+                         fillColor = ~pal(timestamp_local),
+                         stroke = FALSE, fillOpacity = 0.75,
+                         popup = ~as.character(timestamp_local),
+                         label = ~as.character(timestamp_local), 
+                         group = "Tag locations") %>% 
+        
+        # nest data
+        addCircleMarkers(data = nest_data %>% 
+                           filter(ring == bird_ring & 
+                                    year(nest_initiation_date) == map_year), 
+                         ~lon, ~lat, 
+                         radius = ~10,
+                         color = "red",
+                         fillColor = ~pal(ymd_hms(paste(as.character(nest_initiation_date), 
+                                                        "00:00:00"), 
+                                                  tz = "America/Mazatlan") %>% 
+                                            subset(!is.na(.))),
+                         stroke = TRUE, fillOpacity = 0.75,
+                         popup = ~paste(sep = "<br/>", paste0("<br>", as.character(family_ID)),
+                                        paste0("<br>lay date = ", as.character(nest_initiation_date)), 
+                                         paste0("<br>end date = ", as.character(end_date)),
+                                         paste0("<br>fate = ", as.character(fate))), 
+                         group = "Nests") %>% 
+        
+        # brood data
+        addCircleMarkers(data = brood_data %>% 
+                           filter(ring == bird_ring & 
+                                    year(timestamp_brood) == map_year), 
+                         ~lon, ~lat, 
+                         radius = ~10,
+                         color = "black",
+                         fillColor = ~pal(timestamp_brood),
+                         stroke = TRUE, fillOpacity = 0.75,
+                         popup = ~paste(sep = "<br/>", paste0("<br>", as.character(family_ID)),
+                                        paste0("no. chicks = ", as.character(chicks))), 
+                         group = "Brood observations") %>%
+        
+        # resight data
+        addCircleMarkers(data = resight_data %>% 
+                           filter(ring == bird_ring & 
+                                    year(timestamp_resight) == map_year), 
+                         ~lon, ~lat, 
+                         radius = ~10,
+                         color = "green",
+                         fillColor = ~pal(timestamp_resight),
+                         stroke = TRUE, fillOpacity = 0.75,
+                         popup = ~paste0(as.character(timestamp_resight), 
+                                         ", comments = ", as.character(comments)), 
+                         group = "Resight observations") %>% 
+        # Layers control
+        addLayersControl(
+          overlayGroups = c("Tag locations", "Nests", 
+                            "Brood observations", "Resight observations"),
+          options = layersControlOptions(collapsed = FALSE)) %>%
+        htmlwidgets::onRender(title) %>%
+        addMeasure(primaryLengthUnit = "meters")
+      }
+
+tag_and_breeding_data_mapper(tag_data = tag_breeding_data_ceuta$tagging,
+                             nest_data = tag_breeding_data_ceuta$nests,
+                             brood_data = tag_breeding_data_ceuta$broods,
+                             resight_data = tag_breeding_data_ceuta$resights,
+                             bird_ring = "CA3224")
+    
+# pal_tag <- 
+#   colorNumeric(
+#     palette = "Blues", 
+#     domain = CN0318_2019_D_14_tag_sf$timestamp_local)
+# 
+# pal_brood <- 
+#   colorNumeric(
+#     palette = "Blues", 
+#     domain = CN0318_2019_D_14_tag_sf$timestamp_local)
+
+leaflet() %>% 
+  addProviderTiles('Esri.WorldImagery') %>% 
+  addCircleMarkers(data = tagged_brooding_subset %>% filter(ring == "CN0318"), 
+                   ~lon, ~lat,
+                   radius = ~6,
+                   color = "white",
+                   fillColor = ~pal_tag(timestamp_local),
+                   stroke = FALSE, fillOpacity = 0.75,
+                   popup = ~as.character(timestamp_local),
+                   label = ~as.character(timestamp_local), group = "Tag locations") %>%  
+  addCircleMarkers(data = tag_breeding_data_ceuta$broods %>% 
+                   filter(ring == "CN0318" & family_ID == "2019_D_14"), 
+                   ~brood_lon, ~brood_lat, 
+                   radius = ~10,
+                   color = "black",
+                   fillColor = ~pal_brood(timestamp_brood),
+                   stroke = TRUE, fillOpacity = 0.75,
+                   popup = ~paste0(as.character(timestamp_brood), 
+                                   ", no. chicks = ", as.character(chicks)), 
+                   label = ~paste0(as.character(timestamp_brood), 
+                                   ", no. chicks = ", as.character(chicks)), 
+                   group = "Brood observations") %>% 
+  # Layers control
+  addLayersControl(
+    overlayGroups = c("Tag locations", "Brood observations"),
+    options = layersControlOptions(collapsed = FALSE)) %>%
+  addMeasure(primaryLengthUnit = "meters")
+
+  addLegend("topright", pal = pal_tag, values = ~timestamp_local)#,
+            title = "Brood care",
+            # labFormat = labelFormat(prefix = "$"),
+            opacity = 1)
+
+# check that female CN0517 BX.RM|RX.OX has 13 days of brood care for 2019_D_201
+ceuta_list$Nests %>%
+  filter(ID == "2019_D_201") %>% 
+  select(ID, easting, northing, nest_initiation_date, 
+         end_date, fate, male, female, no_chicks, comments)
+
+ceuta_list$Nests %>%
+  filter(female == "BX.RM|RX.OX") %>% 
+  select(ID, easting, northing, nest_initiation_date, 
+         end_date, fate, male, female, no_chicks, comments)
+
+ceuta_list$Broods %>%
+  filter(ID == "2019_D_201") %>% 
+  select(ID, easting, northing, date, time, distance, degree,
+         male, female, chicks, comments, observer)
+
+ceuta_list$Captures %>%
+  filter(ID == "2019_D_201")
+
+tagged_brooding_subset %>% 
+  st_as_sf(., 
+           coords = c("lon", "lat"),
+           crs = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0") %>% 
+  filter(ring == "CN0517") %>% 
+  mutate(timestamp_simp = as.character(timestamp_local)) %>% 
+  mapview(zcol = "timestamp_simp", layer.name = "CN0517")
+  
+  # filter(code == "BX.RM|RX.OX" | ring == "CN0517") %>% 
+  # select(ID, easting, northing, nest_initiation_date, 
+  #        end_date, fate, male, female, no_chicks, comments)
 
 ######### Junk ############
 lapply(tag_breeding_data_ceuta$nests, function(x) 

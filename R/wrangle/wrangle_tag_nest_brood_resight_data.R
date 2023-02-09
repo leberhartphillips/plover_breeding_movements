@@ -82,8 +82,8 @@ tag_brood_data_ceuta <-
   bind_cols(., destPoint(p = cbind(as.numeric(.$obs_lon), as.numeric(.$obs_lat)),
                          b = as.numeric(.$degree),
                          d = as.numeric(.$distance))) %>% 
-  rename(brood_lat = lat,
-         brood_lon = lon) %>% 
+  # rename(brood_lat = lat,
+  #        brood_lon = lon) %>% 
   filter(resight_date >= first_fix & resight_date <= last_fix) %>% 
   arrange(first_fix) %>% 
   mutate(timestamp_brood = paste(as.character(resight_date),
@@ -91,8 +91,8 @@ tag_brood_data_ceuta <-
                                        str_sub(time, 3, 4), 
                                        "00", sep = ":"), sep = "-") %>% 
            ymd_hms(., tz = "America/Mazatlan")) %>% 
-  mutate(brood_lat = ifelse(is.na(brood_lat), obs_lat, brood_lat),
-         brood_lon = ifelse(is.na(brood_lon), obs_lon, brood_lon)) %>% 
+  mutate(lat = ifelse(is.na(lat), obs_lat, lat),
+         lon = ifelse(is.na(lon), obs_lon, lon)) %>% 
   select(-c(resight_date, time, obs_lon, obs_lat, distance, degree)) %>% 
   st_drop_geometry()
 
@@ -119,10 +119,10 @@ tag_resight_data_ceuta <-
   bind_cols(., destPoint(p = cbind(as.numeric(.$obs_lon), as.numeric(.$obs_lat)),
                          b = as.numeric(.$degree),
                          d = as.numeric(.$distance))) %>% 
-  rename(bird_lat = lat,
-         bird_lon = lon) %>% 
-  mutate(bird_lat = ifelse(is.na(bird_lat), obs_lat, bird_lat),
-         bird_lon = ifelse(is.na(bird_lon), obs_lon, bird_lon)) %>% 
+  # rename(bird_lat = lat,
+  #        bird_lon = lon) %>% 
+  mutate(lat = ifelse(is.na(lat), obs_lat, lat),
+         lon = ifelse(is.na(lon), obs_lon, lon)) %>% 
   select(-c(resight_date, time, obs_lon, obs_lat, distance, degree)) %>% 
   st_drop_geometry()
 
