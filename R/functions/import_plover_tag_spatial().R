@@ -14,16 +14,16 @@ import_plover_tag_spatial <-
                         "satellites", "latitude", "longitude", "elevation", 
                         "clock_offset", "accuracy_indicator", "battery")) %>% 
         
-        mutate(
+        dplyr::mutate(
           # make a fix number column
-          fix_number = str_pad(row.names(.), 2, pad = "0"),
+          fix_number = stringr::str_pad(row.names(.), 2, pad = "0"),
           
           # make a timestamp column
           timestamp = paste(paste(year, month, 
                                   day, sep = "-"), 
                             paste(hour, minute, 
                                   second, sep = ":"), sep = " ")) %>% 
-        mutate(
+        dplyr::mutate(
           # convert to a useable POSIX time/date string
           timestamp_collect = 
             ymd_hms(as.character(timestamp), tz = collect_time_zone),
@@ -36,7 +36,7 @@ import_plover_tag_spatial <-
                                      format = "%Y-%m-%d")) %>% 
         
         # make a GMT timestamp
-        mutate(timestamp_utc = with_tz(timestamp_collect, "UTC")) %>% 
+        dplyr::mutate(timestamp_utc = with_tz(timestamp_collect, "UTC")) %>% 
         
         # remove observations without a reliable location
         dplyr::filter(latitude != 0 & !is.na(latitude)) %>%
@@ -51,7 +51,7 @@ import_plover_tag_spatial <-
                       timestamp_utc, satellites, latitude, longitude, 
                       elevation, battery) %>% 
         
-        mutate(# assign bird ring
+        dplyr::mutate(# assign bird ring
           ring = bird_ID,
           
           # assign sex of bird
@@ -69,7 +69,7 @@ import_plover_tag_spatial <-
           satellites = as.character(satellites)) %>% 
         
         # make a local timestamp
-        mutate(timestamp_local = with_tz(timestamp_utc, local_time_zone)) %>% 
+        dplyr::mutate(timestamp_local = with_tz(timestamp_utc, local_time_zone)) %>% 
         
         # make the dataframe a simple feature, define coordinates and projection
         st_as_sf(., 
@@ -87,17 +87,17 @@ import_plover_tag_spatial <-
           read.table(sep = "", na.strings = "", file = data_loc, fill = TRUE,
                      stringsAsFactors = FALSE, header = TRUE) %>% 
           
-          mutate(
+          dplyr::mutate(
             # extract the temporal information from the string
-            year = paste0("20", str_sub(string = RTC.date, start = 1, end = 2)),
-            month = paste0(str_sub(string = RTC.date, start = 4, end = 5)),
-            day = paste0(str_sub(string = RTC.date, start = 7, end = 8)),
-            hour = paste0(str_sub(string = RTC.time, start = 1, end = 2)),
-            minute = paste0(str_sub(string = RTC.time, start = 4, end = 5)),
-            second = paste0(str_sub(string = RTC.time, start = 7, end = 8))
+            year = paste0("20", stringr::str_sub(string = RTC.date, start = 1, end = 2)),
+            month = paste0(stringr::str_sub(string = RTC.date, start = 4, end = 5)),
+            day = paste0(stringr::str_sub(string = RTC.date, start = 7, end = 8)),
+            hour = paste0(stringr::str_sub(string = RTC.time, start = 1, end = 2)),
+            minute = paste0(stringr::str_sub(string = RTC.time, start = 4, end = 5)),
+            second = paste0(stringr::str_sub(string = RTC.time, start = 7, end = 8))
           ) %>% 
           
-          # mutate(
+          # dplyr::mutate(
           #   # Merge the time and date columns together to formulate the time stamp for a given row
           #   timestamp = ISOdate(year = year, month = month, day = day, 
           #                       hour = hour, min = minute, sec = second, 
@@ -111,29 +111,29 @@ import_plover_tag_spatial <-
           #   # 
           #   # timestamp = paste0(year, "-", month, "-", day, " ", hour, ":", minute, ":", second)
           #   
-          #   timestamp_simple = as.Date(str_sub(as.character(timestamp), 
+          #   timestamp_simple = as.Date(stringr::str_sub(as.character(timestamp), 
           #                                      start = 1, end = 10), 
           #                              format = "%Y-%m-%d"),          
           #   # make a fix number column
-          #   fix_number = str_pad(row.names(.), 2, pad = "0"),
+          #   fix_number = stringr::str_pad(row.names(.), 2, pad = "0"),
           #   
           #   # assign name of tag
           #   tag_ID = tag_ID
           # ) %>% 
           # 
           # # make a GMT timestamp
-          # mutate(timestamp_gmt = with_tz(timestamp, "GMT")) %>% 
+          # dplyr::mutate(timestamp_gmt = with_tz(timestamp, "GMT")) %>% 
           
-          mutate(
+          dplyr::mutate(
             # make a fix number column
-            fix_number = str_pad(row.names(.), 2, pad = "0"),
+            fix_number = stringr::str_pad(row.names(.), 2, pad = "0"),
             
             # make a timestamp column
             timestamp = paste(paste(year, month, 
                                     day, sep = "-"), 
                               paste(hour, minute, 
                                     second, sep = ":"), sep = " ")) %>% 
-          mutate(
+          dplyr::mutate(
             # convert to a useable POSIX time/date string
             timestamp_collect = 
               ymd_hms(as.character(timestamp), tz = collect_time_zone),
@@ -146,7 +146,7 @@ import_plover_tag_spatial <-
                                      format = "%Y-%m-%d")) %>% 
           
           # make a GMT timestamp
-          mutate(timestamp_utc = with_tz(timestamp_collect, "UTC")) %>% 
+          dplyr::mutate(timestamp_utc = with_tz(timestamp_collect, "UTC")) %>% 
           
           # remove observations without a reliable location
           dplyr::select(tag_ID, timestamp_date, fix_number, timestamp_collect, timestamp_utc,
@@ -154,11 +154,11 @@ import_plover_tag_spatial <-
           
           `colnames<-` (tolower(names(.))) %>% 
           
-          rename(satellites = sats,
+          dplyr::rename(satellites = sats,
                  tag_ID = tag_id,
                  elevation = altitude.m.) %>% 
           
-          mutate(battery = NA,
+          dplyr::mutate(battery = NA,
                  # assign bird ring
                  ring = bird_ID,
                  
@@ -177,10 +177,10 @@ import_plover_tag_spatial <-
                  satellites = as.character(satellites)) %>% 
           
           # make a local timestamp
-          mutate(timestamp_local = with_tz(timestamp_utc, local_time_zone)) %>% 
+          dplyr::mutate(timestamp_local = with_tz(timestamp_utc, local_time_zone)) %>% 
           
           # remove observations without a reliable location
-          filter(latitude != 0 | !is.na(latitude)) %>% 
+          dplyr::filter(latitude != 0 | !is.na(latitude)) %>% 
           
           # make the dataframe a simple feature, define coordinates and projection
           st_as_sf(., 
@@ -197,28 +197,28 @@ import_plover_tag_spatial <-
                      stringsAsFactors = FALSE, header = TRUE) %>% 
           
           # remove first observation (calibration fix)
-          slice(-(n_slice/n_slice):(n_slice * -1)) %>%
+          dplyr::slice(-(n_slice/n_slice):(n_slice * -1)) %>%
           
-          mutate(
+          dplyr::mutate(
             # extract the temporal information from the string
-            year = paste0("20", str_sub(string = RTC.date, start = 1, end = 2)),
-            month = paste0(str_sub(string = RTC.date, start = 4, end = 5)),
-            day = paste0(str_sub(string = RTC.date, start = 7, end = 8)),
-            hour = paste0(str_sub(string = RTC.time, start = 1, end = 2)),
-            minute = paste0(str_sub(string = RTC.time, start = 4, end = 5)),
-            second = paste0(str_sub(string = RTC.time, start = 7, end = 8))
+            year = paste0("20", stringr::str_sub(string = RTC.date, start = 1, end = 2)),
+            month = paste0(stringr::str_sub(string = RTC.date, start = 4, end = 5)),
+            day = paste0(stringr::str_sub(string = RTC.date, start = 7, end = 8)),
+            hour = paste0(stringr::str_sub(string = RTC.time, start = 1, end = 2)),
+            minute = paste0(stringr::str_sub(string = RTC.time, start = 4, end = 5)),
+            second = paste0(stringr::str_sub(string = RTC.time, start = 7, end = 8))
           ) %>% 
           
-          mutate(
+          dplyr::mutate(
             # make a fix number column
-            fix_number = str_pad(row.names(.), 2, pad = "0"),
+            fix_number = stringr::str_pad(row.names(.), 2, pad = "0"),
             
             # make a timestamp column
             timestamp = paste(paste(year, month, 
                                     day, sep = "-"), 
                               paste(hour, minute, 
                                     second, sep = ":"), sep = " ")) %>% 
-          mutate(
+          dplyr::mutate(
             # convert to a useable POSIX time/date string
             timestamp_collect = 
               ymd_hms(as.character(timestamp), tz = collect_time_zone),
@@ -231,7 +231,7 @@ import_plover_tag_spatial <-
                                      format = "%Y-%m-%d")) %>% 
           
           # make a GMT timestamp
-          mutate(timestamp_utc = with_tz(timestamp_collect, "UTC")) %>% 
+          dplyr::mutate(timestamp_utc = with_tz(timestamp_collect, "UTC")) %>% 
           
           # remove observations without a reliable location
           dplyr::select(tag_ID, timestamp_date, fix_number, timestamp_collect, timestamp_utc,
@@ -239,11 +239,11 @@ import_plover_tag_spatial <-
           
           `colnames<-` (tolower(names(.))) %>% 
           
-          rename(satellites = sats,
+          dplyr::rename(satellites = sats,
                  tag_ID = tag_id,
                  elevation = altitude.m.) %>% 
           
-          mutate(battery = NA,
+          dplyr::mutate(battery = NA,
                  # assign bird ring
                  ring = bird_ID,
                  
@@ -262,10 +262,10 @@ import_plover_tag_spatial <-
                  satellites = as.character(satellites)) %>% 
           
           # make a local timestamp
-          mutate(timestamp_local = with_tz(timestamp_utc, local_time_zone)) %>% 
+          dplyr::mutate(timestamp_local = with_tz(timestamp_utc, local_time_zone)) %>% 
           
           # remove observations without a reliable location
-          filter(latitude != 0 | !is.na(latitude)) %>% 
+          dplyr::filter(latitude != 0 | !is.na(latitude)) %>% 
           
           # make the dataframe a simple feature, define coordinates and projection
           st_as_sf(., 

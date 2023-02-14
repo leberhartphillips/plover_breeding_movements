@@ -1,55 +1,60 @@
 # prepare R environment
 source("R/project/project_libraries.R")
-source("R/project/project_load_movement_data.R")
 source("R/project/project_load_breeding_data.R")
+source("R/project/project_load_movement_data.R")
 source("R/wrangle/wrangle_tag_nest_brood_resight_data.R")
 
 # summary of observed broods that have at least one of the parents tagged
 tagged_broods_summary <-
   tag_breeding_data_ceuta$broods %>% 
-  group_by(family_ID, ring, code) %>% 
-  summarise(min_date = min(timestamp_brood, na.rm = TRUE),
+  dplyr::group_by(family_ID, ring, code) %>% 
+  dplyr::summarise(min_date = min(timestamp_brood, na.rm = TRUE),
             max_date = max(timestamp_brood, na.rm = TRUE)) %>% 
-  rename(ID = family_ID) %>% 
-  left_join(., ceuta_list$Nests %>% 
-              select(ID, nest_initiation_date, end_date, fate), 
-            by = "ID") %>% 
-  mutate(post_hatch_days_with_tag_data = as.Date(max_date) - end_date) %>% 
-  rename(family_ID = ID) %>% 
-  select(family_ID, post_hatch_days_with_tag_data, ring, code, end_date) %>% 
-  left_join(., tag_breeding_data_ceuta$broods %>% select(ring, family_ID, sex)) %>% 
-  distinct() %>% 
-  arrange(post_hatch_days_with_tag_data) %>% 
-  mutate(status = "brooding")
+  dplyr::rename(ID = family_ID) %>% 
+  dplyr::left_join(., ceuta_list$Nests %>% 
+                     dplyr::select(ID, nest_initiation_date, end_date, fate), 
+            by = "ID",
+            multiple = "all") %>% 
+  dplyr::mutate(post_hatch_days_with_tag_data = as.Date(max_date) - end_date) %>% 
+  dplyr::rename(family_ID = ID) %>% 
+  dplyr::select(family_ID, post_hatch_days_with_tag_data, ring, code, end_date) %>% 
+  dplyr::left_join(., tag_breeding_data_ceuta$broods %>% 
+                     dplyr::select(ring, family_ID, sex),
+                   multiple = "all") %>% 
+  dplyr::distinct() %>% 
+  dplyr::arrange(post_hatch_days_with_tag_data) %>% 
+  dplyr::mutate(status = "brooding")
 
 # summary of hatched nests that have at least one of the parents tagged but no
 # known brooding information
 tagged_hatched_nests_summary <- 
   tag_breeding_data_ceuta$nests %>% 
-  group_by(family_ID) %>% 
-  filter(fate == "Hatch") %>% 
-  mutate(post_hatch_days_with_tag_data = last_fix - end_date) %>% 
-  filter(post_hatch_days_with_tag_data > 0) %>% 
-  select(family_ID, post_hatch_days_with_tag_data, ring, code, sex, end_date) %>% 
-  filter(family_ID %!in% tagged_broods_summary$family_ID) %>% 
-  mutate(status = "potential")
+  dplyr::group_by(family_ID) %>% 
+  dplyr::filter(fate == "Hatch") %>% 
+  dplyr::mutate(post_hatch_days_with_tag_data = last_fix - end_date) %>% 
+  dplyr::filter(post_hatch_days_with_tag_data > 0) %>% 
+  dplyr::select(family_ID, post_hatch_days_with_tag_data, ring, code, sex, end_date) %>% 
+  dplyr::filter(family_ID %!in% tagged_broods_summary$family_ID) %>% 
+  dplyr::mutate(status = "potential")
 
 # bind two data summaries together
 tagged_brooding_summary <- 
-  bind_rows(tagged_broods_summary, tagged_hatched_nests_summary)
+  dplyr::bind_rows(tagged_broods_summary, tagged_hatched_nests_summary)
 
 # subset tagging data to birds and time-periods of interest
 tagged_brooding_subset <- 
   tag_breeding_data_ceuta$tagging %>% 
-  left_join(tagged_brooding_summary, ., by = c("ring", "sex")) %>% 
-  filter(end_date <= as.Date(timestamp_local) & (end_date + 30) >= as.Date(timestamp_local)) %>% 
-  ungroup()
+  dplyr::left_join(tagged_brooding_summary, ., 
+                   by = c("ring", "sex"),
+                   multiple = "all") %>% 
+  dplyr::filter(end_date <= as.Date(timestamp_local) & (end_date + 30) >= as.Date(timestamp_local)) %>% 
+  dplyr::ungroup()
 
 #### inspect spatial data of tags and breeding information ----
 tag_breeding_data_ceuta$tagging %>% 
-  group_by(ring, year(timestamp_local)) %>% 
-  summarise(fixes = n()) %>% 
-  arrange(desc(fixes)) %>% 
+  dplyr::group_by(ring, year(timestamp_local)) %>% 
+  dplyr::summarise(fixes = dplyr::n()) %>% 
+  dplyr::arrange(desc(fixes)) %>% 
   View()
 
 tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
@@ -148,6 +153,12 @@ tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
 # need to remove data from La Cruz
 tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
                              bird_ring = "CN0118", map_year = 2018)
+
+# breeding pair both tagged with nesting and brooding
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CN0423", map_year = 2022)
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CA3340", map_year = 2022)
 
 # tagged_brooding_subset %>% 
 #   ungroup() %>% 

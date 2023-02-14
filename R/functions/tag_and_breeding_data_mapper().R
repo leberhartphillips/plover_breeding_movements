@@ -6,8 +6,8 @@ tag_and_breeding_data_mapper <-
     
     if(is.null(map_year)){
       map_year = tag_and_breeding_data$tagging %>% 
-        filter(ring == bird_ring) %>% 
-        pull(timestamp_local) %>% 
+        dplyr::filter(ring == bird_ring) %>% 
+        dplyr::pull(timestamp_local) %>% 
         min(.) %>% year()
     } else {map_year = map_year}
     
@@ -17,29 +17,29 @@ tag_and_breeding_data_mapper <-
         colorNumeric(
           palette = "Blues", 
           domain = tag_and_breeding_data$tagging %>% 
-            filter(ring == bird_ring & 
-                     year(timestamp_local) == map_year) %>% pull(timestamp_local))
+            dplyr::filter(ring == bird_ring & 
+                     year(timestamp_local) == map_year) %>% dplyr::pull(timestamp_local))
     } else if (nrow(tag_and_breeding_data$broods) > nrow(tag_and_breeding_data$resights)){
       pal <- 
         colorNumeric(
           palette = "Blues", 
           domain = tag_and_breeding_data$broods %>% 
-            filter(ring == bird_ring & 
-                     year(timestamp_brood) == map_year) %>% pull(timestamp_brood))
+            dplyr::filter(ring == bird_ring & 
+                     year(timestamp_brood) == map_year) %>% dplyr::pull(timestamp_brood))
     } else if (nrow(tag_and_breeding_data$resights) > nrow(tag_and_breeding_data$nests)){
       pal <- 
         colorNumeric(
           palette = "Blues", 
           domain = tag_and_breeding_data$resights %>% 
-            filter(ring == bird_ring & 
-                     year(timestamp_resight) == map_year) %>% pull(timestamp_resight))
+            dplyr::filter(ring == bird_ring & 
+                     year(timestamp_resight) == map_year) %>% dplyr::pull(timestamp_resight))
     } else {
       pal <- 
         colorNumeric(
           palette = "Blues", 
           domain = tag_and_breeding_data$nests %>% 
-            filter(ring == bird_ring & 
-                     year(nest_initiation_date) == map_year) %>% pull(nest_initiation_date) %>% 
+            dplyr::filter(ring == bird_ring & 
+                     year(nest_initiation_date) == map_year) %>% dplyr::pull(nest_initiation_date) %>% 
             ymd_hms(paste(as.character(.), "00:00:00"), tz = "America/Mazatlan") %>% 
             subset(!is.na(.)))
     } 
@@ -48,15 +48,15 @@ tag_and_breeding_data_mapper <-
         function() {
             $('.leaflet-control-layers-overlays').prepend('<label style=\"text-align:center\">", 
                    tag_and_breeding_data$tagging %>% 
-                     filter(ring == bird_ring & 
-                              year(timestamp_local) == map_year) %>% pull(species) %>% unique(), ", ",
+                     dplyr::filter(ring == bird_ring & 
+                              year(timestamp_local) == map_year) %>% dplyr::pull(species) %>% unique(), ", ",
                    tag_and_breeding_data$tagging %>% 
-                     filter(ring == bird_ring & 
-                              year(timestamp_local) == map_year) %>% pull(sex) %>% unique(), ", ",
+                     dplyr::filter(ring == bird_ring & 
+                              year(timestamp_local) == map_year) %>% dplyr::pull(sex) %>% unique(), ", ",
                    bird_ring, ", ",
                    tag_and_breeding_data$tagging %>% 
-                     filter(ring == bird_ring & 
-                              year(timestamp_local) == map_year) %>% pull(code) %>% unique(), ", ",
+                     dplyr::filter(ring == bird_ring & 
+                              year(timestamp_local) == map_year) %>% dplyr::pull(code) %>% unique(), ", ",
                    map_year, 
                    "</label>');
         }
@@ -79,7 +79,7 @@ tag_and_breeding_data_mapper <-
       
       # nest data
       addCircleMarkers(data = tag_and_breeding_data$nests %>% 
-                         filter(ring == bird_ring & 
+                         dplyr::filter(ring == bird_ring & 
                                   year(nest_initiation_date) == map_year), 
                        ~lon, ~lat, 
                        radius = ~10,
@@ -97,7 +97,7 @@ tag_and_breeding_data_mapper <-
       
       # brood data
       addCircleMarkers(data = tag_and_breeding_data$broods %>% 
-                         filter(ring == bird_ring & 
+                         dplyr::filter(ring == bird_ring & 
                                   year(timestamp_brood) == map_year), 
                        ~lon, ~lat, 
                        radius = ~10,
@@ -111,7 +111,7 @@ tag_and_breeding_data_mapper <-
       
       # resight data
       addCircleMarkers(data = tag_and_breeding_data$resights %>% 
-                         filter(ring == bird_ring & 
+                         dplyr::filter(ring == bird_ring & 
                                   year(timestamp_resight) == map_year), 
                        ~lon, ~lat, 
                        radius = ~10,

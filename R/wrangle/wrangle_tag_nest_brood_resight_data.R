@@ -6,107 +6,107 @@ source("R/project/project_load_breeding_data.R")
 # Determine the first fix for each tagging dataset
 deploy_info <- 
   plover_tagging_df %>% 
-  group_by(species, ring, tag_ID, code, sex) %>% 
-  summarise(first_fix = min(timestamp_date),
+  dplyr::group_by(species, ring, tag_ID, code, sex) %>% 
+  dplyr::summarise(first_fix = min(timestamp_date),
             last_fix = max(timestamp_date)) %>% 
-  arrange(ring, first_fix)
+  dplyr::arrange(ring, first_fix)
 
 # extract the ring and tagIDs from the tagging dataset
 rings_tags <- 
   plover_tagging_sf %>% 
-  filter(species %in% c("SNPL", "WIPL","KEPL")) %>%
-  select(ring, tag_ID) %>%
-  distinct()
+  dplyr::filter(species %in% c("SNPL", "WIPL","KEPL")) %>%
+  dplyr::select(ring, tag_ID) %>%
+  dplyr::distinct()
 
 #### Ceuta breeding data ----
 # wrangle the deployment dates and deployment nest IDs for each tagging dataset
 tagging_data_ceuta <- 
   ceuta_list$Captures %>% 
-  mutate(sex = ifelse(ring == "CA3340" & ID == "2019_D_203", "M", sex)) %>% 
-  mutate(code = ifelse(ring == "CA3314", "GX.RM|BX.WX", code)) %>% 
-  mutate(code = ifelse(ring == "CA3315", "GX.MR|GX.BX", code)) %>% 
+  dplyr::mutate(sex = ifelse(ring == "CA3340" & ID == "2019_D_203", "M", sex)) %>% 
+  dplyr::mutate(code = ifelse(ring == "CA3314", "GX.RM|BX.WX", code)) %>% 
+  dplyr::mutate(code = ifelse(ring == "CA3315", "GX.MR|GX.BX", code)) %>% 
   dplyr::select(ring, ID, code, date) %>% 
-  left_join(deploy_info,., by = c("ring")) %>% 
-  filter(code.x == code.y) %>% 
-  select(-code.y) %>% 
-  rename(code = code.x) %>% 
-  mutate(time_diff = first_fix - date) %>% 
-  filter(time_diff > -1) %>%
-  arrange(ring, time_diff) %>% 
-  group_by(ring, tag_ID) %>% 
-  slice(1) %>% 
-  arrange(desc(time_diff)) %>% 
-  rename(deploy_nest_ID = ID) %>% 
-  rename(cap_date = date)
+  dplyr::left_join(deploy_info,., by = c("ring")) %>% 
+  dplyr::filter(code.x == code.y) %>% 
+  dplyr::select(-code.y) %>% 
+  dplyr::rename(code = code.x) %>% 
+  dplyr::mutate(time_diff = first_fix - date) %>% 
+  dplyr::filter(time_diff > -1) %>%
+  dplyr::arrange(ring, time_diff) %>% 
+  dplyr::group_by(ring, tag_ID) %>% 
+  dplyr::slice(1) %>% 
+  dplyr::arrange(desc(time_diff)) %>% 
+  dplyr::rename(deploy_nest_ID = ID) %>% 
+  dplyr::rename(cap_date = date)
   
 # wrangle the nest information associated with each known nesting attempt of tagged birds
 tag_nest_data_ceuta <- 
   ceuta_list$Nests %>% 
-  mutate(female = ifelse(ID == "SNPL_2022_C_402", "OX.RM|OX.LX", female),
+  dplyr::mutate(female = ifelse(ID == "SNPL_2022_C_402", "OX.RM|OX.LX", female),
          fate = ifelse(fate == "Hatched", "Hatch", fate)) %>% 
   dplyr::select("ID", "female", "male", "easting", "northing", 
                 "nest_initiation_date",  "end_date", 
                 "last_observation_alive", "fate") %>% 
-  pivot_longer(cols = c("female", "male"), names_to = "sex", values_to = "code") %>% 
-  mutate(sex = ifelse(sex == "female", "F", ifelse(sex == "male", "M", NA))) %>%
-  left_join(tagging_data_ceuta, ., by = c("sex", "code")) %>% 
-  distinct() %>% 
+  tidyr::pivot_longer(cols = c("female", "male"), names_to = "sex", values_to = "code") %>% 
+  dplyr::mutate(sex = ifelse(sex == "female", "F", ifelse(sex == "male", "M", NA))) %>%
+  dplyr::left_join(tagging_data_ceuta, ., by = c("sex", "code")) %>% 
+  dplyr::distinct() %>% 
   st_as_sf(x = .,                         
            coords = c("easting", "northing"),
            crs = "+proj=utm +zone=13") %>% 
   st_transform(., crs = "+proj=longlat +datum=WGS84") %>% 
   sfc_as_cols(., names = c("lon", "lat")) %>% 
   st_drop_geometry() %>% 
-  filter(end_date >= first_fix | nest_initiation_date <= last_fix) %>% 
-  arrange(first_fix) %>% 
-  rename(family_ID = ID)
+  dplyr::filter(end_date >= first_fix | nest_initiation_date <= last_fix) %>% 
+  dplyr::arrange(first_fix) %>% 
+  dplyr::rename(family_ID = ID)
 
 # wrangle the brooding information associated with each known brood of tagged birds
 tag_brood_data_ceuta <- 
   ceuta_list$Broods %>% 
-  mutate(male = ifelse(ID == "2018_C_301" & male == "GX.RM|GX.BX", "GX.MR|GX.BX", male)) %>% 
+  dplyr::mutate(male = ifelse(ID == "2018_C_301" & male == "GX.RM|GX.BX", "GX.MR|GX.BX", male)) %>% 
   dplyr::select("ID", "female", "male", "easting", "northing", 
                 "date",  "time", "chicks", "distance", "degree") %>% 
-  pivot_longer(cols = c("female", "male"), names_to = "sex", values_to = "code") %>% 
-  mutate(sex = ifelse(sex == "female", "F", ifelse(sex == "male", "M", NA))) %>% 
-  left_join(tagging_data_ceuta, ., by = c("sex", "code")) %>% 
-  distinct() %>% 
-  rename(resight_date = date,
+  tidyr::pivot_longer(cols = c("female", "male"), names_to = "sex", values_to = "code") %>% 
+  dplyr::mutate(sex = ifelse(sex == "female", "F", ifelse(sex == "male", "M", NA))) %>% 
+  dplyr::left_join(tagging_data_ceuta, ., by = c("sex", "code")) %>% 
+  dplyr::distinct() %>% 
+  dplyr::rename(resight_date = date,
          family_ID = ID) %>%
-  filter(!is.na(easting)) %>% 
+  dplyr::filter(!is.na(easting)) %>% 
   st_as_sf(x = .,                         
            coords = c("easting", "northing"),
            crs = "+proj=utm +zone=13") %>% 
   st_transform(., crs = "+proj=longlat +datum=WGS84") %>% 
   sfc_as_cols(., names = c("obs_lon", "obs_lat")) %>% 
-  bind_cols(., destPoint(p = cbind(as.numeric(.$obs_lon), as.numeric(.$obs_lat)),
+  dplyr::bind_cols(., destPoint(p = cbind(as.numeric(.$obs_lon), as.numeric(.$obs_lat)),
                          b = as.numeric(.$degree),
                          d = as.numeric(.$distance))) %>% 
-  filter(resight_date >= first_fix & resight_date <= last_fix) %>% 
-  arrange(first_fix) %>% 
-  mutate(timestamp_brood = paste(as.character(resight_date),
-                                 paste(str_sub(time, 1, 2), 
-                                       str_sub(time, 3, 4), 
+  dplyr::filter(resight_date >= first_fix & resight_date <= last_fix) %>% 
+  dplyr::arrange(first_fix) %>% 
+  dplyr::mutate(timestamp_brood = paste(as.character(resight_date),
+                                 paste(stringr::str_sub(time, 1, 2), 
+                                       stringr::str_sub(time, 3, 4), 
                                        "00", sep = ":"), sep = "-") %>% 
            ymd_hms(., tz = "America/Mazatlan")) %>% 
-  mutate(lat = ifelse(is.na(lat), obs_lat, lat),
+  dplyr::mutate(lat = ifelse(is.na(lat), obs_lat, lat),
          lon = ifelse(is.na(lon), obs_lon, lon)) %>% 
-  select(-c(resight_date, time, obs_lon, obs_lat, distance, degree)) %>% 
+  dplyr::select(-c(resight_date, time, obs_lon, obs_lat, distance, degree)) %>% 
   st_drop_geometry()
 
 # wrangle the resighting information associated with each tagged bird
 tag_resight_data_ceuta <-
   ceuta_list$Resights %>% 
   dplyr::select("code", "easting", "northing", "date", "time", "distance", "degree", "comments") %>% 
-  left_join(tagging_data_ceuta, ., by = "code") %>% 
-  distinct() %>% 
-  rename(resight_date = date) %>%
-  filter(!is.na(easting)) %>% 
-  filter(resight_date >= first_fix & resight_date <= last_fix) %>% 
-  arrange(first_fix) %>% 
-  mutate(timestamp_resight = paste(as.character(resight_date),
-                                 paste(str_sub(time, 1, 2), 
-                                       str_sub(time, 3, 4), 
+  dplyr::left_join(tagging_data_ceuta, ., by = "code") %>% 
+  dplyr::distinct() %>% 
+  dplyr::rename(resight_date = date) %>%
+  dplyr::filter(!is.na(easting)) %>% 
+  dplyr::filter(resight_date >= first_fix & resight_date <= last_fix) %>% 
+  dplyr::arrange(first_fix) %>% 
+  dplyr::mutate(timestamp_resight = paste(as.character(resight_date),
+                                 paste(stringr::str_sub(time, 1, 2), 
+                                       stringr::str_sub(time, 3, 4), 
                                        "00", sep = ":"), sep = "-") %>% 
            ymd_hms(., tz = "America/Mazatlan")) %>% 
   st_as_sf(x = .,                         
@@ -114,12 +114,12 @@ tag_resight_data_ceuta <-
            crs = "+proj=utm +zone=13") %>% 
   st_transform(., crs = "+proj=longlat +datum=WGS84") %>% 
   sfc_as_cols(., names = c("obs_lon", "obs_lat")) %>% 
-  bind_cols(., destPoint(p = cbind(as.numeric(.$obs_lon), as.numeric(.$obs_lat)),
+  dplyr::bind_cols(., destPoint(p = cbind(as.numeric(.$obs_lon), as.numeric(.$obs_lat)),
                          b = as.numeric(.$degree),
                          d = as.numeric(.$distance))) %>% 
-  mutate(lat = ifelse(is.na(lat), obs_lat, lat),
+  dplyr::mutate(lat = ifelse(is.na(lat), obs_lat, lat),
          lon = ifelse(is.na(lon), obs_lon, lon)) %>% 
-  select(-c(resight_date, time, obs_lon, obs_lat, distance, degree)) %>% 
+  dplyr::select(-c(resight_date, time, obs_lon, obs_lat, distance, degree)) %>% 
   st_drop_geometry()
 
 # bind all ceuta breeding and tagging data into a single list
@@ -127,33 +127,33 @@ tag_breeding_data_ceuta <-
   list(nests = tag_nest_data_ceuta,
        broods = tag_brood_data_ceuta,
        resights = tag_resight_data_ceuta,
-       tagging = plover_tagging_df %>% filter(population == "ceuta" & species == "SNPL"))
+       tagging = plover_tagging_df %>% dplyr::filter(population == "ceuta" & species == "SNPL"))
 
 
 #### Tagus breeding data ----
 # wrangle the nest information associated with each known nesting attempt of tagged birds
 tag_nest_data_tagus <-
   tagus_list$Nests %>% 
-  mutate(end_date = ifelse(is.na(`HATCH DATE`), as.character(`INACTIVE DATE`), 
+  dplyr::mutate(end_date = ifelse(is.na(`HATCH DATE`), as.character(`INACTIVE DATE`), 
                            as.character(`HATCH DATE`)) %>% 
            as.Date(., format = "%Y-%m-%d")) %>%
-  select("NEST ID", "FEMALE", "MALE", "LAT", "LON", "LAY DATE", end_date, "FATE") %>% 
-  rename(ID = "NEST ID",
+  dplyr::select("NEST ID", "FEMALE", "MALE", "LAT", "LON", "LAY DATE", end_date, "FATE") %>% 
+  dplyr::rename(ID = "NEST ID",
          female = FEMALE,
          male = MALE,
          lat = LAT,
          lon = LON,
          nest_initiation_date = "LAY DATE",
          fate = "FATE") %>% 
-  mutate(nest_initiation_date = as.Date(nest_initiation_date),
-         fate = tolower(ifelse(str_detect(fate, "hatch"), "Hatch", fate))) %>% 
-  pivot_longer(cols = c("female", "male"), names_to = "sex", values_to = "ring") %>% 
-  mutate(sex = ifelse(sex == "female", "F", ifelse(sex == "male", "M", NA)),
-         ring = str_replace_all(ring, regex("\\s*"), "")) %>% 
-  left_join(deploy_info,., by = c("ring")) %>% 
-  select(-sex.y) %>% 
-  rename(sex = sex.x) %>% 
-  filter(species == "KEPL" & !is.na(lat))
+  dplyr::mutate(nest_initiation_date = as.Date(nest_initiation_date),
+         fate = tolower(ifelse(stringr::str_detect(fate, "hatch"), "Hatch", fate))) %>% 
+  tidyr::pivot_longer(cols = c("female", "male"), names_to = "sex", values_to = "ring") %>% 
+  dplyr::mutate(sex = ifelse(sex == "female", "F", ifelse(sex == "male", "M", NA)),
+         ring = stringr::str_replace_all(ring, stringr::regex("\\s*"), "")) %>% 
+  dplyr::left_join(deploy_info,., by = c("ring")) %>% 
+  dplyr::select(-sex.y) %>% 
+  dplyr::rename(sex = sex.x) %>% 
+  dplyr::filter(species == "KEPL" & !is.na(lat))
 
 # # bind ceuta and tagus data
 # tag_nest_data <- 
@@ -178,7 +178,7 @@ tag_nest_data_tagus <-
 #   filter(species %in% c("SNPL", "WIPL","KEPL")) %>%
 #   left_join(., tag_nest_data, by = c("ring", "tag_ID", "sex", "species", "code")) %>% 
 #   filter(timestamp_local <= end_date & timestamp_local >= nest_initiation_date) %>% 
-#   mutate(days_before_nest_end = end_date - as.Date(str_sub(as.character(timestamp_local), 
+#   mutate(days_before_nest_end = end_date - as.Date(stringr::str_sub(as.character(timestamp_local), 
 #                                                     start = 1, end = 10), 
 #                                             format = "%Y-%m-%d"),
 #          dist_from_nest = distHaversine(p1 = matrix(c(bird_lon, bird_lat), ncol = 2),
@@ -191,7 +191,7 @@ tag_nest_data_tagus <-
 
 # plover_tagging_sf_nest %>% 
 #   # filter(fate != "Abandoned") %>% 
-#   # filter(str_detect(tag_ID, "NF")) %>% 
+#   # filter(stringr::str_detect(tag_ID, "NF")) %>% 
 #   filter(tag_ID == "PP48669") %>% 
 #   ggplot(.) +
 #   geom_boxplot(aes(x = hms::as_hms(rounded_hour),
@@ -242,7 +242,7 @@ tag_nest_data_tagus <-
 # 
 # plover_tagging_sf_nest_summary %>% 
 #   # filter(fate != "Abandoned") %>% 
-#   # filter(str_detect(tag_ID, "NF")) %>% 
+#   # filter(stringr::str_detect(tag_ID, "NF")) %>% 
 #   filter(tag_ID == "PP48669") %>% 
 #   ggplot(.) +
 #   geom_boxplot(aes(x = hms::as_hms(rounded_hour),
