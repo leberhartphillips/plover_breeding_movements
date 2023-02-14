@@ -66,7 +66,7 @@ tag_and_breeding_data_mapper <-
       addProviderTiles('Esri.WorldImagery') %>% 
       # tag data
       addCircleMarkers(data = tag_and_breeding_data$tagging %>% 
-                         filter(ring == bird_ring & 
+                         dplyr::filter(ring == bird_ring & 
                                   year(timestamp_local) == map_year), 
                        ~lon, ~lat,
                        radius = ~6,

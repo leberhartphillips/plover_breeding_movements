@@ -1,8 +1,206 @@
 # prepare R environment
 source("R/project/project_libraries.R")
+source("R/project/project_plotting_misc.R")
 source("R/project/project_load_movement_data.R")
 source("R/project/project_load_breeding_data.R")
 source("R/wrangle/wrangle_tag_nest_brood_resight_data.R")
+
+# load functions
+function.sources = list.files(path = "R/functions/", 
+                              pattern = "*\\().R$", full.names = TRUE, 
+                              ignore.case = TRUE)
+sapply(function.sources, source, .GlobalEnv)
+
+# breeding pair both tagged with nesting and brooding
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CN0423", map_year = 2022)
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CA3340", map_year = 2022)
+
+CN0423_move <- 
+  tag_data_move_wrangle(formatted_tag_data = CN0423$tagging, 
+                        temporal_res = 1, 
+                        temporal_unit = "hours", 
+                        longitude_name = "lon", 
+                        latitude_name = "lat", 
+                        timestamp_name = "timestamp_local", 
+                        ind_name = "ring",
+                        projection = "+init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
+
+CA3340_move <- 
+  tag_data_move_wrangle(formatted_tag_data = CA3340$tagging, 
+                        temporal_res = 1, 
+                        temporal_unit = "hours", 
+                        longitude_name = "lon", 
+                        latitude_name = "lat", 
+                        timestamp_name = "timestamp_local", 
+                        ind_name = "ring",
+                        projection = "+init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
+
+#### proximity between birds ----
+# extract data for each focal bird
+snpl_pair <- 
+  lapply(tag_breeding_data_ceuta, function(x) 
+    subset(x, ring %in% c("CN0423", "CA3340")))
+  
+round(median(CA3340_move$sampling_time_lags))
+round(median(CN0423_move$sampling_time_lags))
+
+snpl_pair$tagging %>% 
+  group_by(ring) %>% 
+  summarise(min_date = min(timestamp_local),
+            max_date = max(timestamp_local))
+
+# subset tagging data to period with both birds tracked and calculate proximity
+# distance between pair members
+CN0423_move_aligned_round <- 
+  CN0423_move$aligned_move_object %>% 
+  as.data.frame() %>% 
+  mutate(rounded_time = round(time, "hours")) %>% 
+  filter(as_hms(rounded_time) %in% c(as_hms("22:00:00"), as_hms("10:00:00"))) %>% 
+  rename(x_CN0423 = x,
+         y_CN0423 = y)
+
+CA3340_move_aligned_round <- 
+  CA3340_move$aligned_move_object %>% 
+  as.data.frame() %>% 
+  mutate(rounded_time = round(time, "hours")) %>% 
+  filter(as_hms(rounded_time) %in% c(as_hms("22:00:00"), as_hms("10:00:00"))) %>% 
+  rename(x_CA3340 = x,
+         y_CA3340 = y)
+
+snpl_pair$nests
+
+full_join(CN0423_move_aligned_round, CA3340_move_aligned_round, by = "rounded_time") %>%
+  dplyr::select(rounded_time, x_CN0423, y_CN0423, x_CA3340, y_CA3340) %>% 
+  drop_na() %>% 
+  mutate(proximity = distHaversine(p1 = matrix(c(x_CN0423, y_CN0423), ncol = 2),
+                                   p2 = matrix(c(x_CA3340, y_CA3340), ncol = 2))) %>% 
+  # filter(proximity < 2000) %>% 
+  mutate(hms = hms::as_hms(rounded_time),
+         ymd = as.Date(rounded_time, tz = "America/Mazatlan")) 
+  # filter(UUID %in% c("14000002d5", "14000002ea")) %>%
+  ggplot() +
+  # geom_rect(data = behav_data_sun_times,
+  #           aes(xmin = 0, xmax = hms::as_hms(nauticalDawn), ymin = 0, ymax = 1100),
+  #           fill = "#023858", alpha = 0.15) +
+  # geom_rect(data = behav_data_sun_times, 
+  #           aes(xmin = hms::as_hms(nauticalDawn), xmax = hms::as_hms(dawn), ymin = 0, ymax = 1100),
+  #           fill = "#045a8d", alpha = 0.15) +
+  # geom_rect(data = behav_data_sun_times, 
+  #           aes(xmin = hms::as_hms(dawn), xmax = hms::as_hms(sunrise), ymin = 0, ymax = 1100), 
+  #           fill = "#0570b0", alpha = 0.15) +
+  # geom_rect(data = behav_data_sun_times, 
+  #           aes(xmin = hms::as_hms(sunrise), xmax = hms::as_hms(goldenHourEnd), ymin = 0, ymax = 1100), 
+  #           fill = "#3690c0", alpha = 0.15) +
+  # geom_rect(data = behav_data_sun_times, 
+  #           aes(xmin = hms::as_hms(goldenHour), xmax = hms::as_hms(sunset), ymin = 0, ymax = 1100), 
+  #           fill = "#3690c0", alpha = 0.15) +
+  # geom_rect(data = behav_data_sun_times, 
+  #           aes(xmin = hms::as_hms(sunset), xmax = hms::as_hms(dusk), ymin = 0, ymax = 1100), 
+  #           fill = "#0570b0", alpha = 0.15) +
+  # geom_rect(data = behav_data_sun_times, 
+  #           aes(xmin = hms::as_hms(dusk), xmax = hms::as_hms(nauticalDusk), ymin = 0, ymax = 1100), 
+  #           fill = "#045a8d", alpha = 0.15) +
+  # geom_rect(data = behav_data_sun_times, 
+  #           aes(xmin = hms::as_hms(nauticalDusk), xmax = Inf, ymin = 0, ymax = 1100), 
+  #           fill = "#023858", alpha = 0.15) +
+  # geom_line(data = temp_data,
+  #           aes(x = hms::as.hms(timestamp), y = as.numeric(Temperature)/coef)) +
+  geom_line(aes(x = rounded_time, y = proximity)) +#, 
+                # group = hms,
+                # color = hms)) +
+  # facet_grid(. ~ hms) +
+  luke_theme +
+  theme(legend.position = "right",
+        axis.title.x = element_blank()) +#,
+        # strip.background = element_blank(),
+        # strip.text = element_text(size = 8, face = "italic")) +
+  ylab("distance between individuals (m)") +
+  xlab("season") +
+  scale_x_datetime(expand = c(0, 0), 
+                   breaks = date_breaks("1 week"), 
+                   labels = date_format("%d-%B")) +
+  labs(color = "time of day")#+
+# scale_y_continuous(sec.axis = sec_axis(~.*coef, name="Second Axis"))
+
+
+move_align_object = CA3340_move
+ggplot() +
+  geom_point(data = data.frame(times = as.Date(move_align_object$sampling_times[1:length(move_align_object$sampling_times) - 1]),
+                               lags = move_align_object$sampling_time_lags),
+             aes(x = times, y = lags)) +
+  geom_line(data = data.frame(times = as.Date(move_align_object$sampling_times[1:length(move_align_object$sampling_times) - 1]),
+                              lags = move_align_object$sampling_time_lags), 
+            aes(x = times, y = lags), 
+            color = brewer.pal(8, "Dark2")[c(6)]) +
+  scale_x_date(date_labels = "%B", expand = c(0.01, 0.01), date_breaks = "1 months") +
+  ylab("Time lag between\nsampling occasions (hours)") +
+  theme_bw() +
+  theme(
+    # text = element_text(family = "Franklin Gothic Book"),
+    legend.position = "none",
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1, size = 10),
+    axis.title.y = element_text(size = 12),
+    axis.text.y = element_text(size = 10),
+    panel.grid.major = element_line(colour = "grey70", size = 0.1),
+    panel.grid.minor = element_line(colour = "grey70", size = 0.1),
+    axis.ticks = element_line(size = 0.25, lineend = "round", colour = "grey60"),
+    axis.ticks.length = unit(0.1, "cm"),
+    panel.border = element_rect(linetype = "solid", colour = "grey"),
+    plot.margin = unit(c(5, 1, 5, 1), "cm")
+  ) +
+  ggtitle(label = paste0(move_align_object$number_of_fixes, 
+                         " fixes collected over ", 
+                         round(move_align_object$timespan_of_sampling), " days"),
+          subtitle = paste(paste("First sample = ", 
+                                 move_align_object$sampling_start, 
+                                 attr(as.POSIXlt(move_align_object$sampling_start),
+                                      "tzone")[3], sep = " "),
+                           paste("Last sample = ", 
+                                 move_align_object$sampling_end, 
+                                 attr(as.POSIXlt(move_align_object$sampling_start),
+                                      "tzone")[3], sep = " "), sep = "\n"))
+
+move_align_object = CN0423_move
+ggplot() +
+  geom_point(data = data.frame(times = as.Date(move_align_object$sampling_times[1:length(move_align_object$sampling_times) - 1]),
+                               lags = move_align_object$sampling_time_lags),
+             aes(x = times, y = lags)) +
+  geom_line(data = data.frame(times = as.Date(move_align_object$sampling_times[1:length(move_align_object$sampling_times) - 1]),
+                              lags = move_align_object$sampling_time_lags), 
+            aes(x = times, y = lags), 
+            color = brewer.pal(8, "Dark2")[c(6)]) +
+  scale_x_date(date_labels = "%B", expand = c(0.01, 0.01), date_breaks = "1 months") +
+  ylab("Time lag between\nsampling occasions (hours)") +
+  theme_bw() +
+  theme(
+    # text = element_text(family = "Franklin Gothic Book"),
+    legend.position = "none",
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1, size = 10),
+    axis.title.y = element_text(size = 12),
+    axis.text.y = element_text(size = 10),
+    panel.grid.major = element_line(colour = "grey70", size = 0.1),
+    panel.grid.minor = element_line(colour = "grey70", size = 0.1),
+    axis.ticks = element_line(size = 0.25, lineend = "round", colour = "grey60"),
+    axis.ticks.length = unit(0.1, "cm"),
+    panel.border = element_rect(linetype = "solid", colour = "grey"),
+    plot.margin = unit(c(5, 1, 5, 1), "cm")
+  ) +
+  ggtitle(label = paste0(move_align_object$number_of_fixes, 
+                         " fixes collected over ", 
+                         round(move_align_object$timespan_of_sampling), " days"),
+          subtitle = paste(paste("First sample = ", 
+                                 move_align_object$sampling_start, 
+                                 attr(as.POSIXlt(move_align_object$sampling_start),
+                                      "tzone")[3], sep = " "),
+                           paste("Last sample = ", 
+                                 move_align_object$sampling_end, 
+                                 attr(as.POSIXlt(move_align_object$sampling_start),
+                                      "tzone")[3], sep = " "), sep = "\n"))
+
 
 lapply(tag_breeding_data_ceuta$nests, function(x) 
   subset(x, family_ID %in% c("SNPL_2022_C_4")))
