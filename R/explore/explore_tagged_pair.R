@@ -71,14 +71,36 @@ CA3340_move_aligned_round <-
 
 snpl_pair$nests
 
-full_join(CN0423_move_aligned_round, CA3340_move_aligned_round, by = "rounded_time") %>%
+snpl_pair_dist_season_events <- 
+  full_join(CN0423_move_aligned_round, CA3340_move_aligned_round, by = "rounded_time") %>%
   dplyr::select(rounded_time, x_CN0423, y_CN0423, x_CA3340, y_CA3340) %>% 
   drop_na() %>% 
   mutate(proximity = distHaversine(p1 = matrix(c(x_CN0423, y_CN0423), ncol = 2),
                                    p2 = matrix(c(x_CA3340, y_CA3340), ncol = 2))) %>% 
-  # filter(proximity < 2000) %>% 
   mutate(hms = hms::as_hms(rounded_time),
-         ymd = as.Date(rounded_time, tz = "America/Mazatlan")) 
+         ymd = as.Date(rounded_time, tz = "America/Mazatlan")) %>% 
+  left_join(., dplyr::select(snpl_pair$nests, nest_initiation_date, family_ID), 
+            by = c("ymd" = "nest_initiation_date"), multiple = "all") %>% 
+  rename(nest_initiation = family_ID) %>% 
+  distinct() %>% 
+  left_join(., dplyr::select(snpl_pair$nests, end_date, fate, family_ID), 
+            by = c("ymd" = "end_date"), multiple = "all") %>% 
+  rename(nest_end = family_ID) %>% 
+  distinct() %>% 
+  left_join(., snpl_pair$broods %>% 
+              filter(sex == "M") %>% 
+              mutate(brood_ymd = as.Date(timestamp_brood, tz = "America/Mazatlan")) %>% 
+              dplyr::select(brood_ymd, family_ID),
+            by = c("ymd" = "brood_ymd"), multiple = "all") %>% 
+  rename(male_with_brood = family_ID) %>% 
+  distinct() %>% 
+  left_join(., snpl_pair$broods %>% 
+              filter(sex == "F") %>% 
+              mutate(brood_ymd = as.Date(timestamp_brood, tz = "America/Mazatlan")) %>% 
+              dplyr::select(brood_ymd, family_ID),
+            by = c("ymd" = "brood_ymd"), multiple = "all") %>% 
+  rename(female_with_brood = family_ID) %>% 
+  distinct() 
   # filter(UUID %in% c("14000002d5", "14000002ea")) %>%
   ggplot() +
   # geom_rect(data = behav_data_sun_times,
