@@ -152,6 +152,196 @@ tag_breeding_data_ceuta <-
        resights = tag_resight_data_ceuta,
        tagging = plover_tagging_df %>% filter(population == "ceuta" & species == "SNPL"))
 
+#### 
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CN0161", map_year = 2018)
+CN0161 <- 
+  lapply(tag_breeding_data_ceuta, function(x) 
+    subset(x, ring %in% c("CN0161")))
+
+CN0161_list <- 
+  extract_sampling_times(df = CN0161$tagging)
+
+CN0161_list_sp <- 
+  lapply(CN0161_list, sp.tag, 
+         projection = CRS("+proj=longlat +datum=WGS84"), 
+         lat = "lat", long = "lon")
+
+CN0161_list_dist <- 
+  lapply(CN0161_list_sp, point_dist_calc)
+
+CN0161_dist <- 
+  as.data.frame(do.call(rbind, CN0161_list_dist)) %>% 
+  mutate(date = as.Date(timestamp_local, tz = "America/Mazatlan"),
+         year = year(timestamp_local),
+         month_day = format(as.Date(timestamp_local, tz = "America/Mazatlan"), format = "%m-%d")) %>% 
+  filter(!is.na(dist))
+
+tail(as.data.frame(tag_data_to_check_dist))
+
+# dist_plot <- 
+tag_data_to_check_dist %>% 
+  filter(year == "2021") %>% 
+  ggplot() +
+  geom_point(aes(x = date, y = dist, color = hour)) +
+  geom_line(aes(x = date, y = dist, color = hour)) +
+  facet_wrap(. ~ hour, nrow = 6) +
+  scale_color_manual(values = c("blue", "grey", "grey", "grey", "grey", "blue")) +
+  scale_x_date(date_labels = "%B-%d", expand = c(0.01, 0.01), date_breaks = "1 weeks") +
+  ylab("Displacement distance between consecutive \nsampling occasions (meters)") +
+  theme_bw() +
+  theme(
+    # text = element_text(family = "Franklin Gothic Book"),
+    # legend.position = "none",
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1, size = 10),
+    axis.title.y = element_text(size = 12),
+    axis.text.y = element_text(size = 10),
+    panel.grid.major = element_line(colour = "grey70", size = 0.1),
+    panel.grid.minor = element_line(colour = "grey70", size = 0.1),
+    axis.ticks = element_line(size = 0.25, lineend = "round", colour = "grey60"),
+    axis.ticks.length = unit(0.1, "cm"),
+    plot.title = element_text(hjust = 0.5),
+    plot.subtitle = element_text(hjust = 0.5),
+    panel.border = element_rect(linetype = "solid", colour = "grey")#,
+    # plot.margin = unit(c(5, 1, 5, 1), "cm")
+  ) +
+  ggtitle(label = "Spatial displacement patterns \n of the 4-hour sampling schedule",
+          subtitle = paste("Kentish Plover\nTagus Estuary, Portugal\n", 
+                           tag_data_to_check_dist$sex, tag_data_to_check_dist$ring))# +
+extract_sampling_times_fun(CN0161$tagging)
+
+
+CN0161_move <- 
+  tag_data_move_wrangle(formatted_tag_data = CN0161$tagging, 
+                        temporal_res = 1, 
+                        temporal_unit = "hours", 
+                        longitude_name = "lon", 
+                        latitude_name = "lat", 
+                        timestamp_name = "timestamp_local", 
+                        ind_name = "ring",
+                        projection = "+init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
+
+extract_sampling_times_fun(CN0161$tagging)
+
+CN0161_move_aligned_round <- 
+  CN0161_move$aligned_move_object %>% 
+  as.data.frame() %>% 
+  mutate(rounded_time = round(time, "hours")) %>% 
+  filter(as_hms(rounded_time) %in% c(as_hms("21:00:00"), as_hms("09:00:00"))) %>% 
+  rename(ring = trackId,
+         timestamp_local = rounded_time) %>% 
+  mutate(rounded_time_hms = hms::as_hms(timestamp_local),
+         rounded_time_ymd = as.Date(timestamp_local, 
+                                    tz = "America/Mazatlan"),
+         timestamp_local = as.POSIXct(timestamp_local))
+
+CN0161_move_aligned_round_AM <- 
+  CN0161_move_aligned_round %>% 
+  filter(rounded_time_hms == hms::as_hms("09:00:00")) 
+
+CN0161_move_aligned_round_PM <- 
+  CN0161_move_aligned_round %>% 
+  filter(rounded_time_hms == hms::as_hms("21:00:00"))
+
+# specify coordinate columns
+coordinates(CN0161_move_aligned_round_AM) <- c("x","y")
+coordinates(CN0161_move_aligned_round_PM) <- c("x","y")
+
+# define spatial projection as WGS84
+proj4string(CN0161_move_aligned_round_AM) <- CRS("+init=epsg:4326")
+proj4string(CN0161_move_aligned_round_PM) <- CRS("+init=epsg:4326")
+
+# calculate trajectories for morning and evening
+ltraj_CN0161_AM <- 
+  as.ltraj(xy = sp::coordinates(CN0161_move_aligned_round_AM),
+           date = CN0161_move_aligned_round_AM$timestamp_local,
+           id = CN0161_move_aligned_round_AM$ring, 
+           proj4string = CRS("+init=epsg:4326"))
+
+ltraj_CN0161_PM <- 
+  as.ltraj(xy = sp::coordinates(CN0161_move_aligned_round_PM),
+           date = CN0161_move_aligned_round_PM$timestamp_local,
+           id = CN0161_move_aligned_round_PM$ring, 
+           proj4string = CRS("+init=epsg:4326"))
+
+# convert to dataframes
+dftraj_CN0161_AM <- 
+  ld(ltraj_CN0161_AM) %>% 
+  dplyr::rename(distance = dist,
+                dispersion = R2n,
+                cardinal_angle = abs.angle,
+                relative_angle = rel.angle,
+                ring = id) %>% 
+  mutate(distance_m = distance * 100000) %>% 
+  group_by(ring) %>% 
+  mutate(cum_distance = cumsum(distance_m)) %>% 
+  mutate(rounded_time_hms = hms::as_hms(date),
+         rounded_time_ymd = as.Date(date, 
+                                    tz = "America/Mazatlan")) 
+
+dftraj_CN0161_PM <- 
+  ld(ltraj_CN0161_PM) %>% 
+  dplyr::rename(distance = dist,
+                dispersion = R2n,
+                cardinal_angle = abs.angle,
+                relative_angle = rel.angle,
+                ring = id) %>% 
+  mutate(distance_m = distance * 100000) %>% 
+  group_by(ring) %>% 
+  mutate(cum_distance = cumsum(distance_m)) %>% 
+  mutate(rounded_time_hms = hms::as_hms(date),
+         rounded_time_ymd = as.Date(date, 
+                                    tz = "America/Mazatlan"))
+
+# bind together
+dftraj_CN0161 <- 
+  bind_rows(dftraj_CN0161_AM, dftraj_CN0161_PM)
+
+# plot spatiotemporal repeatability 
+# ring_sex_labels <- c(
+#   "CA3340" = "Male",
+#   "CN0423" = "Female")
+# 
+# timestamp_labels <- c(
+#   "10:00:00" = "Morning (1000)",
+#   "22:00:00" = "Evening (2200)")
+
+ggplot() +
+  geom_point(data = dftraj_CN0161,
+             aes(x = rounded_time_ymd, y = distance_m, 
+                 group = ring, color = ring)) +
+  geom_line(data = dftraj_CN0161,
+            aes(x = rounded_time_ymd, y = distance_m, 
+                group = ring, color = ring)) +
+  facet_grid(rounded_time_hms ~ .) +
+  # scale_color_manual(labels = c("male", "female"), values = c("blue", "red")) +
+  scale_x_date(date_labels = "%B-%d", 
+               expand = c(0.01, 0.01), 
+               date_breaks = "1 weeks") +
+  ylab("Displacement distance between consecutive \nsampling occasions (meters)") +
+  # labs(color = "sex")
+  theme_bw() +
+  theme(
+    # text = element_text(family = "Franklin Gothic Book"),
+    legend.title = element_blank(),
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1, size = 10),
+    axis.title.y = element_text(size = 12),
+    axis.text.y = element_text(size = 10),
+    panel.grid.major = element_line(colour = "grey70", size = 0.1),
+    panel.grid.minor = element_line(colour = "grey70", size = 0.1),
+    axis.ticks = element_line(size = 0.25, lineend = "round", colour = "grey60"),
+    axis.ticks.length = unit(0.1, "cm"),
+    plot.title = element_text(hjust = 0.5),
+    plot.subtitle = element_text(hjust = 0.5),
+    panel.border = element_rect(linetype = "solid", colour = "grey")#,
+    # plot.margin = unit(c(5, 1, 5, 1), "cm")
+  ) #+
+ggtitle(label = "Spatial displacement patterns \n of the 4-hour sampling schedule",
+        subtitle = paste("Kentish Plover\nTagus Estuary, Portugal\n", 
+                         tag_data_to_check_dist$sex, tag_data_to_check_dist$ring))
+
 # # bind ceuta and tagus data
 # tag_nest_data <- 
 #   tag_nest_data_ceuta %>% 
