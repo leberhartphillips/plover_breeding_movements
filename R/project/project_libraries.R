@@ -12,7 +12,7 @@ packages_required_in_project <-
     "leaflet.extras2", "leaflet", "RColorBrewer", "adehabitatLT", 
     "lubridate", "RSQLite", "tidyverse", "sf", "ctmm", "readxl", 
     "geosphere", "hms", "mgcv", "mapview", "geosphere", "ctmm", "moveVis", 
-    "move", "scales"#, "rmdformats", "webshot2"
+    "move", "scales", "recurse"#, "rmdformats", "webshot2"
     )
 
 # of the required packages, check if some need to be installed
