@@ -37,7 +37,30 @@ c) Assess spatial use during brood-care
   - analytical steps:
     - for known broods, assess 1) cumulative distance trav
     
-    
+d) recursive analysis
+  - identify areas that have high fidelity within a given radius (i.e., 
+  measurement error of GPS device): these are presumable nesting attempts
+  - determine the number of days that the bird was using a high fidelity area
+  - determine the timespan that the bird was using the high fidelity area (i.e,
+  exit_date - start_date)
+  
+  getRecursions object gives:
+  1) coordIdx =  the index of the focal coordinate into the data frame (either 
+  the movement trajectory or the list of specified locations)
+  2) visitIdx = The visitIdx gives the index of which visit this is to the focal 
+  coordinate (so the number of revisits corresponds to the highest visit index)
+  3) entranceTime and exitTime = the times calculated for crossing the radius by 
+  interpolating between the points inside and outside the radius
+  4 timeSinceLastVist = calculated as the time outside the radius between visits 
+  for subsequent visits
+  
+  - wrangling approach:
+  
+  
+  - potential extra steps to explore:
+    - use "getRecursionsInPolygon" function to first identify potential nesting
+    habitat.
+
 potential issues:
 -  (DONE) BX.RM|OX.YX female has repeated combo (end date of SNPL_2022_A_2 overlaps start date of SNPL_2022_D_211)
 

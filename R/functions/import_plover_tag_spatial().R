@@ -68,8 +68,11 @@ import_plover_tag_spatial <-
           
           satellites = as.character(satellites)) %>% 
         
-        # make a local timestamp
-        dplyr::mutate(timestamp_local = with_tz(timestamp_utc, local_time_zone)) %>% 
+        # make a local timestamp and force all temporal cols to character
+        dplyr::mutate(timestamp_local = as.character(with_tz(timestamp_utc, local_time_zone)),
+                      timestamp_collect = as.character(timestamp_collect),
+                      timestamp_date = as.character(timestamp_date),
+                      timestamp_utc = as.character(timestamp_utc)) %>% 
         
         # make the dataframe a simple feature, define coordinates and projection
         st_as_sf(., 
@@ -176,8 +179,11 @@ import_plover_tag_spatial <-
                  
                  satellites = as.character(satellites)) %>% 
           
-          # make a local timestamp
-          dplyr::mutate(timestamp_local = with_tz(timestamp_utc, local_time_zone)) %>% 
+          # make a local timestamp and force all temporal cols to character
+          dplyr::mutate(timestamp_local = as.character(with_tz(timestamp_utc, local_time_zone)),
+                        timestamp_collect = as.character(timestamp_collect),
+                        timestamp_date = as.character(timestamp_date),
+                        timestamp_utc = as.character(timestamp_utc)) %>% 
           
           # remove observations without a reliable location
           dplyr::filter(latitude != 0 | !is.na(latitude)) %>% 
@@ -261,8 +267,11 @@ import_plover_tag_spatial <-
                  
                  satellites = as.character(satellites)) %>% 
           
-          # make a local timestamp
-          dplyr::mutate(timestamp_local = with_tz(timestamp_utc, local_time_zone)) %>% 
+          # make a local timestamp and force all temporal cols to character
+          dplyr::mutate(timestamp_local = as.character(with_tz(timestamp_utc, local_time_zone)),
+                        timestamp_collect = as.character(timestamp_collect),
+                        timestamp_date = as.character(timestamp_date),
+                        timestamp_utc = as.character(timestamp_utc)) %>% 
           
           # remove observations without a reliable location
           dplyr::filter(latitude != 0 | !is.na(latitude)) %>% 

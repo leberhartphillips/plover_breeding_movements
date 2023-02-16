@@ -14,3 +14,5 @@ luke_theme <-
     axis.ticks.length = unit(0.1, "cm"),
     panel.border = element_rect(linetype = "solid", colour = "grey")
   )
+
+mapviewOptions(basemaps = c("Esri.WorldImagery"))

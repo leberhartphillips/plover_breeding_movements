@@ -301,6 +301,45 @@ plover_tagging_df <-
   sfc_as_cols(., names = c("lon", "lat")) %>% 
   st_drop_geometry()
 
+ceuta <- 
+  plover_tagging_df %>% 
+  filter(population == "ceuta") %>% 
+  mutate(date = as.Date(timestamp_local, tz = "America/Mazatlan")) %>%
+  getSunlightTimes(data = ., keep = c("nightEnd", "night"), tz = "America/Mazatlan") %>% 
+  rename(lat_fun = lat,
+         lon_fun = lon) %>% 
+  bind_cols(plover_tagging_df %>% filter(population == "ceuta"), .) %>% 
+  filter(lat_fun == lat | lon_fun == lon) %>% 
+  dplyr::select(-c(lat_fun, lon_fun)) %>% 
+  mutate(night_fix = ifelse(timestamp_local < nightEnd | timestamp_local > night, 1, 0))
+
+kaikoura <- 
+  plover_tagging_df %>% 
+  filter(population == "kaikoura") %>% 
+  mutate(date = as.Date(timestamp_local, tz = "Pacific/Auckland")) %>%
+  getSunlightTimes(data = ., keep = c("nightEnd", "night"), tz = "Pacific/Auckland") %>% 
+  rename(lat_fun = lat,
+         lon_fun = lon) %>% 
+  bind_cols(plover_tagging_df %>% filter(population == "kaikoura"), .) %>% 
+  filter(lat_fun == lat | lon_fun == lon) %>% 
+  dplyr::select(-c(lat_fun, lon_fun)) %>% 
+  mutate(night_fix = ifelse(timestamp_local < nightEnd | timestamp_local > night, 1, 0))
+
+tagus <- 
+  plover_tagging_df %>% 
+  filter(population == "tagus") %>% 
+  mutate(date = as.Date(timestamp_local, tz = "Europe/Lisbon")) %>%
+  getSunlightTimes(data = ., keep = c("nightEnd", "night"), tz = "Europe/Lisbon") %>% 
+  rename(lat_fun = lat,
+         lon_fun = lon) %>% 
+  bind_cols(plover_tagging_df %>% filter(population == "tagus"), .) %>% 
+  filter(lat_fun == lat | lon_fun == lon) %>% 
+  dplyr::select(-c(lat_fun, lon_fun)) %>% 
+  mutate(night_fix = ifelse(timestamp_local < nightEnd | timestamp_local > night, 1, 0))
+
+plover_tagging_df <- 
+  bind_rows(ceuta, kaikoura, tagus)
+
 plover_tagging_sf <- 
   rbind(NF21163_ceuta, NF21065_ceuta, NF20996_ceuta, NF21117_ceuta, 
             NF21166_ceuta, NF21176_ceuta,
@@ -324,3 +363,4 @@ plover_tagging_sf <-
             NFTag20865_nz, NFTag21146_nz,
             NFTag55687_nz, NFTag55660_nz,
             NFTag55795_nz)
+
