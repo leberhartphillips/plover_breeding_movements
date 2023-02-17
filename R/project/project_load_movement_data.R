@@ -309,9 +309,14 @@ ceuta <-
   rename(lat_fun = lat,
          lon_fun = lon) %>% 
   bind_cols(plover_tagging_df %>% filter(population == "ceuta"), .) %>% 
+  mutate(timestamp_local = ymd_hms(timestamp_local, tz = "America/Mazatlan")) %>% 
   filter(lat_fun == lat | lon_fun == lon) %>% 
   dplyr::select(-c(lat_fun, lon_fun)) %>% 
-  mutate(night_fix = ifelse(timestamp_local < nightEnd | timestamp_local > night, 1, 0))
+  mutate(night_fix = ifelse(timestamp_local < nightEnd | timestamp_local > night, 1, 0),
+         timestamp_local = as.character(timestamp_local),
+         date = as.character(date),
+         nightEnd = as.character(nightEnd),
+         night = as.character(night))
 
 kaikoura <- 
   plover_tagging_df %>% 
@@ -321,9 +326,14 @@ kaikoura <-
   rename(lat_fun = lat,
          lon_fun = lon) %>% 
   bind_cols(plover_tagging_df %>% filter(population == "kaikoura"), .) %>% 
+  mutate(timestamp_local = ymd_hms(timestamp_local, tz = "Pacific/Auckland")) %>% 
   filter(lat_fun == lat | lon_fun == lon) %>% 
   dplyr::select(-c(lat_fun, lon_fun)) %>% 
-  mutate(night_fix = ifelse(timestamp_local < nightEnd | timestamp_local > night, 1, 0))
+  mutate(night_fix = ifelse(timestamp_local < nightEnd | timestamp_local > night, 1, 0),
+         timestamp_local = as.character(timestamp_local),
+         date = as.character(date),
+         nightEnd = as.character(nightEnd),
+         night = as.character(night))
 
 tagus <- 
   plover_tagging_df %>% 
@@ -333,9 +343,14 @@ tagus <-
   rename(lat_fun = lat,
          lon_fun = lon) %>% 
   bind_cols(plover_tagging_df %>% filter(population == "tagus"), .) %>% 
+  mutate(timestamp_local = ymd_hms(timestamp_local, tz = "Europe/Lisbon")) %>% 
   filter(lat_fun == lat | lon_fun == lon) %>% 
   dplyr::select(-c(lat_fun, lon_fun)) %>% 
-  mutate(night_fix = ifelse(timestamp_local < nightEnd | timestamp_local > night, 1, 0))
+  mutate(night_fix = ifelse(timestamp_local < nightEnd | timestamp_local > night, 1, 0),
+         timestamp_local = as.character(timestamp_local),
+         date = as.character(date),
+         nightEnd = as.character(nightEnd),
+         night = as.character(night))
 
 plover_tagging_df <- 
   bind_rows(ceuta, kaikoura, tagus)

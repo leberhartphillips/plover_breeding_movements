@@ -1,8 +1,11 @@
 tag_and_breeding_data_mapper <- 
-  function(tag_and_breeding_data, 
+  function(tag_and_breeding_data, time_zone_local = "America/Mazatlan",
            # tag = FALSE, nest = FALSE, brood = FALSE, resight = FALSE,
            bird_ring, map_year = NULL, 
            breeding = TRUE){
+    
+    tag_and_breeding_data$tagging$timestamp_local <- 
+      ymd_hms(tag_and_breeding_data$tagging$timestamp_local, tz = time_zone_local)
     
     if(is.null(map_year)){
       map_year = tag_and_breeding_data$tagging %>% 

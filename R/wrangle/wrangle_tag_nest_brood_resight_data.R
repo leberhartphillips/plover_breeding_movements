@@ -6,14 +6,15 @@ source("R/project/project_load_breeding_data.R")
 # Determine the first fix for each tagging dataset
 deploy_info <- 
   plover_tagging_df %>% 
+  mutate(timestamp_local_date = as.Date(timestamp_local)) %>% 
   dplyr::group_by(species, ring, tag_ID, code, sex) %>% 
-  dplyr::summarise(first_fix = min(timestamp_date),
-            last_fix = max(timestamp_date)) %>% 
+  dplyr::summarise(first_fix = as.Date(min(timestamp_date)),
+                   last_fix = as.Date(max(timestamp_date))) %>% 
   dplyr::arrange(ring, first_fix)
 
 # extract the ring and tagIDs from the tagging dataset
 rings_tags <- 
-  plover_tagging_sf %>% 
+  plover_tagging_df %>% 
   dplyr::filter(species %in% c("SNPL", "WIPL","KEPL")) %>%
   dplyr::select(ring, tag_ID) %>%
   dplyr::distinct()
@@ -128,7 +129,6 @@ tag_breeding_data_ceuta <-
        broods = tag_brood_data_ceuta,
        resights = tag_resight_data_ceuta,
        tagging = plover_tagging_df %>% dplyr::filter(population == "ceuta" & species == "SNPL"))
-
 
 #### Tagus breeding data ----
 # wrangle the nest information associated with each known nesting attempt of tagged birds

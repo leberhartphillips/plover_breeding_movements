@@ -23,8 +23,16 @@ summary(martinvisit$revisits)
 
 bird_ring = "CN0161"
 
-bird_tagging_data <- 
+bird_tagging_data_full <- 
   filter(tag_breeding_data_ceuta$tagging, ring == bird_ring)
+bird_tagging_data_day <- 
+  filter(tag_breeding_data_ceuta$tagging, ring == bird_ring & night_fix == 0)
+bird_tagging_data_night <- 
+  filter(tag_breeding_data_ceuta$tagging, ring == bird_ring & night_fix == 1)
+
+bird_tagging_data <- 
+  bird_tagging_data_day %>% 
+  mutate(timestamp_local = ymd_hms(timestamp_local, tz = "America/Mazatlan"))
 
 # first transform the tagging data into UTM so that the units are in meters
 tag_utm <- 
@@ -34,7 +42,7 @@ tag_utm <-
            crs = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0") %>%
   st_transform(., crs = "+proj=utm +zone=13") %>% 
   sfc_as_cols(., names = c("easting", "northing")) %>% 
-  st_drop_geometry() 
+  st_drop_geometry()
 
 # then transform the UTM data into a move object to be used by the recurse package
 tag_utm_move <-
@@ -44,6 +52,13 @@ tag_utm_move <-
           x = "easting", y = "northing",
           time = "timestamp_local")
 
+tag_latlon_move <-
+  df2move(df = arrange(as.data.frame(bird_tagging_data), timestamp_local),
+          track_id = "ring",
+          proj = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
+          x = "lon", y = "lat",
+          time = "timestamp_local")
+
 # inspect the data
 plot(tag_utm$easting, tag_utm$northing, 
      col = viridis_pal()(nrow(tag_utm)), pch = 20, 
@@ -51,11 +66,11 @@ plot(tag_utm$easting, tag_utm$northing,
 
 # also look at the data in regards to known nesting attempts
 tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
-                             bird_ring = "CN0930", map_year = 2022)
+                             bird_ring = "CN0161", map_year = 2018)
 
 # specify the radius size for the recursion (10m is adequate for the measurement 
 # error of the GPS tags)
-radius_size = 5
+radius_size = 3
 
 # calculate the recursions based on the radius size specified above
 bird_visit = getRecursions(x = tag_utm_move, 
@@ -113,8 +128,8 @@ mdist <- distm(xy)
 # cluster all points using a hierarchical clustering approach
 hc <- hclust(as.dist(mdist), method = "complete")
 
-# define the distance threshold, in this case 20 m
-d=20
+# define the distance threshold, in this case 30 m
+d=30
 
 # define clusters based on a tree "height" cutoff "d" and add them to the SpDataFrame
 xy$clust <- cutree(hc, h=d)
@@ -135,10 +150,32 @@ for (i in 1:max(xy$clust))
 # from the dismo package
 ci <- circles(cent, d=d, lonlat=T)
 
+ci1 <- circles(matrix(cent[1, 1:2], nrow = 1), d=d, lonlat=T)
+ci2 <- circles(matrix(cent[2, 1:2], nrow = 1), d=d, lonlat=T)
+
 # plot
 plot(ci@polygons, axes=T)
 plot(xy, col=rainbow(4)[factor(xy$clust)], add=T)
 
+cent %>% 
+  as.data.frame() %>% 
+  rename(lon = V1,
+         lat = V2) %>% 
+  st_as_sf(x = .,                         
+           coords = c("lon", "lat"),
+           crs = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0") %>% 
+  mapview()
+
+bird_visit_nest1 = 
+  getRecursionsInPolygon(tag_latlon_move, 
+                         polygon = polygons(ci1))
+
+bird_visit_nest2 = 
+  getRecursionsInPolygon(tag_latlon_move, 
+                         polygon = polygons(ci2))
+
+ymd_hms("2018-05-22 08:19:41", tz = "America/Mazatlan") - ymd_hms("2018-05-08 00:32:58", tz = "America/Mazatlan")
+  
 
 #### Female CN0423 ----
 # this female has a 12-hour sampling interval and shows a known nesting 
@@ -147,23 +184,16 @@ plot(xy, col=rainbow(4)[factor(xy$clust)], add=T)
 
 bird_ring = "CN0423"
 
-bird_tagging_data_full = 
-  filter(tag_breeding_data_ceuta$tagging, 
-         ring == bird_ring)
+bird_tagging_data_full <- 
+  filter(tag_breeding_data_ceuta$tagging, ring == bird_ring)
+bird_tagging_data_day <- 
+  filter(tag_breeding_data_ceuta$tagging, ring == bird_ring & night_fix == 0)
+bird_tagging_data_night <- 
+  filter(tag_breeding_data_ceuta$tagging, ring == bird_ring & night_fix == 1)
 
-bird_tagging_data_AM = 
-  filter(tag_breeding_data_ceuta$tagging, 
-         ring == bird_ring) %>% 
-  mutate(rounded_time = round(timestamp_local, "hours")) %>% 
-  filter(as_hms(rounded_time) %in% c(as_hms("10:00:00")))
-
-bird_tagging_data_PM = 
-  filter(tag_breeding_data_ceuta$tagging, 
-         ring == bird_ring) %>% 
-  mutate(rounded_time = round(timestamp_local, "hours")) %>% 
-  filter(as_hms(rounded_time) %in% c(as_hms("22:00:00")))
-
-bird_tagging_data = bird_tagging_data_AM
+bird_tagging_data = 
+  bird_tagging_data_day %>% 
+  mutate(timestamp_local = ymd_hms(timestamp_local, tz = "America/Mazatlan"))
 
 # first transform the tagging data into UTM so that the units are in meters
 tag_utm <- 
@@ -183,6 +213,13 @@ tag_utm_move <-
           x = "easting", y = "northing",
           time = "timestamp_local")
 
+tag_latlon_move <-
+  df2move(df = arrange(as.data.frame(bird_tagging_data), timestamp_local),
+          track_id = "ring",
+          proj = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
+          x = "lon", y = "lat",
+          time = "timestamp_local")
+
 # view the move object to see clusters in the points that may correspond to 
 # nesting attempts
 mapview(tag_utm_move)
@@ -198,7 +235,7 @@ tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
 
 # specify the radius size for the recursion (5m is adequate for the measurement 
 # error of the GPS tags)
-radius_size = 5
+radius_size = 3
 
 # calculate the recursions based on the radius size specified above
 bird_visit = getRecursions(x = tag_utm_move, 
@@ -254,7 +291,7 @@ mdist <- distm(xy)
 hc <- hclust(as.dist(mdist), method = "complete")
 
 # define the distance threshold, in this case 20 m
-d=20
+d=25
 
 # define clusters based on a tree "height" cutoff "d" and add them to the SpDataFrame
 xy$clust <- cutree(hc, h=d)
@@ -273,11 +310,37 @@ for (i in 1:max(xy$clust))
 
 # compute circles around the centroid coords using a 40m radius
 # from the dismo package
-ci <- circles(cent, d=d, lonlat=T)
+ci1 <- circles(matrix(cent[1, 1:2], nrow = 1), d=d, lonlat=T)
+ci2 <- circles(matrix(cent[2, 1:2], nrow = 1), d=d, lonlat=T)
+
+mapview(polygons(ci1))
 
 # plot
 plot(ci@polygons, axes=T)
 plot(xy, col=rainbow(4)[factor(xy$clust)], add=T)
+
+cent %>% 
+  as.data.frame() %>% 
+  rename(lon = V1,
+         lat = V2) %>% 
+  st_as_sf(x = .,                         
+           coords = c("lon", "lat"),
+           crs = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0") %>% 
+  mapview()
+
+bird_visit = 
+  getRecursionsInPolygon(tag_latlon_move, 
+                         polygon = polygons(ci1))
+
+as.numeric(bird_visit$residenceTime)/24
+
+# time that the female spent around the focal site
+max(bird_visit$revisitStats$exitTime) - min(bird_visit$revisitStats$entranceTime)
+
+getRecursionsInPolygon(martin, protectedArea)
+poly = sp::SpatialPolygons( list(
+  sp::Polygons( list(sp::Polygon(cbind(c(4,6,6,3,4),c(1,2,4,3,1)))), ID = 1 )
+))
 
 #%>% 
   # as.data.frame() %>% 
@@ -352,14 +415,17 @@ bird_visit$revisitStats %>%
   arrange(desc(n_visits)) %>% 
   mutate(time_period_days = exitTime_date - entranceTime_date)
 
-#### Female CN0930 ----
-# this female has a 12-hour sampling interval and shows a known nesting 
-# attempt in D that was preceded by brood care and followed by desertion and 
-# another nesting attempt
-bird_ring = "CN0930"
+#### Female CN0937 ----
+bird_ring = "CN0937"
 
-bird_tagging_data <- 
+bird_tagging_data_full <- 
   filter(tag_breeding_data_ceuta$tagging, ring == bird_ring)
+bird_tagging_data_day <- 
+  filter(tag_breeding_data_ceuta$tagging, ring == bird_ring & night_fix == 0)
+bird_tagging_data_night <- 
+  filter(tag_breeding_data_ceuta$tagging, ring == bird_ring & night_fix == 1)
+
+bird_tagging_data = bird_tagging_data_day
 
 # first transform the tagging data into UTM so that the units are in meters
 tag_utm <- 
@@ -369,7 +435,140 @@ tag_utm <-
            crs = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0") %>%
   st_transform(., crs = "+proj=utm +zone=13") %>% 
   sfc_as_cols(., names = c("easting", "northing")) %>% 
-  st_drop_geometry() 
+  st_drop_geometry() %>% 
+  mutate(timestamp_local = ymd_hms(timestamp_local, tz = "America/Mazatlan"))
+
+# then transform the UTM data into a move object to be used by the recurse package
+tag_utm_move <-
+  df2move(df = arrange(as.data.frame(tag_utm), timestamp_local),
+          track_id = "ring",
+          proj = "+proj=utm +zone=13",
+          x = "easting", y = "northing",
+          time = "timestamp_local")
+
+# inspect the data
+plot(tag_utm$easting, tag_utm$northing, 
+     col = viridis_pal()(nrow(tag_utm)), pch = 20, 
+     xlab = "easting", ylab = "northing", asp = 1)
+
+# also look at the data in regards to known nesting attempts
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CN0937", map_year = 2022)
+
+# specify the radius size for the recursion (5m is adequate for the measurement 
+# error of the GPS tags)
+radius_size = 3
+
+# calculate the recursions based on the radius size specified above
+bird_visit = getRecursions(x = tag_utm_move, 
+                           radius = radius_size, 
+                           threshold = 3, timeunits = "days")
+
+# plot the data and the recursions (also show the size of the radius in 
+# relation to the data and study site)
+
+# ggplot() +
+
+par(mfrow = c(1, 2), mar = c(4, 4, 1, 1))
+plot(bird_visit, tag_utm_move, 
+     col = brewer.pal(max(bird_visit$revisits), "Reds"),
+     legendPos = c(min(tag_utm$easting)+1250, max(tag_utm$northing)))
+drawCircle(max(tag_utm$easting), max(tag_utm$northing), radius_size)
+hist(bird_visit$revisits, breaks = 20, main = "", 
+     xlab = paste("Revisits (radius = ", radius_size, ")", sep = ""))
+
+summary(bird_visit$revisits)
+head(arrange(bird_visit$revisitStats, entranceTime))
+head(arrange(as.data.frame(tag_utm_move), time))
+
+nrow(bird_visit$revisitStats)
+nrow(as.data.frame(tag_utm_move))
+
+bird_visit$revisitStats %>% arrange(desc(visitIdx))
+
+high_visitation_points <- 
+  bird_visit$revisitStats %>% 
+  group_by(coordIdx, x, y) %>% 
+  summarise(n_visits = max(visitIdx)) %>% 
+  arrange(desc(n_visits)) %>% 
+  filter(n_visits > 1) %>% 
+  st_as_sf(x = .,                         
+           coords = c("x", "y"),
+           crs = "+proj=utm +zone=13") %>%
+  st_transform(., crs = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0") %>% 
+  sfc_as_cols(., names = c("lon", "lat")) %>% 
+  st_drop_geometry() %>% as.data.frame()
+
+xy <- 
+  SpatialPointsDataFrame(
+    matrix(c(high_visitation_points$lon,high_visitation_points$lat), ncol=2), 
+    data.frame(ID=high_visitation_points$coordIdx),
+    # matrix(c(x,y), ncol=2), data.frame(ID=seq(1:length(x))),
+    proj4string=CRS("+proj=longlat +ellps=WGS84 +datum=WGS84"))
+
+# use the distm function to generate a geodesic distance matrix in meters
+mdist <- distm(xy)
+
+# cluster all points using a hierarchical clustering approach
+hc <- hclust(as.dist(mdist), method = "complete")
+
+# define the distance threshold, in this case 30 m
+d=30
+
+# define clusters based on a tree "height" cutoff "d" and add them to the SpDataFrame
+xy$clust <- cutree(hc, h=d)
+
+library(dismo)
+library(rgeos)
+
+# expand the extent of plotting frame
+xy@bbox[] <- as.matrix(extend(extent(xy),0.001))
+
+# get the centroid coords for each cluster
+cent <- matrix(ncol=2, nrow=max(xy$clust))
+for (i in 1:max(xy$clust))
+  # gCentroid from the rgeos package
+  cent[i,] <- gCentroid(subset(xy, clust == i))@coords
+
+# compute circles around the centroid coords using a 40m radius
+# from the dismo package
+ci <- circles(cent, d=d, lonlat=T)
+
+# plot
+plot(ci@polygons, axes=T)
+plot(xy, col=rainbow(4)[factor(xy$clust)], add=T)
+
+cent %>% 
+  as.data.frame() %>% 
+  rename(lon = V1,
+         lat = V2) %>% 
+  st_as_sf(x = .,                         
+           coords = c("lon", "lat"),
+           crs = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0") %>% 
+  mapview()
+
+#### Female CN0930 ----
+bird_ring = "CN0930"
+
+bird_tagging_data_full <- 
+  filter(tag_breeding_data_ceuta$tagging, ring == bird_ring)
+bird_tagging_data_day <- 
+  filter(tag_breeding_data_ceuta$tagging, ring == bird_ring & night_fix == 0)
+bird_tagging_data_night <- 
+  filter(tag_breeding_data_ceuta$tagging, ring == bird_ring & night_fix == 1)
+
+bird_tagging_data = bird_tagging_data_day
+
+# first transform the tagging data into UTM so that the units are in meters
+tag_utm <- 
+  bird_tagging_data %>% 
+  st_as_sf(x = .,                         
+           coords = c("lon", "lat"),
+           crs = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0") %>%
+  st_transform(., crs = "+proj=utm +zone=13") %>% 
+  sfc_as_cols(., names = c("easting", "northing")) %>% 
+  st_drop_geometry() %>% 
+  mutate(timestamp_local = ymd_hms(timestamp_local, tz = "America/Mazatlan"))
 
 # then transform the UTM data into a move object to be used by the recurse package
 tag_utm_move <-
@@ -388,19 +587,94 @@ plot(tag_utm$easting, tag_utm$northing,
 tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
                              bird_ring = "CN0930", map_year = 2022)
 
-# specify the radius size for the recursion (10m is adequate for the measurement 
+# specify the radius size for the recursion (5m is adequate for the measurement 
 # error of the GPS tags)
 radius_size = 10
 
 # calculate the recursions based on the radius size specified above
-bird_visit = getRecursions(x = tag_utm_move, radius = radius_size) 
+bird_visit = getRecursions(x = tag_utm_move, 
+                           radius = radius_size, 
+                           threshold = 3, timeunits = "days")
 
 # plot the data and the recursions (also show the size of the radius in 
 # relation to the data and study site)
+
+# ggplot() +
+
 par(mfrow = c(1, 2), mar = c(4, 4, 1, 1))
 plot(bird_visit, tag_utm_move, 
+     col = brewer.pal(max(bird_visit$revisits), "Reds"),
      legendPos = c(min(tag_utm$easting)+1250, max(tag_utm$northing)))
 drawCircle(max(tag_utm$easting), max(tag_utm$northing), radius_size)
-hist(bird_visit$revisits, breaks = 20, main = "", xlab = paste("Revisits (radius = ", radius_size, ")", sep = ""))
+hist(bird_visit$revisits, breaks = 20, main = "", 
+     xlab = paste("Revisits (radius = ", radius_size, ")", sep = ""))
+
 summary(bird_visit$revisits)
-head(bird_visit$revisitStats)
+head(arrange(bird_visit$revisitStats, entranceTime))
+head(arrange(as.data.frame(tag_utm_move), time))
+
+nrow(bird_visit$revisitStats)
+nrow(as.data.frame(tag_utm_move))
+
+bird_visit$revisitStats %>% arrange(desc(visitIdx))
+
+high_visitation_points <- 
+  bird_visit$revisitStats %>% 
+  group_by(coordIdx, x, y) %>% 
+  summarise(n_visits = max(visitIdx)) %>% 
+  arrange(desc(n_visits)) %>% 
+  filter(n_visits > 1) %>% 
+  st_as_sf(x = .,                         
+           coords = c("x", "y"),
+           crs = "+proj=utm +zone=13") %>%
+  st_transform(., crs = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0") %>% 
+  sfc_as_cols(., names = c("lon", "lat")) %>% 
+  st_drop_geometry() %>% as.data.frame()
+
+xy <- 
+  SpatialPointsDataFrame(
+    matrix(c(high_visitation_points$lon,high_visitation_points$lat), ncol=2), 
+    data.frame(ID=high_visitation_points$coordIdx),
+    # matrix(c(x,y), ncol=2), data.frame(ID=seq(1:length(x))),
+    proj4string=CRS("+proj=longlat +ellps=WGS84 +datum=WGS84"))
+
+# use the distm function to generate a geodesic distance matrix in meters
+mdist <- distm(xy)
+
+# cluster all points using a hierarchical clustering approach
+hc <- hclust(as.dist(mdist), method = "complete")
+
+# define the distance threshold, in this case 30 m
+d=30
+
+# define clusters based on a tree "height" cutoff "d" and add them to the SpDataFrame
+xy$clust <- cutree(hc, h=d)
+
+library(dismo)
+library(rgeos)
+
+# expand the extent of plotting frame
+xy@bbox[] <- as.matrix(extend(extent(xy),0.001))
+
+# get the centroid coords for each cluster
+cent <- matrix(ncol=2, nrow=max(xy$clust))
+for (i in 1:max(xy$clust))
+  # gCentroid from the rgeos package
+  cent[i,] <- gCentroid(subset(xy, clust == i))@coords
+
+# compute circles around the centroid coords using a 40m radius
+# from the dismo package
+ci <- circles(cent, d=d, lonlat=T)
+
+# plot
+plot(ci@polygons, axes=T)
+plot(xy, col=rainbow(4)[factor(xy$clust)], add=T)
+
+cent %>% 
+  as.data.frame() %>% 
+  rename(lon = V1,
+         lat = V2) %>% 
+  st_as_sf(x = .,                         
+           coords = c("lon", "lat"),
+           crs = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0") %>% 
+  mapview()

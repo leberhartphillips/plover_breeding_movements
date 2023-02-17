@@ -44,7 +44,17 @@ d) recursive analysis
   - determine the timespan that the bird was using the high fidelity area (i.e,
   exit_date - start_date)
   
-  getRecursions object gives:
+  getRecursions function:
+  "threshold" =  a time threshold to ignore brief excursions outside the
+  specified radius. The threshold parameter defaults to zero, meaning any 
+  excursion outside the radius, no matter how brief, will lead to the reentry 
+  to be counted as a new visit. For the plovers, the "incubation signal" relies
+  on repeated visits every 24 hours, however it could be the case that the single
+  fix for a given day is off the nest, resulting in an exit. Thus, 3 days seems
+  appropriate: a run of 3 days in a row in which the focal bird didn't return to
+  the radius location would likely indicate a "true" exit from nesting.
+  
+  produces a list that contains a dataframe called "revisitStats":
   1) coordIdx =  the index of the focal coordinate into the data frame (either 
   the movement trajectory or the list of specified locations)
   2) visitIdx = The visitIdx gives the index of which visit this is to the focal 
