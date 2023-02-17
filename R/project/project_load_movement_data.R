@@ -141,7 +141,8 @@ PP48670_ceuta <- # once-per-day (0000)
                             tag_ID = "PP48670", projection = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
                             collect_time_zone = "America/Mazatlan", tag_model = "PinPoint-10", n_slice = 0, local_time_zone = "America/Mazatlan",
                             bird_ID = "CN0118", bird_code = "MX.RW|LX.RX", bird_sex = "F", species = "SNPL", population = "ceuta") %>% 
-  filter(timestamp_local < ymd_hms("2018-05-24 08:00:00", tz = "America/Mazatlan")) %>% arrange(desc(timestamp_local))
+  filter(ymd_hms(timestamp_local, tz = "America/Mazatlan") < ymd_hms("2018-05-24 08:00:00", tz = "America/Mazatlan")) %>%
+  arrange(desc(timestamp_local))
 
 PP48671_ceuta <- # no nesting data
   import_plover_tag_spatial(data_loc = "data/SNPL/lotek/PinPoint_Tag_48671/Swift GPS Data Files/PinPoint 48671 2019-05-09 12-07-57.txt",
@@ -196,7 +197,8 @@ PP51069b_ceuta <- # short-term (every 20 mins)
                             tag_ID = "PP51069b", projection = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
                             collect_time_zone = "GMT", tag_model = "PinPoint-10", n_slice = 1, local_time_zone = "America/Mazatlan",
                             bird_ID = "CN0066", bird_code = "GX.RM|YX.OX", bird_sex = "M", species = "SNPL", population = "ceuta") %>% 
-  filter(timestamp_local < ymd_hms("2022-05-02 20:50:00", tz = "America/Mazatlan")) %>% arrange(desc(timestamp_local))
+  filter(ymd_hms(timestamp_local, tz = "America/Mazatlan") < ymd_hms("2022-05-02 20:50:00", tz = "America/Mazatlan")) %>%
+  arrange(desc(timestamp_local))
 
 PP51070a_ceuta <- # mid-term (1000 and 2200)
   import_plover_tag_spatial(data_loc = "data/SNPL/lotek/PinPoint_Tag_51070a/Swift GPS Data Files/PinPoint 51070 2022-06-14 19-19-55_NestC402_FemaleCN0423.txt",
