@@ -249,42 +249,8 @@ CN0609_nest_search$bird_tagging_data %>%
            format(., format = "%H:%M")) %>% 
   pull(rounded_hour) %>% unique()
 
-#### **CA3224 from 2019 (nanoFix 24-hour @ 0600) ----
-# locates all known nests nicely
-tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
-                             bird_ring = "CA3224", map_year = 2019)
-CA3224_nest_search <- 
-  find_plover_nests(tagging_data = tag_breeding_data_ceuta$tagging,
-                    longitude_col = "lon",
-                    latitude_col = "lat",
-                    local_UTM_zone = 13,
-                    bird_ring = "CA3224",
-                    circadian_search_period = "daytime",
-                    local_time_zone = "America/Mazatlan",
-                    recurse_radius_size = 3,
-                    recurse_time_threshold = 1,
-                    recurse_time_threshold_unit = "hours",
-                    revisit_threshold = 1,
-                    cluster_distance_threshold = 30,
-                    nest_data = tag_breeding_data_ceuta$nests,
-                    tag_year = 2019)
-
-# evaluate nest site predictions
-CA3224_nest_search$nest_search_plot
-
-# determine the modal interval between fixes
-CA3224_nest_search$tag_latlon_move %>% 
-  timeLag(unit = "hours") %>% 
-  getmode()
-
-# determine the tag type ("PP" = PinPoint, "NF" = nanoFix)
-CA3224_nest_search$bird_tagging_data$tag_ID %>% unique()
-
-# determine the hours sampled
-CA3224_nest_search$bird_tagging_data %>% 
-  mutate(rounded_hour = round(timestamp_local, "hours") %>% 
-           format(., format = "%H:%M")) %>% 
-  pull(rounded_hour) %>% unique()
+min(CN0609_nest_search$nest_visits_list[[2]]$revisitStats$entranceTime) - 
+  max(CN0609_nest_search$nest_visits_list[[1]]$revisitStats$exitTime)
 
 #### *CM1858 from 2022 (PinPoint 20-min) ----
 # locates single known nests nicely
@@ -545,6 +511,9 @@ CA3224_nest_search$bird_tagging_data %>%
   mutate(rounded_hour = round(timestamp_local, "hours") %>% 
            format(., format = "%H:%M")) %>% 
   pull(rounded_hour) %>% unique()
+
+min(CA3224_nest_search$nest_visits_list[[2]]$revisitStats$entranceTime) - 
+  max(CA3224_nest_search$nest_visits_list[[1]]$revisitStats$exitTime)
 
 #### *CN0318 from 2019 (nanoFix 24-hour @ 0600) ----
 # locates second nest nicely
