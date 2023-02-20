@@ -1,0 +1,3 @@
+Error log 
+
+Burst CN0916-2022: no locations revisited for more than 2 days

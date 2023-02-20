@@ -20,7 +20,7 @@ find_plover_nests <-
     
     if(circadian_search_period == "all"){
         bird_tagging_data <- filter(tagging_data, 
-                                    ring == bird_ring_col)
+                                    ring == bird_ring)
         
       } else if(circadian_search_period == "daytime"){
         bird_tagging_data <- filter(tagging_data, 
@@ -154,7 +154,8 @@ find_plover_nests <-
     nest_searching_list <- list(nest_visits_list = nest_visits_list,
                                 nest_search_plot = nest_search_plot,
                                 bird_tagging_data = bird_tagging_data,
-                                tag_latlon_move = tag_latlon_move)
+                                tag_latlon_move = tag_latlon_move,
+                                likely_nests = likely_nests)
     
     return(nest_searching_list)
   }

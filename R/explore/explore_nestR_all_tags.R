@@ -31,459 +31,613 @@ sea_end = "08-01"
 #### Females ----
 #### **CN0161 from 2018 (PinPoint 9-hour schedule) ----
 # perfectly locates the presumed second nesting attempt
+bird_ring = "CN0161"
+map_year = 2018
+
 tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
-                             bird_ring = "CN0161", map_year = 2018)
-CN0161_nest_search <- 
-  find_plover_nests(tagging_data = tag_breeding_data_ceuta$tagging,
-                    longitude_col = "lon",
-                    latitude_col = "lat",
-                    local_UTM_zone = 13,
-                    bird_ring = "CN0161",
-                    circadian_search_period = "daytime",
-                    local_time_zone = "America/Mazatlan",
-                    recurse_radius_size = 3,
-                    recurse_time_threshold = 3,
-                    recurse_time_threshold_unit = "days",
-                    revisit_threshold = 1,
-                    cluster_distance_threshold = 30,
-                    nest_data = tag_breeding_data_ceuta$nests,
-                    tag_year = 2018)
-CN0161_nest_search$nest_search_plot
-CN0161_nest_search$tag_latlon_move %>% 
-  timeLag(unit = "hours") %>% 
-  getmode()
+                             bird_ring = bird_ring, map_year = map_year)
 
-nestR_CN0161_out <- 
-  find_nests(nestR_data %>% filter(str_detect(burst, "CN0161")), 
-             buffer = 20,
-             sea_start = "04-01", 
-             sea_end = "08-01", 
-             min_pts = 4,
-             nest_cycle = 28, 
-             min_d_fix = 1,
-             min_consec = 1,
-             min_top_att = 1,
-             min_days_att = 1)
-
-nest_mapper(nestR_out = nestR_CN0161_out, 
-            plover_nest_finder_out = CN0161_nest_search,
-            tag_and_breeding_data = tag_and_breeding_data,
-            bird_ring = "CN0161")
-
-known_nests <- 
-  tag_and_breeding_data$nests %>% 
-  dplyr::filter(ring == "CN0161" & 
-                  year(nest_initiation_date) == "2018") %>% 
-  mutate(burst = paste(ring, year(nest_initiation_date), sep = "-")) %>% 
-  dplyr::select(burst, lon, lat) %>% 
-  rename(long = lon,
-         lat = lat) %>% 
-  as.data.frame()
-
-get_explodata(candidate_nests = nestR_CN0161_out$nests, 
-              known_coords = known_nests,
-              buffer = 40,
-              pick_overlapping = FALSE)
-
-explore_nests(nestR_data)
-
-#### **CN0423 from 2022 (PinPoint 12-hour @ 1000/2200) ----
-# perfectly locates both nesting attempts initiated post deployment
-tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
-                             bird_ring = "CN0423", map_year = 2022)
-CN0423_nest_search <- 
-  find_plover_nests(tagging_data = tag_breeding_data_ceuta$tagging,
-                    longitude_col = "lon",
-                    latitude_col = "lat",
-                    local_UTM_zone = 13,
-                    bird_ring = "CN0423",
-                    circadian_search_period = "daytime",
-                    local_time_zone = "America/Mazatlan",
-                    recurse_radius_size = 5,
-                    recurse_time_threshold = 3,
-                    recurse_time_threshold_unit = "days",
-                    revisit_threshold = 1,
-                    cluster_distance_threshold = 30,
-                    nest_data = tag_breeding_data_ceuta$nests,
-                    tag_year = 2022)
-CN0423_nest_search$nest_search_plot
-CN0423_nest_search$tag_latlon_move %>% 
-  timeLag(unit = "hours") %>% 
-  getmode()
-CN0423_nest_search$bird_tagging_data$tag_ID %>% unique()
-
-nestR_CN0423_out <- 
-  find_nests(nestR_data %>% filter(str_detect(burst, "CN0423")), 
-             buffer = 20,
-             sea_start = "04-01", 
-             sea_end = "08-01", 
-             min_pts = 5,
-             nest_cycle = 28, 
-             min_d_fix = 1,
-             min_consec = 1,
-             min_top_att = 10,
-             min_days_att = 2)
-
-nest_mapper(nestR_out = nestR_CN0423_out, 
-            plover_nest_finder_out = CN0423_nest_search,
-            tag_and_breeding_data = tag_and_breeding_data,
-            bird_ring = "CN0423")
-
-#### *CN0937 from 2022 (PinPoint 20-min then 12-hour @ 1000/2200) ----
-# locates second nesting attempt after first was predated 
-# first nest had only 20-min sampling
-tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
-                             bird_ring = "CN0937", map_year = 2022)
-CN0937_nest_search <- 
-  find_plover_nests(tagging_data = tag_breeding_data_ceuta$tagging,
-                    longitude_col = "lon",
-                    latitude_col = "lat",
-                    local_UTM_zone = 13,
-                    bird_ring = "CN0937",
-                    circadian_search_period = "daytime",
-                    local_time_zone = "America/Mazatlan",
-                    recurse_radius_size = 3,
-                    recurse_time_threshold = 3,
-                    recurse_time_threshold_unit = "days",
-                    revisit_threshold = 1,
-                    cluster_distance_threshold = 30,
-                    nest_data = tag_breeding_data_ceuta$nests,
-                    tag_year = 2022)
-# evaluate nest site predictions
-CN0937_nest_search$nest_search_plot
-
-# determine the modal interval between fixes
-CN0937_nest_search$tag_latlon_move %>% 
-  timeLag(unit = "hours") %>% 
-  getmode()
-
-# determine the tag type ("PP" = PinPoint, "NF" = nanoFix)
-CN0937_nest_search$bird_tagging_data$tag_ID %>% unique()
-
-# determine the hours sampled
-CN0937_nest_search$bird_tagging_data %>% 
-  mutate(rounded_hour = round(timestamp_local, "hours") %>% 
-           format(., format = "%H:%M")) %>% 
-  pull(rounded_hour) %>% unique()
-
-nestR_CN0937_out <- 
-  find_nests(nestR_data %>% filter(str_detect(burst, "CN0937") & date > as.Date("2022-05-06")), 
-             buffer = 20,
-             sea_start = "04-01", 
-             sea_end = "08-01", 
-             min_pts = 5,
-             nest_cycle = 28, 
-             min_d_fix = 1,
-             min_consec = 1,
-             min_top_att = 10,
-             min_days_att = 2)
-
-nest_mapper(nestR_out = nestR_CN0937_out, 
-            plover_nest_finder_out = CN0937_nest_search,
-            tag_and_breeding_data = tag_and_breeding_data,
-            bird_ring = "CN0937")
-
-#### *CN0930 from 2022 (PinPoint 20-min then 12-hour @ 1000/2200) ----
-tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
-                             bird_ring = "CN0930", map_year = 2022)
-CN0930_nest_search <- # recurse_radius_size = 10
-  find_plover_nests(tagging_data = tag_breeding_data_ceuta$tagging,
-                    longitude_col = "lon",
-                    latitude_col = "lat",
-                    local_UTM_zone = 13,
-                    bird_ring = "CN0930",
-                    circadian_search_period = "daytime",
-                    local_time_zone = "America/Mazatlan",
-                    recurse_radius_size = 10,
-                    recurse_time_threshold = 3,
-                    recurse_time_threshold_unit = "days",
-                    revisit_threshold = 1,
-                    cluster_distance_threshold = 30,
-                    nest_data = tag_breeding_data_ceuta$nests,
-                    tag_year = 2022)
-
-# evaluate nest site predictions
-CN0930_nest_search$nest_search_plot
-
-# determine the modal interval between fixes
-CN0930_nest_search$tag_latlon_move %>% 
-  timeLag(unit = "hours") %>% 
-  getmode()
-
-# determine the tag type ("PP" = PinPoint, "NF" = nanoFix)
-CN0930_nest_search$bird_tagging_data$tag_ID %>% unique()
-
-# determine the hours sampled
-CN0930_nest_search$bird_tagging_data %>% 
-  mutate(rounded_hour = round(timestamp_local, "hours") %>% 
-           format(., format = "%H:%M")) %>% 
-  pull(rounded_hour) %>% unique()
-
-nestR_CN0930_out <- 
-  find_nests(nestR_data %>% filter(str_detect(burst, "CN0930") & date > as.Date("2022-04-30")), 
-             buffer = 20,
-             sea_start = "04-01", 
-             sea_end = "08-01", 
-             min_pts = 4,
-             nest_cycle = 28, 
-             min_d_fix = 1,
-             min_consec = 1,
-             min_top_att = 10,
-             min_days_att = 2)
-
-nest_mapper(nestR_out = nestR_CN0930_out, 
-            plover_nest_finder_out = CN0930_nest_search,
-            tag_and_breeding_data = tag_and_breeding_data,
-            bird_ring = "CN0930")
-
-#### CN0916 from 2022 (PinPoint 20-min then 12-hour @ 1000/2200) ----
-# issues with temporal resolution (incorrectly found nests in cluster of 20-min fixes)
-# nestR found second nest but location is a bit off
-tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
-                             bird_ring = "CN0916", map_year = 2022)
-CN0916_nest_search <- # recurse_time_threshold = 1, recurse_time_threshold_unit = "hours"
-  find_plover_nests(tagging_data = tag_breeding_data_ceuta$tagging,
-                    longitude_col = "lon",
-                    latitude_col = "lat",
-                    local_UTM_zone = 13,
-                    bird_ring = "CN0916",
-                    circadian_search_period = "daytime",
-                    local_time_zone = "America/Mazatlan",
-                    recurse_radius_size = 3,
-                    recurse_time_threshold = 1,
-                    recurse_time_threshold_unit = "hours",
-                    revisit_threshold = 1,
-                    cluster_distance_threshold = 30,
-                    nest_data = tag_breeding_data_ceuta$nests,
-                    tag_year = 2022)
-
-# evaluate nest site predictions
-CN0916_nest_search$nest_search_plot
-
-# determine the modal interval between fixes
-CN0916_nest_search$tag_latlon_move %>% 
-  timeLag(unit = "hours") %>% 
-  getmode()
-
-# determine the tag type ("PP" = PinPoint, "NF" = nanoFix)
-CN0916_nest_search$bird_tagging_data$tag_ID %>% unique()
-
-# determine the hours sampled
-CN0916_nest_search$bird_tagging_data %>% 
-  mutate(rounded_hour = round(timestamp_local, "hours") %>% 
-           format(., format = "%H:%M")) %>% 
-  pull(rounded_hour) %>% unique()
-
-nestR_CN0916_out <- 
+nestR_out <- 
   find_nests(nestR_data %>% 
-               filter(str_detect(burst, "CN0916") & 
-                        date > as.Date("2022-04-22") & 
-                        night_fix == 0), 
-             buffer = 30,
-             sea_start = "04-01", 
-             sea_end = "08-01", 
-             min_pts = 2,
+               arrange(date) %>% 
+               mutate(diff_10 = round(ymd_hms(date, tz = "America/Mazatlan"), "hours") - 
+                        hms(seconds = 00, minutes = 00, hours = 10),
+                      diff_22 = round(ymd_hms(date, tz = "America/Mazatlan"), "hours") - 
+                        hms(seconds = 00, minutes = 00, hours = 22))
+               filter(str_detect(burst, bird_ring) & 
+                        night_fix == 0 & hour(round(date, hours) %in% c(10, 22)), 
+             buffer = 20,
+             sea_start = sea_start, 
+             sea_end = sea_end, 
+             min_pts = 3,
              nest_cycle = 28, 
              min_d_fix = 1,
              min_consec = 1,
              min_top_att = 1,
              min_days_att = 1, discard_overlapping = TRUE)
 
-nest_mapper(nestR_out = nestR_CN0916_out, 
-            plover_nest_finder_out = CN0916_nest_search,
-            tag_and_breeding_data = tag_and_breeding_data,
-            bird_ring = "CN0916")
+nest_mapper(nestR_out, tag_and_breeding_data, bird_ring = bird_ring, map_year = map_year)
 
-nestR_CN0916_out$nests
+known_nests <-
+  tag_and_breeding_data$nests %>%
+  dplyr::filter(ring == bird_ring &
+                  year(nest_initiation_date) == map_year) %>%
+  mutate(burst = paste(ring, year(nest_initiation_date), sep = "-")) %>%
+  dplyr::select(burst, lon, lat) %>%
+  rename(long = lon,
+         lat = lat) %>%
+  as.data.frame()
 
-#### **CN0609 from 2022 (PinPoint 12-hour @ 1000/2200) ----
-# finds second nest but cluster is slightly "off", could be issues with visit times
-# nestR finds second nest
+# distance between nests
+distGeo(nestR_out$nests %>% 
+          arrange(attempt_start) %>% 
+          dplyr::select(long, lat), 
+        known_nests %>% dplyr::select(long, lat))
+
+# time difference between nesting attempts (based on GPS data)
+(nestR_out$nests %>% 
+    arrange(attempt_start) %>% 
+    slice(2) %>% 
+    pull(attempt_start)) - 
+  (nestR_out$nests %>% 
+     arrange(attempt_start) %>% 
+     slice(1) %>% 
+     pull(attempt_end))
+
+# time difference between nesting attempts (based on field data)
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(2) %>% 
+    pull(end_date)) - 
+(tag_and_breeding_data$nests %>% 
+   dplyr::filter(ring == bird_ring & 
+                   year(nest_initiation_date) == map_year) %>% 
+   arrange(nest_initiation_date) %>% 
+   slice(1) %>% 
+   pull(nest_initiation_date))
+
+# nest fates
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(1) %>% 
+    pull(fate))
+
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(2) %>% 
+    pull(fate))
+
+#### **CN0423 from 2022 (PinPoint 12-hour @ 1000/2200) ----
+# perfectly locates both nesting attempts initiated post deployment
+bird_ring = "CN0423"
+map_year = 2022
+
 tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
-                             bird_ring = "CN0609", map_year = 2022)
-nest_search <- 
-  find_plover_nests(tagging_data = tag_breeding_data_ceuta$tagging,
-                    longitude_col = "lon",
-                    latitude_col = "lat",
-                    local_UTM_zone = 13,
-                    bird_ring = "CN0609",
-                    circadian_search_period = "daytime",
-                    local_time_zone = "America/Mazatlan",
-                    recurse_radius_size = 4,
-                    recurse_time_threshold = 1,
-                    recurse_time_threshold_unit = "hours",
-                    revisit_threshold = 1,
-                    cluster_distance_threshold = 30,
-                    nest_data = tag_breeding_data_ceuta$nests,
-                    tag_year = 2022)
-
-# evaluate nest site predictions
-nest_search$nest_search_plot
-
-# determine the modal interval between fixes
-nest_search$tag_latlon_move %>% 
-  timeLag(unit = "hours") %>% 
-  getmode()
-
-# determine the tag type ("PP" = PinPoint, "NF" = nanoFix)
-nest_search$bird_tagging_data$tag_ID %>% unique()
-
-# determine the hours sampled
-nest_search$bird_tagging_data %>% 
-  mutate(rounded_hour = round(timestamp_local, "hours") %>% 
-           format(., format = "%H:%M")) %>% 
-  pull(rounded_hour) %>% unique()
-
-min(nest_search$nest_visits_list[[2]]$revisitStats$entranceTime) - 
-  max(nest_search$nest_visits_list[[1]]$revisitStats$exitTime)
+                             bird_ring = bird_ring, map_year = map_year)
 
 nestR_out <- 
   find_nests(nestR_data %>% 
-               filter(str_detect(burst, "CN0609") & 
+               filter(str_detect(burst, bird_ring) & 
                         night_fix == 0), 
              buffer = 20,
              sea_start = sea_start, 
              sea_end = sea_end, 
-             min_pts = 4,
+             min_pts = 3,
              nest_cycle = 28, 
              min_d_fix = 1,
              min_consec = 1,
              min_top_att = 1,
              min_days_att = 1, discard_overlapping = TRUE)
 
-nest_mapper(nestR_out = nestR_out, 
-            plover_nest_finder_out = nest_search,
-            tag_and_breeding_data = tag_and_breeding_data,
-            bird_ring = "CN0609")
+nest_mapper(nestR_out, tag_and_breeding_data, bird_ring = bird_ring, map_year = map_year)
 
-known_nests <- 
-  tag_and_breeding_data$nests %>% 
-  dplyr::filter(ring == "CN0609" & 
-                  year(nest_initiation_date) == "2022") %>% 
-  mutate(burst = paste(ring, year(nest_initiation_date), sep = "-")) %>% 
-  dplyr::select(burst, lon, lat) %>% 
+known_nests <-
+  tag_and_breeding_data$nests %>%
+  dplyr::filter(ring == bird_ring &
+                  year(nest_initiation_date) == map_year) %>%
+  mutate(burst = paste(ring, year(nest_initiation_date), sep = "-")) %>%
+  arrange(nest_initiation_date) %>% 
+  dplyr::select(burst, lon, lat) %>%
   rename(long = lon,
-         lat = lat) %>% 
+         lat = lat) %>%
   as.data.frame()
 
-get_explodata(candidate_nests = nestR_out$nests, 
-              known_coords = known_nests,
-              buffer = 40,
-              pick_overlapping = FALSE)
+# distance between nests
+distGeo(nestR_out$nests %>% 
+          arrange(attempt_start) %>% 
+          dplyr::select(long, lat), 
+        known_nests %>% slice(2:3) %>% dplyr::select(long, lat))
 
-distGeo(nestR_out$nests %>% dplyr::select(long, lat), 
+# time difference between nesting attempts (based on GPS data)
+(nestR_out$nests %>% 
+    arrange(attempt_start) %>% 
+    slice(2) %>% 
+    pull(attempt_start)) - 
+  (nestR_out$nests %>% 
+     arrange(attempt_start) %>% 
+     slice(1) %>% 
+     pull(attempt_end))
+
+# time difference between nesting attempts (based on field data)
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(3) %>% 
+    pull(nest_initiation_date)) - 
+  (tag_and_breeding_data$nests %>% 
+     dplyr::filter(ring == bird_ring & 
+                     year(nest_initiation_date) == map_year) %>% 
+     arrange(nest_initiation_date) %>% 
+     slice(2) %>% 
+     pull(end_date))
+
+# nest fates
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(2) %>% 
+    pull(fate))
+
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(3) %>% 
+    pull(fate))
+
+#### *CN0937 from 2022 (PinPoint 20-min then 12-hour @ 1000/2200) ----
+# locates second nesting attempt after first was predated 
+# first nest had only 20-min sampling
+bird_ring = "CN0937"
+map_year = 2022
+
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = bird_ring, map_year = map_year)
+
+nestR_out <- 
+  find_nests(nestR_data %>% 
+             arrange(date) %>% 
+             filter(str_detect(burst, bird_ring) & 
+                      night_fix == 0) %>% 
+             mutate(diff_10 = as_hms(round(ymd_hms(date), "mins") - 
+                      hms(seconds = 00, minutes = 00, hours = 10)),
+                    diff_22 = as_hms(round(ymd_hms(date), "mins") - 
+                      hms(seconds = 00, minutes = 00, hours = 22))) %>%
+             filter(diff_10 == as_hms("00:00:00") | diff_22 == as_hms("00:00:00")),
+                    buffer = 20,
+                    sea_start = sea_start, 
+                    sea_end = sea_end, 
+                    min_pts = 3,
+                    nest_cycle = 28, 
+                    min_d_fix = 1,
+                    min_consec = 1,
+                    min_top_att = 1,
+                    min_days_att = 1, discard_overlapping = TRUE)
+
+nest_mapper(nestR_out, time_zone_local = "America/Mazatlan", tag_and_breeding_data, 
+            bird_ring = bird_ring, map_year = map_year)
+
+known_nests <-
+  tag_and_breeding_data$nests %>%
+  dplyr::filter(ring == bird_ring &
+                  year(nest_initiation_date) == map_year) %>%
+  mutate(burst = paste(ring, year(nest_initiation_date), sep = "-")) %>%
+  dplyr::select(burst, lon, lat) %>%
+  rename(long = lon,
+         lat = lat) %>%
+  as.data.frame() %>% 
+  distinct()
+
+# distance between nests
+distGeo(nestR_out$nests %>% 
+          arrange(attempt_start) %>% 
+          dplyr::select(long, lat), 
         known_nests %>% dplyr::select(long, lat))
+
+# time difference between nesting attempts (based on GPS data)
+(nestR_out$nests %>% 
+    arrange(attempt_start) %>% 
+    slice(2) %>% 
+    pull(attempt_start)) - 
+  (nestR_out$nests %>% 
+     arrange(attempt_start) %>% 
+     slice(1) %>% 
+     pull(attempt_end))
+
+# time difference between nesting attempts (based on field data)
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(2) %>% 
+    pull(end_date)) - 
+  (tag_and_breeding_data$nests %>% 
+     dplyr::filter(ring == bird_ring & 
+                     year(nest_initiation_date) == map_year) %>% 
+     arrange(nest_initiation_date) %>% 
+     slice(1) %>% 
+     pull(nest_initiation_date))
+
+# nest fates
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(1) %>% 
+    pull(fate))
+
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(2) %>% 
+    pull(fate))
+
+#### CN0916 from 2022 (PinPoint 20-min then 12-hour @ 1000/2200) ----
+# issues with temporal resolution (incorrectly found nests in cluster of 20-min fixes)
+# nestR found second nest but location is a bit off
+bird_ring = "CN0916"
+map_year = 2022
+
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = bird_ring, map_year = map_year)
+
+nestR_out <- 
+  find_nests(nestR_data %>% 
+               arrange(date) %>% 
+               filter(str_detect(burst, bird_ring) & 
+                        night_fix == 0) %>% 
+               mutate(diff_10 = as_hms(round(ymd_hms(date), "mins") - 
+                                         hms(seconds = 00, minutes = 00, hours = 10)),
+                      diff_22 = as_hms(round(ymd_hms(date), "mins") - 
+                                         hms(seconds = 00, minutes = 00, hours = 22))) %>%
+               filter(diff_10 == as_hms("00:00:00") | diff_22 == as_hms("00:00:00")),
+             buffer = 30,
+             sea_start = sea_start, 
+             sea_end = sea_end, 
+             min_pts = 3,
+             nest_cycle = 28, 
+             min_d_fix = 1,
+             min_consec = 1,
+             min_top_att = 1,
+             min_days_att = 1, discard_overlapping = TRUE)
+
+nest_mapper(nestR_out, time_zone_local = "America/Mazatlan", tag_and_breeding_data, 
+            bird_ring = bird_ring, map_year = map_year)
+
+known_nests <-
+  tag_and_breeding_data$nests %>%
+  dplyr::filter(ring == bird_ring &
+                  year(nest_initiation_date) == map_year &
+                  min(nestR_out$visits$date) < end_date) %>%
+  mutate(burst = paste(ring, year(nest_initiation_date), sep = "-")) %>%
+  arrange(nest_initiation_date) %>% 
+  dplyr::select(burst, lon, lat) %>%
+  rename(long = lon,
+         lat = lat) %>%
+  as.data.frame() %>% 
+  distinct()
+
+# distance between nests
+distGeo(nestR_out$nests %>% 
+          arrange(attempt_start) %>% 
+          dplyr::select(long, lat), 
+        known_nests %>% dplyr::select(long, lat))
+
+# time difference between nesting attempts (based on GPS data)
+(nestR_out$nests %>% 
+    arrange(attempt_start) %>% 
+    slice(2) %>% 
+    pull(attempt_start)) - 
+  (nestR_out$nests %>% 
+     arrange(attempt_start) %>% 
+     slice(1) %>% 
+     pull(attempt_end))
+
+# time difference between nesting attempts (based on field data)
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(1) %>% 
+    pull(end_date)) - 
+  (tag_and_breeding_data$nests %>% 
+     dplyr::filter(ring == bird_ring & 
+                     year(nest_initiation_date) == map_year) %>% 
+     arrange(nest_initiation_date) %>% 
+     slice(2) %>% 
+     pull(nest_initiation_date))
+
+# nest fates
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(1) %>% 
+    pull(fate))
+
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(2) %>% 
+    pull(fate))
+
+#### **CN0609 from 2022 (PinPoint 12-hour @ 1000/2200) ----
+# finds second nest but cluster is slightly "off", could be issues with visit times
+# nestR finds second nest
+bird_ring = "CN0609"
+map_year = 2022
+
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = bird_ring, map_year = map_year)
+
+nestR_out <- 
+  find_nests(nestR_data %>% 
+               arrange(date) %>% 
+               filter(str_detect(burst, bird_ring) & 
+                        night_fix == 0) %>% 
+               mutate(diff_10 = as_hms(round(ymd_hms(date), "mins") - 
+                                         hms(seconds = 00, minutes = 00, hours = 10)),
+                      diff_22 = as_hms(round(ymd_hms(date), "mins") - 
+                                         hms(seconds = 00, minutes = 00, hours = 22))) %>%
+               filter(diff_10 == as_hms("00:00:00") | diff_22 == as_hms("00:00:00")),
+             buffer = 20,
+             sea_start = sea_start, 
+             sea_end = sea_end, 
+             min_pts = 3,
+             nest_cycle = 28, 
+             min_d_fix = 1,
+             min_consec = 1,
+             min_top_att = 1,
+             min_days_att = 1, discard_overlapping = TRUE)
+
+nest_mapper(nestR_out, time_zone_local = "America/Mazatlan", tag_and_breeding_data, 
+            bird_ring = bird_ring, map_year = map_year)
+
+known_nests <-
+  tag_and_breeding_data$nests %>%
+  dplyr::filter(ring == bird_ring &
+                  year(nest_initiation_date) == map_year &
+                  min(nestR_out$visits$date) < end_date) %>%
+  mutate(burst = paste(ring, year(nest_initiation_date), sep = "-")) %>%
+  arrange(nest_initiation_date) %>% 
+  dplyr::select(burst, lon, lat) %>%
+  rename(long = lon,
+         lat = lat) %>%
+  as.data.frame() %>% 
+  distinct()
+
+# distance between nests
+distGeo(nestR_out$nests %>% 
+          arrange(attempt_start) %>% 
+          dplyr::select(long, lat), 
+        known_nests %>% dplyr::select(long, lat))
+
+# time difference between nesting attempts (based on GPS data)
+(nestR_out$nests %>% 
+    arrange(attempt_start) %>% 
+    slice(2) %>% 
+    pull(attempt_start)) - 
+  (nestR_out$nests %>% 
+     arrange(attempt_start) %>% 
+     slice(1) %>% 
+     pull(attempt_end))
+
+# time difference between nesting attempts (based on field data)
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(1) %>% 
+    pull(end_date)) - 
+  (tag_and_breeding_data$nests %>% 
+     dplyr::filter(ring == bird_ring & 
+                     year(nest_initiation_date) == map_year) %>% 
+     arrange(nest_initiation_date) %>% 
+     slice(2) %>% 
+     pull(nest_initiation_date))
+
+# nest fates
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(1) %>% 
+    pull(fate))
+
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(2) %>% 
+    pull(fate))
 
 #### *CM1858 from 2022 (PinPoint 20-min) ----
 # locates single known nests nicely
+bird_ring = "CM1858"
+map_year = 2022
+
 tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
-                             bird_ring = "CM1858", map_year = 2022)
-CM1858_nest_search <- 
-  find_plover_nests(tagging_data = tag_breeding_data_ceuta$tagging,
-                    longitude_col = "lon",
-                    latitude_col = "lat",
-                    local_UTM_zone = 13,
-                    bird_ring = "CM1858",
-                    circadian_search_period = "daytime",
-                    local_time_zone = "America/Mazatlan",
-                    recurse_radius_size = 3,
-                    recurse_time_threshold = 1,
-                    recurse_time_threshold_unit = "hours",
-                    revisit_threshold = 1,
-                    cluster_distance_threshold = 30,
-                    nest_data = tag_breeding_data_ceuta$nests,
-                    tag_year = 2022)
+                             bird_ring = bird_ring, map_year = map_year)
 
-# evaluate nest site predictions
-CM1858_nest_search$nest_search_plot
+nestR_out <- 
+  find_nests(nestR_data %>% 
+               arrange(date) %>% 
+               filter(str_detect(burst, bird_ring) & 
+                        night_fix == 0),
+               # mutate(diff_10 = as_hms(round(ymd_hms(date), "mins") - 
+               #                           hms(seconds = 00, minutes = 00, hours = 10)),
+               #        diff_22 = as_hms(round(ymd_hms(date), "mins") - 
+               #                           hms(seconds = 00, minutes = 00, hours = 22))) %>%
+               # filter(diff_10 == as_hms("00:00:00") | diff_22 == as_hms("00:00:00")),
+             buffer = 20,
+             sea_start = sea_start, 
+             sea_end = sea_end, 
+             min_pts = 3,
+             nest_cycle = 28, 
+             min_d_fix = 1,
+             min_consec = 1,
+             min_top_att = 1,
+             min_days_att = 1, discard_overlapping = TRUE)
 
-# determine the modal interval between fixes
-CM1858_nest_search$tag_latlon_move %>% 
-  timeLag(unit = "hours") %>% 
-  getmode()
+nest_mapper(nestR_out, time_zone_local = "America/Mazatlan", tag_and_breeding_data, 
+            bird_ring = bird_ring, map_year = map_year)
 
-# determine the tag type ("PP" = PinPoint, "NF" = nanoFix)
-CM1858_nest_search$bird_tagging_data$tag_ID %>% unique()
+known_nests <-
+  tag_and_breeding_data$nests %>%
+  dplyr::filter(ring == bird_ring &
+                  year(nest_initiation_date) == map_year &
+                  min(nestR_out$visits$date) < end_date) %>%
+  mutate(burst = paste(ring, year(nest_initiation_date), sep = "-")) %>%
+  arrange(nest_initiation_date) %>% 
+  dplyr::select(burst, lon, lat) %>%
+  rename(long = lon,
+         lat = lat) %>%
+  as.data.frame() %>% 
+  distinct()
 
-# determine the hours sampled
-CM1858_nest_search$bird_tagging_data %>% 
-  mutate(rounded_hour = round(timestamp_local, "hours") %>% 
-           format(., format = "%H:%M")) %>% 
-  pull(rounded_hour) %>% unique()
+# distance between nests
+distGeo(nestR_out$nests %>% 
+          arrange(attempt_start) %>% 
+          dplyr::select(long, lat), 
+        known_nests %>% dplyr::select(long, lat))
+
+# time difference between nesting attempts (based on GPS data)
+(nestR_out$nests %>% 
+    arrange(attempt_start) %>% 
+    slice(2) %>% 
+    pull(attempt_start)) - 
+  (nestR_out$nests %>% 
+     arrange(attempt_start) %>% 
+     slice(1) %>% 
+     pull(attempt_end))
+
+# time difference between nesting attempts (based on field data)
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(1) %>% 
+    pull(end_date)) - 
+  (tag_and_breeding_data$nests %>% 
+     dplyr::filter(ring == bird_ring & 
+                     year(nest_initiation_date) == map_year) %>% 
+     arrange(nest_initiation_date) %>% 
+     slice(2) %>% 
+     pull(nest_initiation_date))
+
+# nest fates
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(1) %>% 
+    pull(fate))
+
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(2) %>% 
+    pull(fate))
 
 #### CN0306 from 2019 (nanoFix 24-hour @ 0600) ----
 # tag data doesn't cover the nesting period adequately 
+bird_ring = "CN0306"
+map_year = 2019
+
 tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
-                             bird_ring = "CN0306", map_year = 2019)
-CN0306_nest_search <- 
-  find_plover_nests(tagging_data = tag_breeding_data_ceuta$tagging,
-                    longitude_col = "lon",
-                    latitude_col = "lat",
-                    local_UTM_zone = 13,
-                    bird_ring = "CN0306",
-                    circadian_search_period = "daytime",
-                    local_time_zone = "America/Mazatlan",
-                    recurse_radius_size = 3,
-                    recurse_time_threshold = 1,
-                    recurse_time_threshold_unit = "hours",
-                    revisit_threshold = 1,
-                    cluster_distance_threshold = 30,
-                    nest_data = tag_breeding_data_ceuta$nests,
-                    tag_year = 2019)
+                             bird_ring = bird_ring, map_year = map_year)
 
-# evaluate nest site predictions
-CN0306_nest_search$nest_search_plot
+nestR_out <- 
+  find_nests(nestR_data %>% 
+               arrange(date) %>% 
+               filter(str_detect(burst, bird_ring) & 
+                        night_fix == 0),
+             # mutate(diff_10 = as_hms(round(ymd_hms(date), "mins") - 
+             #                           hms(seconds = 00, minutes = 00, hours = 10)),
+             #        diff_22 = as_hms(round(ymd_hms(date), "mins") - 
+             #                           hms(seconds = 00, minutes = 00, hours = 22))) %>%
+             # filter(diff_10 == as_hms("00:00:00") | diff_22 == as_hms("00:00:00")),
+             buffer = 20,
+             sea_start = sea_start, 
+             sea_end = sea_end, 
+             min_pts = 3,
+             nest_cycle = 28, 
+             min_d_fix = 1,
+             min_consec = 1,
+             min_top_att = 1,
+             min_days_att = 1, discard_overlapping = TRUE)
 
-# determine the modal interval between fixes
-CN0306_nest_search$tag_latlon_move %>% 
-  timeLag(unit = "hours") %>% 
-  getmode()
+nest_mapper(nestR_out, time_zone_local = "America/Mazatlan", tag_and_breeding_data, 
+            bird_ring = bird_ring, map_year = map_year)
 
-# determine the tag type ("PP" = PinPoint, "NF" = nanoFix)
-CN0306_nest_search$bird_tagging_data$tag_ID %>% unique()
+known_nests <-
+  tag_and_breeding_data$nests %>%
+  dplyr::filter(ring == bird_ring &
+                  year(nest_initiation_date) == map_year &
+                  min(nestR_out$visits$date) < end_date) %>%
+  mutate(burst = paste(ring, year(nest_initiation_date), sep = "-")) %>%
+  arrange(nest_initiation_date) %>% 
+  dplyr::select(burst, lon, lat) %>%
+  rename(long = lon,
+         lat = lat) %>%
+  as.data.frame() %>% 
+  distinct()
 
-# determine the hours sampled
-CN0306_nest_search$bird_tagging_data %>% 
-  mutate(rounded_hour = round(timestamp_local, "hours") %>% 
-           format(., format = "%H:%M")) %>% 
-  pull(rounded_hour) %>% unique()
+# distance between nests
+distGeo(nestR_out$nests %>% 
+          arrange(attempt_start) %>% 
+          dplyr::select(long, lat), 
+        known_nests %>% dplyr::select(long, lat))
 
-#### *CN0312 from 2019 (nanoFix 24-hour @ 0600)----
-# identifies second nesting attempt nicely
-tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
-                             bird_ring = "CN0312", map_year = 2019)
-CN0312_nest_search <- 
-  find_plover_nests(tagging_data = tag_breeding_data_ceuta$tagging,
-                    longitude_col = "lon",
-                    latitude_col = "lat",
-                    local_UTM_zone = 13,
-                    bird_ring = "CN0312",
-                    circadian_search_period = "daytime",
-                    local_time_zone = "America/Mazatlan",
-                    recurse_radius_size = 3,
-                    recurse_time_threshold = 1,
-                    recurse_time_threshold_unit = "hours",
-                    revisit_threshold = 1,
-                    cluster_distance_threshold = 30,
-                    nest_data = tag_breeding_data_ceuta$nests,
-                    tag_year = 2019)
+# time difference between nesting attempts (based on GPS data)
+(nestR_out$nests %>% 
+    arrange(attempt_start) %>% 
+    slice(2) %>% 
+    pull(attempt_start)) - 
+  (nestR_out$nests %>% 
+     arrange(attempt_start) %>% 
+     slice(1) %>% 
+     pull(attempt_end))
 
-# evaluate nest site predictions
-CN0312_nest_search$nest_search_plot
+# time difference between nesting attempts (based on field data)
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(1) %>% 
+    pull(end_date)) - 
+  (tag_and_breeding_data$nests %>% 
+     dplyr::filter(ring == bird_ring & 
+                     year(nest_initiation_date) == map_year) %>% 
+     arrange(nest_initiation_date) %>% 
+     slice(2) %>% 
+     pull(nest_initiation_date))
 
-# determine the modal interval between fixes
-CN0312_nest_search$tag_latlon_move %>% 
-  timeLag(unit = "hours") %>% 
-  getmode()
+# nest fates
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(1) %>% 
+    pull(fate))
 
-# determine the tag type ("PP" = PinPoint, "NF" = nanoFix)
-CN0312_nest_search$bird_tagging_data$tag_ID %>% unique()
-
-# determine the hours sampled
-CN0312_nest_search$bird_tagging_data %>% 
-  mutate(rounded_hour = round(timestamp_local, "hours") %>% 
-           format(., format = "%H:%M")) %>% 
-  pull(rounded_hour) %>% unique()
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(2) %>% 
+    pull(fate))
 
 #### *CN0066 from 2022 (PinPoint 20-min) ----
 # only 20-min data, finds nest and foraging location
