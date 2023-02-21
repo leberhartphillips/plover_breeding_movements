@@ -155,6 +155,10 @@ tag_nest_data_tagus <-
   dplyr::rename(sex = sex.x) %>% 
   dplyr::filter(species == "KEPL" & !is.na(lat))
 
+tag_breeding_data_tagus <- 
+  list(nests = tag_nest_data_tagus,
+       tagging = plover_tagging_df %>% dplyr::filter(population == "tagus" & species == "KEPL"))
+
 # # bind ceuta and tagus data
 # tag_nest_data <- 
 #   tag_nest_data_ceuta %>% 

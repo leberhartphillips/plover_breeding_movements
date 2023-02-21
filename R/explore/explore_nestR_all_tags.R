@@ -910,94 +910,7 @@ distGeo(nestR_out$nests %>%
     slice(2) %>% 
     pull(fate))
 
-#### *CN0066 from 2022 (PinPoint 20-min) ----
-# only 20-min data, finds nest and foraging location
-bird_ring = "CN0066"
-map_year = 2022
 
-tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
-                             bird_ring = bird_ring, map_year = map_year)
-
-nestR_out <- 
-  find_nests(nestR_data %>% 
-               arrange(date) %>% 
-               filter(str_detect(burst, bird_ring) &
-                        night_fix == 0),
-             # mutate(diff_10 = as_hms(round(ymd_hms(date), "mins") - 
-             #                           hms(seconds = 00, minutes = 00, hours = 10)),
-             #        diff_22 = as_hms(round(ymd_hms(date), "mins") - 
-             #                           hms(seconds = 00, minutes = 00, hours = 22))) %>%
-             # filter(diff_10 == as_hms("00:00:00") | diff_22 == as_hms("00:00:00")),
-             buffer = 50,
-             sea_start = sea_start, 
-             sea_end = sea_end, 
-             min_pts = 3,
-             nest_cycle = 28, 
-             min_d_fix = 1,
-             min_consec = 1,
-             min_top_att = 1,
-             min_days_att = 1, discard_overlapping = TRUE)
-
-nest_mapper(nestR_out, time_zone_local = "America/Mazatlan", tag_and_breeding_data, 
-            bird_ring = bird_ring, map_year = map_year)
-
-known_nests <-
-  tag_and_breeding_data$nests %>%
-  dplyr::filter(ring == bird_ring &
-                  year(nest_initiation_date) == map_year &
-                  min(nestR_out$visits$date) < end_date) %>%
-  mutate(burst = paste(ring, year(nest_initiation_date), sep = "-")) %>%
-  arrange(nest_initiation_date) %>% 
-  dplyr::select(burst, lon, lat) %>%
-  rename(long = lon,
-         lat = lat) %>%
-  as.data.frame() %>% 
-  distinct()
-
-# distance between nests
-distGeo(nestR_out$nests %>% 
-          arrange(attempt_start) %>% 
-          dplyr::select(long, lat), 
-        known_nests %>% dplyr::select(long, lat))
-
-# time difference between nesting attempts (based on GPS data)
-(nestR_out$nests %>% 
-    arrange(attempt_start) %>% 
-    slice(2) %>% 
-    pull(attempt_start)) - 
-  (nestR_out$nests %>% 
-     arrange(attempt_start) %>% 
-     slice(1) %>% 
-     pull(attempt_end))
-
-# time difference between nesting attempts (based on field data)
-(tag_and_breeding_data$nests %>% 
-    dplyr::filter(ring == bird_ring & 
-                    year(nest_initiation_date) == map_year) %>% 
-    arrange(nest_initiation_date) %>% 
-    slice(1) %>% 
-    pull(end_date)) - 
-  (tag_and_breeding_data$nests %>% 
-     dplyr::filter(ring == bird_ring & 
-                     year(nest_initiation_date) == map_year) %>% 
-     arrange(nest_initiation_date) %>% 
-     slice(2) %>% 
-     pull(nest_initiation_date))
-
-# nest fates
-(tag_and_breeding_data$nests %>% 
-    dplyr::filter(ring == bird_ring & 
-                    year(nest_initiation_date) == map_year) %>% 
-    arrange(nest_initiation_date) %>% 
-    slice(1) %>% 
-    pull(fate))
-
-(tag_and_breeding_data$nests %>% 
-    dplyr::filter(ring == bird_ring & 
-                    year(nest_initiation_date) == map_year) %>% 
-    arrange(nest_initiation_date) %>% 
-    slice(2) %>% 
-    pull(fate))
 
 #### CN0520 from 2021 (nanoFix 4-hour @ 0600/1000/1400/1800) ----
 # limited tag data overlapping nesting
@@ -1645,6 +1558,94 @@ distGeo(nestR_out$nests %>%
     pull(fate))
 
 #### Males ----
+#### *CN0066 from 2022 (PinPoint 20-min) ----
+# only 20-min data, finds nest and foraging location
+bird_ring = "CN0066"
+map_year = 2022
+
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = bird_ring, map_year = map_year)
+
+nestR_out <- 
+  find_nests(nestR_data %>% 
+               arrange(date) %>% 
+               filter(str_detect(burst, bird_ring) &
+                        night_fix == 0),
+             # mutate(diff_10 = as_hms(round(ymd_hms(date), "mins") - 
+             #                           hms(seconds = 00, minutes = 00, hours = 10)),
+             #        diff_22 = as_hms(round(ymd_hms(date), "mins") - 
+             #                           hms(seconds = 00, minutes = 00, hours = 22))) %>%
+             # filter(diff_10 == as_hms("00:00:00") | diff_22 == as_hms("00:00:00")),
+             buffer = 50,
+             sea_start = sea_start, 
+             sea_end = sea_end, 
+             min_pts = 3,
+             nest_cycle = 28, 
+             min_d_fix = 1,
+             min_consec = 1,
+             min_top_att = 1,
+             min_days_att = 1, discard_overlapping = TRUE)
+
+nest_mapper(nestR_out, time_zone_local = "America/Mazatlan", tag_and_breeding_data, 
+            bird_ring = bird_ring, map_year = map_year)
+
+known_nests <-
+  tag_and_breeding_data$nests %>%
+  dplyr::filter(ring == bird_ring &
+                  year(nest_initiation_date) == map_year &
+                  min(nestR_out$visits$date) < end_date) %>%
+  mutate(burst = paste(ring, year(nest_initiation_date), sep = "-")) %>%
+  arrange(nest_initiation_date) %>% 
+  dplyr::select(burst, lon, lat) %>%
+  rename(long = lon,
+         lat = lat) %>%
+  as.data.frame() %>% 
+  distinct()
+
+# distance between nests
+distGeo(nestR_out$nests %>% 
+          arrange(attempt_start) %>% 
+          dplyr::select(long, lat), 
+        known_nests %>% dplyr::select(long, lat))
+
+# time difference between nesting attempts (based on GPS data)
+(nestR_out$nests %>% 
+    arrange(attempt_start) %>% 
+    slice(2) %>% 
+    pull(attempt_start)) - 
+  (nestR_out$nests %>% 
+     arrange(attempt_start) %>% 
+     slice(1) %>% 
+     pull(attempt_end))
+
+# time difference between nesting attempts (based on field data)
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(1) %>% 
+    pull(end_date)) - 
+  (tag_and_breeding_data$nests %>% 
+     dplyr::filter(ring == bird_ring & 
+                     year(nest_initiation_date) == map_year) %>% 
+     arrange(nest_initiation_date) %>% 
+     slice(2) %>% 
+     pull(nest_initiation_date))
+
+# nest fates
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(1) %>% 
+    pull(fate))
+
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(2) %>% 
+    pull(fate))
 #### CA3314 from 2019 (nanoFix 24-hour @ 2300) ----
 # not enough data during breeding season, but finds a spot close to nest
 bird_ring = "CA3314"
@@ -2208,6 +2209,710 @@ nestR_out <-
              min_days_att = 1, discard_overlapping = TRUE)
 
 nest_mapper(nestR_out, time_zone_local = "America/Mazatlan", tag_and_breeding_data, 
+            bird_ring = bird_ring, map_year = map_year)
+
+known_nests <-
+  tag_and_breeding_data$nests %>%
+  dplyr::filter(ring == bird_ring &
+                  year(nest_initiation_date) == map_year &
+                  min(nestR_out$visits$date) < end_date) %>%
+  mutate(burst = paste(ring, year(nest_initiation_date), sep = "-")) %>%
+  arrange(nest_initiation_date) %>% 
+  dplyr::select(burst, lon, lat) %>%
+  rename(long = lon,
+         lat = lat) %>%
+  as.data.frame() %>% 
+  distinct()
+
+# distance between nests
+distGeo(nestR_out$nests %>% 
+          arrange(attempt_start) %>% 
+          dplyr::select(long, lat), 
+        known_nests %>% dplyr::select(long, lat))
+
+# time difference between nesting attempts (based on GPS data)
+(nestR_out$nests %>% 
+    arrange(attempt_start) %>% 
+    slice(2) %>% 
+    pull(attempt_start)) - 
+  (nestR_out$nests %>% 
+     arrange(attempt_start) %>% 
+     slice(1) %>% 
+     pull(attempt_end))
+
+# time difference between nesting attempts (based on field data)
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(1) %>% 
+    pull(end_date)) - 
+  (tag_and_breeding_data$nests %>% 
+     dplyr::filter(ring == bird_ring & 
+                     year(nest_initiation_date) == map_year) %>% 
+     arrange(nest_initiation_date) %>% 
+     slice(2) %>% 
+     pull(nest_initiation_date))
+
+# nest fates
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(1) %>% 
+    pull(fate))
+
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(2) %>% 
+    pull(fate))
+
+###############################################################################
+#### Tagus ----
+nestR_data <- 
+  tag_breeding_data_tagus$tagging %>% 
+  mutate(burst = paste(ring, year(timestamp_local), sep = "-")) %>% 
+  dplyr::select(burst, timestamp_local, lon, lat, night_fix) %>% 
+  rename(date = timestamp_local,
+         long = lon,
+         lat = lat)
+#### D50218 Female ----
+bird_ring = "D50218"; map_year = 2021
+
+tag_and_nest_data_mapper(tag_and_nest_data = tag_breeding_data_tagus,
+                         bird_ring = bird_ring, map_year = map_year, time_zone_local = "Europe/Lisbon")
+
+nestR_out <- 
+  find_nests(nestR_data %>% 
+               arrange(date) %>% 
+               filter(str_detect(burst, bird_ring) &
+                        night_fix == 1 & str_detect(burst, as.character(map_year))),# %>% 
+             # mutate(diff_10 = as_hms(round(ymd_hms(date), "mins") -
+             #                           hms(seconds = 00, minutes = 00, hours = 10)),
+             #        diff_22 = as_hms(round(ymd_hms(date), "mins") -
+             #                           hms(seconds = 00, minutes = 00, hours = 22))) %>%
+             # filter(diff_10 == as_hms("00:00:00") | diff_22 == as_hms("00:00:00")),
+             buffer = 20,
+             sea_start = sea_start, 
+             sea_end = sea_end, 
+             min_pts = 3,
+             nest_cycle = 28, 
+             min_d_fix = 1,
+             min_consec = 1,
+             min_top_att = 1,
+             min_days_att = 1, discard_overlapping = TRUE)
+
+nest_mapper(nestR_out, time_zone_local = "America/Mazatlan", tag_and_breeding_data, 
+            bird_ring = bird_ring, map_year = map_year)
+
+known_nests <-
+  tag_and_breeding_data$nests %>%
+  dplyr::filter(ring == bird_ring &
+                  year(nest_initiation_date) == map_year &
+                  min(nestR_out$visits$date) < end_date) %>%
+  mutate(burst = paste(ring, year(nest_initiation_date), sep = "-")) %>%
+  arrange(nest_initiation_date) %>% 
+  dplyr::select(burst, lon, lat) %>%
+  rename(long = lon,
+         lat = lat) %>%
+  as.data.frame() %>% 
+  distinct()
+
+# distance between nests
+distGeo(nestR_out$nests %>% 
+          arrange(attempt_start) %>% 
+          dplyr::select(long, lat), 
+        known_nests %>% dplyr::select(long, lat))
+
+# time difference between nesting attempts (based on GPS data)
+(nestR_out$nests %>% 
+    arrange(attempt_start) %>% 
+    slice(2) %>% 
+    pull(attempt_start)) - 
+  (nestR_out$nests %>% 
+     arrange(attempt_start) %>% 
+     slice(1) %>% 
+     pull(attempt_end))
+
+# time difference between nesting attempts (based on field data)
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(1) %>% 
+    pull(end_date)) - 
+  (tag_and_breeding_data$nests %>% 
+     dplyr::filter(ring == bird_ring & 
+                     year(nest_initiation_date) == map_year) %>% 
+     arrange(nest_initiation_date) %>% 
+     slice(2) %>% 
+     pull(nest_initiation_date))
+
+# nest fates
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(1) %>% 
+    pull(fate))
+
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(2) %>% 
+    pull(fate))
+
+
+#### D35644 Male ----
+bird_ring = "D35644"; map_year = 2021
+
+tag_and_nest_data_mapper(tag_and_nest_data = tag_breeding_data_tagus,
+                         bird_ring = bird_ring, map_year = map_year, time_zone_local = "Europe/Lisbon")
+
+nestR_out <- 
+  find_nests(nestR_data %>% 
+               arrange(date) %>% 
+               filter(str_detect(burst, bird_ring) &
+                        night_fix == 1 & str_detect(burst, as.character(map_year))),# %>% 
+             # mutate(diff_10 = as_hms(round(ymd_hms(date), "mins") -
+             #                           hms(seconds = 00, minutes = 00, hours = 10)),
+             #        diff_22 = as_hms(round(ymd_hms(date), "mins") -
+             #                           hms(seconds = 00, minutes = 00, hours = 22))) %>%
+             # filter(diff_10 == as_hms("00:00:00") | diff_22 == as_hms("00:00:00")),
+             buffer = 20,
+             sea_start = sea_start, 
+             sea_end = sea_end, 
+             min_pts = 3,
+             nest_cycle = 28, 
+             min_d_fix = 1,
+             min_consec = 1,
+             min_top_att = 1,
+             min_days_att = 1, discard_overlapping = TRUE)
+
+nest_mapper(nestR_out, time_zone_local = "America/Mazatlan", tag_and_breeding_data, 
+            bird_ring = bird_ring, map_year = map_year)
+
+known_nests <-
+  tag_and_breeding_data$nests %>%
+  dplyr::filter(ring == bird_ring &
+                  year(nest_initiation_date) == map_year &
+                  min(nestR_out$visits$date) < end_date) %>%
+  mutate(burst = paste(ring, year(nest_initiation_date), sep = "-")) %>%
+  arrange(nest_initiation_date) %>% 
+  dplyr::select(burst, lon, lat) %>%
+  rename(long = lon,
+         lat = lat) %>%
+  as.data.frame() %>% 
+  distinct()
+
+# distance between nests
+distGeo(nestR_out$nests %>% 
+          arrange(attempt_start) %>% 
+          dplyr::select(long, lat), 
+        known_nests %>% dplyr::select(long, lat))
+
+# time difference between nesting attempts (based on GPS data)
+(nestR_out$nests %>% 
+    arrange(attempt_start) %>% 
+    slice(2) %>% 
+    pull(attempt_start)) - 
+  (nestR_out$nests %>% 
+     arrange(attempt_start) %>% 
+     slice(1) %>% 
+     pull(attempt_end))
+
+# time difference between nesting attempts (based on field data)
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(1) %>% 
+    pull(end_date)) - 
+  (tag_and_breeding_data$nests %>% 
+     dplyr::filter(ring == bird_ring & 
+                     year(nest_initiation_date) == map_year) %>% 
+     arrange(nest_initiation_date) %>% 
+     slice(2) %>% 
+     pull(nest_initiation_date))
+
+# nest fates
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(1) %>% 
+    pull(fate))
+
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(2) %>% 
+    pull(fate))
+
+#### D59946 Male ----
+bird_ring = "D59946"; map_year = 2021
+
+tag_and_nest_data_mapper(tag_and_nest_data = tag_breeding_data_tagus,
+                         bird_ring = bird_ring, map_year = map_year, time_zone_local = "Europe/Lisbon")
+
+nestR_out <- 
+  find_nests(nestR_data %>% 
+               arrange(date) %>% 
+               filter(str_detect(burst, bird_ring) &
+                        night_fix == 1 & str_detect(burst, as.character(map_year))),# %>% 
+             # mutate(diff_10 = as_hms(round(ymd_hms(date), "mins") -
+             #                           hms(seconds = 00, minutes = 00, hours = 10)),
+             #        diff_22 = as_hms(round(ymd_hms(date), "mins") -
+             #                           hms(seconds = 00, minutes = 00, hours = 22))) %>%
+             # filter(diff_10 == as_hms("00:00:00") | diff_22 == as_hms("00:00:00")),
+             buffer = 20,
+             sea_start = sea_start, 
+             sea_end = sea_end, 
+             min_pts = 3,
+             nest_cycle = 28, 
+             min_d_fix = 1,
+             min_consec = 1,
+             min_top_att = 1,
+             min_days_att = 1, discard_overlapping = TRUE)
+
+nest_mapper(nestR_out, time_zone_local = "Europe/Lisbon", tag_and_breeding_data = tag_breeding_data_tagus, 
+            bird_ring = bird_ring, map_year = map_year)
+
+known_nests <-
+  tag_and_breeding_data$nests %>%
+  dplyr::filter(ring == bird_ring &
+                  year(nest_initiation_date) == map_year &
+                  min(nestR_out$visits$date) < end_date) %>%
+  mutate(burst = paste(ring, year(nest_initiation_date), sep = "-")) %>%
+  arrange(nest_initiation_date) %>% 
+  dplyr::select(burst, lon, lat) %>%
+  rename(long = lon,
+         lat = lat) %>%
+  as.data.frame() %>% 
+  distinct()
+
+# distance between nests
+distGeo(nestR_out$nests %>% 
+          arrange(attempt_start) %>% 
+          dplyr::select(long, lat), 
+        known_nests %>% dplyr::select(long, lat))
+
+# time difference between nesting attempts (based on GPS data)
+(nestR_out$nests %>% 
+    arrange(attempt_start) %>% 
+    slice(2) %>% 
+    pull(attempt_start)) - 
+  (nestR_out$nests %>% 
+     arrange(attempt_start) %>% 
+     slice(1) %>% 
+     pull(attempt_end))
+
+# time difference between nesting attempts (based on field data)
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(1) %>% 
+    pull(end_date)) - 
+  (tag_and_breeding_data$nests %>% 
+     dplyr::filter(ring == bird_ring & 
+                     year(nest_initiation_date) == map_year) %>% 
+     arrange(nest_initiation_date) %>% 
+     slice(2) %>% 
+     pull(nest_initiation_date))
+
+# nest fates
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(1) %>% 
+    pull(fate))
+
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(2) %>% 
+    pull(fate))
+
+#### D59933 Female ----
+bird_ring = "D59933"; map_year = 2021
+
+tag_and_nest_data_mapper(tag_and_nest_data = tag_breeding_data_tagus,
+                         bird_ring = bird_ring, map_year = map_year, time_zone_local = "Europe/Lisbon")
+
+nestR_out <- 
+  find_nests(nestR_data %>% 
+               arrange(date) %>% 
+               filter(str_detect(burst, bird_ring) &
+                        night_fix == 0 & str_detect(burst, as.character(map_year))),# %>% 
+             # mutate(diff_10 = as_hms(round(ymd_hms(date), "mins") -
+             #                           hms(seconds = 00, minutes = 00, hours = 10)),
+             #        diff_22 = as_hms(round(ymd_hms(date), "mins") -
+             #                           hms(seconds = 00, minutes = 00, hours = 22))) %>%
+             # filter(diff_10 == as_hms("00:00:00") | diff_22 == as_hms("00:00:00")),
+             buffer = 20,
+             sea_start = sea_start, 
+             sea_end = sea_end, 
+             min_pts = 3,
+             nest_cycle = 28, 
+             min_d_fix = 1,
+             min_consec = 1,
+             min_top_att = 1,
+             min_days_att = 1, discard_overlapping = TRUE)
+
+nest_mapper(nestR_out, time_zone_local = "Europe/Lisbon", tag_and_breeding_data = tag_breeding_data_tagus, 
+            bird_ring = bird_ring, map_year = map_year)
+
+known_nests <-
+  tag_and_breeding_data$nests %>%
+  dplyr::filter(ring == bird_ring &
+                  year(nest_initiation_date) == map_year &
+                  min(nestR_out$visits$date) < end_date) %>%
+  mutate(burst = paste(ring, year(nest_initiation_date), sep = "-")) %>%
+  arrange(nest_initiation_date) %>% 
+  dplyr::select(burst, lon, lat) %>%
+  rename(long = lon,
+         lat = lat) %>%
+  as.data.frame() %>% 
+  distinct()
+
+# distance between nests
+distGeo(nestR_out$nests %>% 
+          arrange(attempt_start) %>% 
+          dplyr::select(long, lat), 
+        known_nests %>% dplyr::select(long, lat))
+
+# time difference between nesting attempts (based on GPS data)
+(nestR_out$nests %>% 
+    arrange(attempt_start) %>% 
+    slice(2) %>% 
+    pull(attempt_start)) - 
+  (nestR_out$nests %>% 
+     arrange(attempt_start) %>% 
+     slice(1) %>% 
+     pull(attempt_end))
+
+# time difference between nesting attempts (based on field data)
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(1) %>% 
+    pull(end_date)) - 
+  (tag_and_breeding_data$nests %>% 
+     dplyr::filter(ring == bird_ring & 
+                     year(nest_initiation_date) == map_year) %>% 
+     arrange(nest_initiation_date) %>% 
+     slice(2) %>% 
+     pull(nest_initiation_date))
+
+# nest fates
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(1) %>% 
+    pull(fate))
+
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(2) %>% 
+    pull(fate))
+
+#### P01903 Male ----
+bird_ring = "P01903"; map_year = 2021
+
+tag_and_nest_data_mapper(tag_and_nest_data = tag_breeding_data_tagus,
+                         bird_ring = bird_ring, map_year = map_year, time_zone_local = "Europe/Lisbon")
+
+nestR_out <- 
+  find_nests(nestR_data %>% 
+               arrange(date) %>% 
+               filter(str_detect(burst, bird_ring) &
+                        night_fix == 1 & str_detect(burst, as.character(map_year))),# %>% 
+             # mutate(diff_10 = as_hms(round(ymd_hms(date), "mins") -
+             #                           hms(seconds = 00, minutes = 00, hours = 10)),
+             #        diff_22 = as_hms(round(ymd_hms(date), "mins") -
+             #                           hms(seconds = 00, minutes = 00, hours = 22))) %>%
+             # filter(diff_10 == as_hms("00:00:00") | diff_22 == as_hms("00:00:00")),
+             buffer = 20,
+             sea_start = sea_start, 
+             sea_end = sea_end, 
+             min_pts = 3,
+             nest_cycle = 28, 
+             min_d_fix = 1,
+             min_consec = 1,
+             min_top_att = 1,
+             min_days_att = 1, discard_overlapping = TRUE)
+
+nest_mapper(nestR_out, time_zone_local = "Europe/Lisbon", tag_and_breeding_data = tag_breeding_data_tagus, 
+            bird_ring = bird_ring, map_year = map_year)
+
+known_nests <-
+  tag_and_breeding_data$nests %>%
+  dplyr::filter(ring == bird_ring &
+                  year(nest_initiation_date) == map_year &
+                  min(nestR_out$visits$date) < end_date) %>%
+  mutate(burst = paste(ring, year(nest_initiation_date), sep = "-")) %>%
+  arrange(nest_initiation_date) %>% 
+  dplyr::select(burst, lon, lat) %>%
+  rename(long = lon,
+         lat = lat) %>%
+  as.data.frame() %>% 
+  distinct()
+
+# distance between nests
+distGeo(nestR_out$nests %>% 
+          arrange(attempt_start) %>% 
+          dplyr::select(long, lat), 
+        known_nests %>% dplyr::select(long, lat))
+
+# time difference between nesting attempts (based on GPS data)
+(nestR_out$nests %>% 
+    arrange(attempt_start) %>% 
+    slice(2) %>% 
+    pull(attempt_start)) - 
+  (nestR_out$nests %>% 
+     arrange(attempt_start) %>% 
+     slice(1) %>% 
+     pull(attempt_end))
+
+# time difference between nesting attempts (based on field data)
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(1) %>% 
+    pull(end_date)) - 
+  (tag_and_breeding_data$nests %>% 
+     dplyr::filter(ring == bird_ring & 
+                     year(nest_initiation_date) == map_year) %>% 
+     arrange(nest_initiation_date) %>% 
+     slice(2) %>% 
+     pull(nest_initiation_date))
+
+# nest fates
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(1) %>% 
+    pull(fate))
+
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(2) %>% 
+    pull(fate))
+#### D59182 Female ----
+bird_ring = "D59182"; map_year = 2021
+
+tag_and_nest_data_mapper(tag_and_nest_data = tag_breeding_data_tagus,
+                         bird_ring = bird_ring, map_year = map_year, time_zone_local = "Europe/Lisbon")
+
+nestR_out <- 
+  find_nests(nestR_data %>% 
+               arrange(date) %>% 
+               filter(str_detect(burst, bird_ring) &
+                        night_fix == 0 & str_detect(burst, as.character(map_year))),# %>% 
+             # mutate(diff_10 = as_hms(round(ymd_hms(date), "mins") -
+             #                           hms(seconds = 00, minutes = 00, hours = 10)),
+             #        diff_22 = as_hms(round(ymd_hms(date), "mins") -
+             #                           hms(seconds = 00, minutes = 00, hours = 22))) %>%
+             # filter(diff_10 == as_hms("00:00:00") | diff_22 == as_hms("00:00:00")),
+             buffer = 20,
+             sea_start = sea_start, 
+             sea_end = sea_end, 
+             min_pts = 3,
+             nest_cycle = 28, 
+             min_d_fix = 1,
+             min_consec = 1,
+             min_top_att = 1,
+             min_days_att = 1, discard_overlapping = TRUE)
+
+nest_mapper(nestR_out, time_zone_local = "Europe/Lisbon", tag_and_breeding_data = tag_breeding_data_tagus, 
+            bird_ring = bird_ring, map_year = map_year)
+
+known_nests <-
+  tag_and_breeding_data$nests %>%
+  dplyr::filter(ring == bird_ring &
+                  year(nest_initiation_date) == map_year &
+                  min(nestR_out$visits$date) < end_date) %>%
+  mutate(burst = paste(ring, year(nest_initiation_date), sep = "-")) %>%
+  arrange(nest_initiation_date) %>% 
+  dplyr::select(burst, lon, lat) %>%
+  rename(long = lon,
+         lat = lat) %>%
+  as.data.frame() %>% 
+  distinct()
+
+# distance between nests
+distGeo(nestR_out$nests %>% 
+          arrange(attempt_start) %>% 
+          dplyr::select(long, lat), 
+        known_nests %>% dplyr::select(long, lat))
+
+# time difference between nesting attempts (based on GPS data)
+(nestR_out$nests %>% 
+    arrange(attempt_start) %>% 
+    slice(2) %>% 
+    pull(attempt_start)) - 
+  (nestR_out$nests %>% 
+     arrange(attempt_start) %>% 
+     slice(1) %>% 
+     pull(attempt_end))
+
+# time difference between nesting attempts (based on field data)
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(1) %>% 
+    pull(end_date)) - 
+  (tag_and_breeding_data$nests %>% 
+     dplyr::filter(ring == bird_ring & 
+                     year(nest_initiation_date) == map_year) %>% 
+     arrange(nest_initiation_date) %>% 
+     slice(2) %>% 
+     pull(nest_initiation_date))
+
+# nest fates
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(1) %>% 
+    pull(fate))
+
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(2) %>% 
+    pull(fate))
+#### D59932 Male ----
+bird_ring = "D59932"; map_year = 2021
+
+tag_and_nest_data_mapper(tag_and_nest_data = tag_breeding_data_tagus,
+                         bird_ring = bird_ring, map_year = map_year, time_zone_local = "Europe/Lisbon")
+
+nestR_out <- 
+  find_nests(nestR_data %>% 
+               arrange(date) %>% 
+               filter(str_detect(burst, bird_ring) &
+                        night_fix == 1 & str_detect(burst, as.character(map_year))),# %>% 
+             # mutate(diff_10 = as_hms(round(ymd_hms(date), "mins") -
+             #                           hms(seconds = 00, minutes = 00, hours = 10)),
+             #        diff_22 = as_hms(round(ymd_hms(date), "mins") -
+             #                           hms(seconds = 00, minutes = 00, hours = 22))) %>%
+             # filter(diff_10 == as_hms("00:00:00") | diff_22 == as_hms("00:00:00")),
+             buffer = 20,
+             sea_start = sea_start, 
+             sea_end = sea_end, 
+             min_pts = 3,
+             nest_cycle = 28, 
+             min_d_fix = 1,
+             min_consec = 1,
+             min_top_att = 1,
+             min_days_att = 1, discard_overlapping = TRUE)
+
+nest_mapper(nestR_out, time_zone_local = "Europe/Lisbon", tag_and_breeding_data = tag_breeding_data_tagus, 
+            bird_ring = bird_ring, map_year = map_year)
+
+known_nests <-
+  tag_and_breeding_data$nests %>%
+  dplyr::filter(ring == bird_ring &
+                  year(nest_initiation_date) == map_year &
+                  min(nestR_out$visits$date) < end_date) %>%
+  mutate(burst = paste(ring, year(nest_initiation_date), sep = "-")) %>%
+  arrange(nest_initiation_date) %>% 
+  dplyr::select(burst, lon, lat) %>%
+  rename(long = lon,
+         lat = lat) %>%
+  as.data.frame() %>% 
+  distinct()
+
+# distance between nests
+distGeo(nestR_out$nests %>% 
+          arrange(attempt_start) %>% 
+          dplyr::select(long, lat), 
+        known_nests %>% dplyr::select(long, lat))
+
+# time difference between nesting attempts (based on GPS data)
+(nestR_out$nests %>% 
+    arrange(attempt_start) %>% 
+    slice(2) %>% 
+    pull(attempt_start)) - 
+  (nestR_out$nests %>% 
+     arrange(attempt_start) %>% 
+     slice(1) %>% 
+     pull(attempt_end))
+
+# time difference between nesting attempts (based on field data)
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(1) %>% 
+    pull(end_date)) - 
+  (tag_and_breeding_data$nests %>% 
+     dplyr::filter(ring == bird_ring & 
+                     year(nest_initiation_date) == map_year) %>% 
+     arrange(nest_initiation_date) %>% 
+     slice(2) %>% 
+     pull(nest_initiation_date))
+
+# nest fates
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(1) %>% 
+    pull(fate))
+
+(tag_and_breeding_data$nests %>% 
+    dplyr::filter(ring == bird_ring & 
+                    year(nest_initiation_date) == map_year) %>% 
+    arrange(nest_initiation_date) %>% 
+    slice(2) %>% 
+    pull(fate))
+
+#### P01902 Female ----
+bird_ring = "P01902"; map_year = 2021
+
+tag_and_nest_data_mapper(tag_and_nest_data = tag_breeding_data_tagus,
+                         bird_ring = bird_ring, map_year = map_year, time_zone_local = "Europe/Lisbon")
+
+nestR_out <- 
+  find_nests(nestR_data %>% 
+               arrange(date) %>% 
+               filter(str_detect(burst, bird_ring) &
+                        night_fix == 0 & str_detect(burst, as.character(map_year))),# %>% 
+             # mutate(diff_10 = as_hms(round(ymd_hms(date), "mins") -
+             #                           hms(seconds = 00, minutes = 00, hours = 10)),
+             #        diff_22 = as_hms(round(ymd_hms(date), "mins") -
+             #                           hms(seconds = 00, minutes = 00, hours = 22))) %>%
+             # filter(diff_10 == as_hms("00:00:00") | diff_22 == as_hms("00:00:00")),
+             buffer = 20,
+             sea_start = sea_start, 
+             sea_end = sea_end, 
+             min_pts = 3,
+             nest_cycle = 28, 
+             min_d_fix = 1,
+             min_consec = 1,
+             min_top_att = 1,
+             min_days_att = 1, discard_overlapping = TRUE)
+
+nest_mapper(nestR_out, time_zone_local = "Europe/Lisbon", tag_and_breeding_data = tag_breeding_data_tagus, 
             bird_ring = bird_ring, map_year = map_year)
 
 known_nests <-

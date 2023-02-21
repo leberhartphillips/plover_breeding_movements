@@ -1109,3 +1109,30 @@ CN0118_nest_search$bird_tagging_data %>%
   mutate(rounded_hour = round(timestamp_local, "hours") %>% 
            format(., format = "%H:%M")) %>% 
   pull(rounded_hour) %>% unique()
+
+
+#### Tagus ----
+#### D50218
+tag_and_nest_data_mapper(tag_and_nest_data = tag_breeding_data_tagus,
+                         bird_ring = "D50218", map_year = 2021, time_zone_local = "Europe/Lisbon")
+#### D35644
+tag_and_nest_data_mapper(tag_and_nest_data = tag_breeding_data_tagus,
+                         bird_ring = "D35644", map_year = 2021, time_zone_local = "Europe/Lisbon")
+#### D59946
+tag_and_nest_data_mapper(tag_and_nest_data = tag_breeding_data_tagus,
+                         bird_ring = "D59946", map_year = 2021, time_zone_local = "Europe/Lisbon")
+#### D59933
+tag_and_nest_data_mapper(tag_and_nest_data = tag_breeding_data_tagus,
+                         bird_ring = "D59933", map_year = 2021, time_zone_local = "Europe/Lisbon")
+#### P01903
+tag_and_nest_data_mapper(tag_and_nest_data = tag_breeding_data_tagus,
+                         bird_ring = "P01903", map_year = 2021, time_zone_local = "Europe/Lisbon")
+#### D59182
+tag_and_nest_data_mapper(tag_and_nest_data = tag_breeding_data_tagus,
+                         bird_ring = "D59182", map_year = 2021, time_zone_local = "Europe/Lisbon")
+#### D59932
+tag_and_nest_data_mapper(tag_and_nest_data = tag_breeding_data_tagus,
+                         bird_ring = "D59932", map_year = 2021, time_zone_local = "Europe/Lisbon")
+#### P01902
+tag_and_nest_data_mapper(tag_and_nest_data = tag_breeding_data_tagus,
+                         bird_ring = "P01902", map_year = 2021, time_zone_local = "Europe/Lisbon")

@@ -6,7 +6,6 @@
 # expected to be on the nest during theit incubation shift. Each female had
 # two known nests during the season and the GPS data nicely shows the time taken
 # between breeding attempts
-
 #### **CA3224 from 2019 (nanoFix 24-hour @ 0600) ----
 # locates all known nests nicely
 bird_ring = "CA3224"
@@ -450,12 +449,12 @@ distGeo(nestR_out$nests %>%
     slice(2) %>% 
     pull(fate))
 
-
+################################################################################
+# Circadian patterns
 #### Females with 20-min ----
 # the following four females had fixes collected at times of day when they were
 # expected to be on the nest during theit incubation shift. 
-
-#### *CM1858 from 2022 (PinPoint 20-min) ----
+#### *CM1858 from 2022 (PinPoint 20-min) perfect circadian incubation pattern ----
 # locates single known nests nicely
 bird_ring = "CM1858"
 map_year = 2022
@@ -532,7 +531,7 @@ tag_breeding_data_ceuta$tagging %>%
   geom_boxplot(aes(x = hms::as_hms(rounded_hour),
                    y = dist_from_nest, group = rounded_hour))
 
-#### **CA3224 from 2022 (PinPoint 20-min) ----
+#### **CA3224 from 2022 (PinPoint 20-min) perfect circadian incubation pattern  ----
 # locates all known nests nicely
 bird_ring = "CA3224"
 map_year = 2022
@@ -622,8 +621,123 @@ tag_breeding_data_ceuta$tagging %>%
                    y = dist_from_nest, group = rounded_hour))
 
 
+#### *CN0937 from 2022 (PinPoint 20-min then 12-hour @ 1000/2200) perfect circadian incubation pattern ----
+end_of_20_min_sampling <- ymd_hms("2022-05-06 07:00:00", tz = "America/Mazatlan")
+
+# merge nest data with tagging data and make box plot
+tag_breeding_data_ceuta$tagging %>% 
+  mutate(timestamp_local = ymd_hms(timestamp_local, tz = "America/Mazatlan")) %>% 
+  filter(ring == "CN0937" & 
+           year(timestamp_local) == 2022) %>% 
+  left_join(., tag_breeding_data_ceuta$nests %>% 
+              filter(ring == "CN0937" & 
+                       year(nest_initiation_date) == 2022) %>% 
+              dplyr::select(ring, lon, lat, nest_initiation_date) %>% distinct(), by = "ring") %>% 
+  filter(timestamp_local > nest_initiation_date) %>% 
+  filter(timestamp_local < end_of_20_min_sampling) %>% 
+  rename(bird_lat = lat.x,
+         bird_lon = lon.x,
+         nest_lat = lat.y,
+         nest_lon = lon.y) %>% 
+  mutate(dist_from_nest = distHaversine(p1 = matrix(c(bird_lon, bird_lat), ncol = 2),
+                                        p2 = matrix(c(nest_lon, nest_lat), ncol = 2))) %>%
+  mutate(rounded_hour = round(timestamp_local, "hours") %>%
+           format(., format = "%H:%M:%S"),
+         time_of_day = format(timestamp_local, format = "%H:%M:%S")) %>% 
+  ggplot(.) +
+  geom_boxplot(aes(x = hms::as_hms(rounded_hour),
+                   y = dist_from_nest, group = rounded_hour))
+
+tag_breeding_data_ceuta$tagging %>% 
+  mutate(timestamp_local = ymd_hms(timestamp_local, tz = "America/Mazatlan")) %>% 
+  filter(ring == "CN0937" & timestamp_local < end_of_20_min_sampling) %>% 
+  st_as_sf(., 
+           coords = c("lon", "lat"),
+           crs = projection) %>% 
+  mapview(zcol = "night_fix", col.regions = c("yellow", "blue"))
+
+
+
+
+#### *CN0930 from 2022 (PinPoint 20-min then 12-hour @ 1000/2200) no morning incubation, but good afternoon incubation----
+end_of_20_min_sampling <- ymd_hms("2022-04-30 07:00:00", tz = "America/Mazatlan")
+
+# merge nest data with tagging data and make box plot
+tag_breeding_data_ceuta$tagging %>% 
+  mutate(timestamp_local = ymd_hms(timestamp_local, tz = "America/Mazatlan")) %>% 
+  filter(ring == "CN0930" & 
+           year(timestamp_local) == 2022) %>%
+  left_join(., tag_breeding_data_ceuta$nests %>% 
+              filter(ring == "CN0930" & 
+                       year(nest_initiation_date) == 2022) %>% 
+              dplyr::select(ring, lon, lat, nest_initiation_date) %>% distinct(), by = "ring") %>% 
+  filter(timestamp_local > nest_initiation_date) %>% 
+  filter(timestamp_local < end_of_20_min_sampling) %>%
+  rename(bird_lat = lat.x,
+         bird_lon = lon.x,
+         nest_lat = lat.y,
+         nest_lon = lon.y) %>% 
+  mutate(dist_from_nest = distHaversine(p1 = matrix(c(bird_lon, bird_lat), ncol = 2),
+                                        p2 = matrix(c(nest_lon, nest_lat), ncol = 2))) %>%
+  mutate(rounded_hour = round(timestamp_local, "hours") %>%
+           format(., format = "%H:%M:%S"),
+         time_of_day = format(timestamp_local, format = "%H:%M:%S")) %>% 
+  ggplot(.) +
+  geom_boxplot(aes(x = hms::as_hms(rounded_hour),
+                   y = dist_from_nest, group = rounded_hour))
+
+tag_breeding_data_ceuta$tagging %>% 
+  mutate(timestamp_local = ymd_hms(timestamp_local, tz = "America/Mazatlan")) %>% 
+  filter(ring == "CN0930" & timestamp_local < end_of_20_min_sampling) %>% 
+  st_as_sf(., 
+           coords = c("lon", "lat"),
+           crs = projection) %>% 
+  mapview(zcol = "night_fix", col.regions = c("yellow", "blue"))
+
+
+#### CN0916 from 2022 (PinPoint 20-min then 12-hour @ 1000/2200) no pattern, female stayed away from nest the whole time ----
+end_of_20_min_sampling <- ymd_hms("2022-04-22 07:00:00", tz = "America/Mazatlan")
+
+# merge nest data with tagging data and make box plot
+tag_breeding_data_ceuta$tagging %>% 
+  mutate(timestamp_local = ymd_hms(timestamp_local, tz = "America/Mazatlan")) %>% 
+  filter(ring == "CN0916" & 
+           year(timestamp_local) == 2022) %>%
+  left_join(., tag_breeding_data_ceuta$nests %>% 
+              filter(ring == "CN0916" & 
+                       year(nest_initiation_date) == 2022) %>% 
+              dplyr::select(ring, lon, lat, nest_initiation_date) %>% distinct(), by = "ring") %>% 
+  filter(timestamp_local > nest_initiation_date) %>% 
+  filter(timestamp_local < end_of_20_min_sampling) %>%
+  rename(bird_lat = lat.x,
+         bird_lon = lon.x,
+         nest_lat = lat.y,
+         nest_lon = lon.y) %>% 
+  mutate(dist_from_nest = distHaversine(p1 = matrix(c(bird_lon, bird_lat), ncol = 2),
+                                        p2 = matrix(c(nest_lon, nest_lat), ncol = 2))) %>%
+  mutate(rounded_hour = round(timestamp_local, "hours") %>%
+           format(., format = "%H:%M:%S"),
+         time_of_day = format(timestamp_local, format = "%H:%M:%S")) %>% 
+  ggplot(.) +
+  geom_boxplot(aes(x = hms::as_hms(rounded_hour),
+                   y = dist_from_nest, group = rounded_hour))
+
+tag_breeding_data_ceuta$tagging %>% 
+  mutate(timestamp_local = ymd_hms(timestamp_local, tz = "America/Mazatlan")) %>% 
+  filter(ring == "CN0916" & timestamp_local < end_of_20_min_sampling) %>% 
+  st_as_sf(., 
+           coords = c("lon", "lat"),
+           crs = projection) %>% 
+  mapview(zcol = "night_fix", col.regions = c("yellow", "blue")) +
+  mapview(tag_breeding_data_ceuta$nests %>% 
+            filter(ring == "CN0916" & 
+                     year(nest_initiation_date) == 2022) %>% 
+            dplyr::select(ring, lon, lat, nest_initiation_date) %>% distinct() %>% st_as_sf(., 
+                                                                                            coords = c("lon", "lat"),
+                                                                                            crs = projection))
+################################################################################
 #### Males with 20-min ----
-#### *CA3340 from 2022 (PinPoint 20-min then 12-hour @ 1000/2200) ----
+#### *CA3340 from 2022 (PinPoint 20-min then 12-hour @ 1000/2200) perfect circadian incubation pattern ----
 # locates single known nests nicely
 bird_ring = "CA3340"
 map_year = 2022
@@ -702,3 +816,164 @@ tag_breeding_data_ceuta$tagging %>%
   ggplot(.) +
   geom_boxplot(aes(x = hms::as_hms(rounded_hour),
                    y = dist_from_nest, group = rounded_hour))
+
+#### *CN0066 from 2022 (PinPoint 20-min) decent circadian incubation pattern, but reduced sample ----
+end_of_20_min_sampling <- ymd_hms("2022-05-02 20:40:09", tz = "America/Mazatlan")
+
+# merge nest data with tagging data and make box plot
+tag_breeding_data_ceuta$tagging %>% 
+  mutate(timestamp_local = ymd_hms(timestamp_local, tz = "America/Mazatlan")) %>% 
+  filter(ring == "CN0066" & 
+           year(timestamp_local) == 2022) %>% 
+  left_join(., tag_breeding_data_ceuta$nests %>% 
+              filter(ring == "CN0066" & 
+                       year(nest_initiation_date) == 2022) %>% 
+              dplyr::select(ring, lon, lat, nest_initiation_date) %>% distinct(), by = "ring") %>% 
+  filter(timestamp_local > nest_initiation_date) %>% 
+  filter(timestamp_local < end_of_20_min_sampling) %>% 
+  rename(bird_lat = lat.x,
+         bird_lon = lon.x,
+         nest_lat = lat.y,
+         nest_lon = lon.y) %>% 
+  mutate(dist_from_nest = distHaversine(p1 = matrix(c(bird_lon, bird_lat), ncol = 2),
+                                        p2 = matrix(c(nest_lon, nest_lat), ncol = 2))) %>%
+  mutate(rounded_hour = round(timestamp_local, "hours") %>%
+           format(., format = "%H:%M:%S"),
+         time_of_day = format(timestamp_local, format = "%H:%M:%S")) %>% 
+  ggplot(.) +
+  geom_boxplot(aes(x = hms::as_hms(rounded_hour),
+                   y = dist_from_nest, group = rounded_hour))
+
+tag_breeding_data_ceuta$tagging %>% 
+  mutate(timestamp_local = ymd_hms(timestamp_local, tz = "America/Mazatlan")) %>% 
+  filter(ring == "CN0066" & timestamp_local < end_of_20_min_sampling) %>% 
+  st_as_sf(., 
+           coords = c("lon", "lat"),
+           crs = projection) %>% 
+  mapview(zcol = "night_fix", col.regions = c("yellow", "blue"))
+################################################################################
+#### Tagus individuals with 4-hour ----
+#### D59946 Male: great circadian incubation pattern ----
+end_of_known_nest <- ymd_hms("2021-06-19 00:00:00", tz = "Europe/Lisbon")
+
+# merge nest data with tagging data and make box plot
+tag_breeding_data_tagus$tagging %>% 
+  mutate(timestamp_local = ymd_hms(timestamp_local, tz = "Europe/Lisbon")) %>% 
+  filter(ring == "D59946" & 
+           year(timestamp_local) == 2021) %>% 
+  left_join(., tag_breeding_data_tagus$nests %>% 
+              filter(ring == "D59946") %>% 
+              dplyr::select(ring, lon, lat, nest_initiation_date) %>% distinct(), by = "ring") %>% 
+  filter(timestamp_local > nest_initiation_date) %>% 
+  filter(timestamp_local < end_of_known_nest) %>% 
+  rename(bird_lat = lat.x,
+         bird_lon = lon.x,
+         nest_lat = lat.y,
+         nest_lon = lon.y) %>% 
+  mutate(dist_from_nest = distHaversine(p1 = matrix(c(bird_lon, bird_lat), ncol = 2),
+                                        p2 = matrix(c(nest_lon, nest_lat), ncol = 2))) %>%
+  mutate(rounded_hour = round(timestamp_local, "hours") %>%
+           format(., format = "%H:%M:%S"),
+         time_of_day = format(timestamp_local, format = "%H:%M:%S")) %>% 
+  ggplot(.) +
+  geom_boxplot(aes(x = hms::as_hms(rounded_hour),
+                   y = dist_from_nest, group = rounded_hour))
+
+tag_breeding_data_tagus$tagging %>% 
+  mutate(timestamp_local = ymd_hms(timestamp_local, tz = "Europe/Lisbon")) %>% 
+  filter(ring == "D59946" & timestamp_local < end_of_known_nest) %>% 
+  st_as_sf(., 
+           coords = c("lon", "lat"),
+           crs = projection) %>% 
+  mapview(zcol = "night_fix", col.regions = c("yellow", "blue"))
+
+#### P01903 Male: decent circadian incubation pattern (maybe use sunrise and sunset?) ----
+end_of_known_nest <- ymd_hms("2021-06-07 00:00:00", tz = "Europe/Lisbon")
+
+# merge nest data with tagging data and make box plot
+tag_breeding_data_tagus$tagging %>% 
+  mutate(timestamp_local = ymd_hms(timestamp_local, tz = "Europe/Lisbon")) %>% 
+  filter(ring == "P01903" & 
+           year(timestamp_local) == 2021) %>% 
+  left_join(., tag_breeding_data_tagus$nests %>% 
+              filter(ring == "P01903") %>% 
+              dplyr::select(ring, lon, lat, nest_initiation_date) %>% distinct(), by = "ring") %>% 
+  filter(timestamp_local > nest_initiation_date) %>% 
+  filter(timestamp_local < end_of_known_nest) %>% 
+  rename(bird_lat = lat.x,
+         bird_lon = lon.x,
+         nest_lat = lat.y,
+         nest_lon = lon.y) %>% 
+  mutate(dist_from_nest = distHaversine(p1 = matrix(c(bird_lon, bird_lat), ncol = 2),
+                                        p2 = matrix(c(nest_lon, nest_lat), ncol = 2))) %>%
+  mutate(rounded_hour = round(timestamp_local, "hours") %>%
+           format(., format = "%H:%M:%S"),
+         time_of_day = format(timestamp_local, format = "%H:%M:%S")) %>% 
+  ggplot(.) +
+  geom_boxplot(aes(x = hms::as_hms(rounded_hour),
+                   y = dist_from_nest, group = rounded_hour))
+
+tag_breeding_data_tagus$tagging %>% 
+  mutate(timestamp_local = ymd_hms(timestamp_local, tz = "Europe/Lisbon")) %>% 
+  filter(ring == "P01903" & timestamp_local < end_of_known_nest) %>% 
+  st_as_sf(., 
+           coords = c("lon", "lat"),
+           crs = projection) %>% 
+  mapview(zcol = "night_fix", col.regions = c("yellow", "blue"))
+
+#### P01902 Female: great circadian incubation pattern ----
+end_of_known_nest <- ymd_hms("2021-06-07 00:00:00", tz = "Europe/Lisbon")
+
+# merge nest data with tagging data and make box plot
+tag_breeding_data_tagus$tagging %>% 
+  mutate(timestamp_local = ymd_hms(timestamp_local, tz = "Europe/Lisbon")) %>% 
+  filter(ring == "P01902" & 
+           year(timestamp_local) == 2021) %>% 
+  left_join(., tag_breeding_data_tagus$nests %>% 
+              filter(ring == "P01902") %>% 
+              dplyr::select(ring, lon, lat, nest_initiation_date) %>% distinct(), by = "ring") %>% 
+  filter(timestamp_local > nest_initiation_date) %>% 
+  filter(timestamp_local < end_of_known_nest) %>% 
+  rename(bird_lat = lat.x,
+         bird_lon = lon.x,
+         nest_lat = lat.y,
+         nest_lon = lon.y) %>% 
+  mutate(dist_from_nest = distHaversine(p1 = matrix(c(bird_lon, bird_lat), ncol = 2),
+                                        p2 = matrix(c(nest_lon, nest_lat), ncol = 2))) %>%
+  mutate(rounded_hour = round(timestamp_local, "hours") %>%
+           format(., format = "%H:%M:%S"),
+         time_of_day = format(timestamp_local, format = "%H:%M:%S")) %>% 
+  ggplot(.) +
+  geom_boxplot(aes(x = hms::as_hms(rounded_hour),
+                   y = dist_from_nest, group = rounded_hour))
+
+tag_breeding_data_tagus$tagging %>% 
+  mutate(timestamp_local = ymd_hms(timestamp_local, tz = "Europe/Lisbon")) %>% 
+  filter(ring == "P01902" & timestamp_local < end_of_known_nest & timestamp_local > as.Date("2021-05-08")) %>% 
+  st_as_sf(., 
+           coords = c("lon", "lat"),
+           crs = projection) %>% 
+  mapview(zcol = "night_fix", col.regions = c("yellow", "blue"))
+
+################################################################################
+# Study plan:
+
+# demonstrate with the 20-min/4-hour deployments that the sex-specific incubation 
+# behaviour is predictably linked to time of day: 
+# Ceuta sample size = 2 males and 4 females that clearly show the trend
+# Husum sample size = ?
+# Tagus sample size = 2 male and 1 female that clearly show the trend
+
+# demonstrate that to find nests using limited battery power of small archival
+# tags, one can schedule fixes to occur at times when state-dependent breeding 
+# behavior is occurring (e.g., at night for male incubation, and during the day
+# for female incubation): 
+# Ceuta sample size = 4 females with multiple breeding attempts
+# Husum sample size = ?
+# Tagus sampl size = ?
+
+# demonstrate that different schedules cost different voltage
+# look at PinPoint battery projection software
+# - show plots of nanofix voltage declines (4-hour vs. 24-hour)
+# - show the length of the breeding season and put into context the right schedule
+# to maximize inference
