@@ -27,4 +27,4 @@ if(length(new.packages)) install.packages(new.packages)
 # load all the packages into the current R session
 lapply(packages_required_in_project, require, character.only = TRUE)
 
-remotes::install_github("picardis/nestR", build_vignettes = TRUE)
+# remotes::install_github("picardis/nestR", build_vignettes = TRUE)
