@@ -2886,7 +2886,7 @@ distGeo(nestR_out$nests %>%
     slice(2) %>% 
     pull(fate))
 
-#### P01902 Female ----
+#### P01902 Female great circadian incubation pattern ----
 bird_ring = "P01902"; map_year = 2021
 
 tag_and_nest_data_mapper(tag_and_nest_data = tag_breeding_data_tagus,
