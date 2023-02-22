@@ -307,7 +307,11 @@ ceuta <-
   plover_tagging_df %>% 
   filter(population == "ceuta") %>% 
   mutate(date = as.Date(timestamp_local, tz = "America/Mazatlan")) %>%
-  getSunlightTimes(data = ., keep = c("nightEnd", "night"), tz = "America/Mazatlan") %>% 
+  getSunlightTimes(data = ., keep = c("nightEnd", "night", 
+                                      "sunrise", "sunset", 
+                                      "dawn", "dusk", 
+                                      "nauticalDawn", "nauticalDusk"), 
+                   tz = "America/Mazatlan") %>% 
   rename(lat_fun = lat,
          lon_fun = lon) %>% 
   bind_cols(plover_tagging_df %>% filter(population == "ceuta"), .) %>% 
@@ -318,13 +322,23 @@ ceuta <-
          timestamp_local = as.character(timestamp_local),
          date = as.character(date),
          nightEnd = as.character(nightEnd),
-         night = as.character(night))
+         night = as.character(night),
+         sunset = as.character(sunset),
+         sunrise = as.character(sunrise),
+         dawn = as.character(dawn),
+         dusk = as.character(dusk),
+         nauticalDawn = as.character(nauticalDawn),
+         nauticalDusk = as.character(nauticalDusk))
 
 kaikoura <- 
   plover_tagging_df %>% 
   filter(population == "kaikoura") %>% 
   mutate(date = as.Date(timestamp_local, tz = "Pacific/Auckland")) %>%
-  getSunlightTimes(data = ., keep = c("nightEnd", "night"), tz = "Pacific/Auckland") %>% 
+  getSunlightTimes(data = ., keep = c("nightEnd", "night", 
+                                      "sunrise", "sunset", 
+                                      "dawn", "dusk", 
+                                      "nauticalDawn", "nauticalDusk"), 
+                   tz = "Pacific/Auckland") %>% 
   rename(lat_fun = lat,
          lon_fun = lon) %>% 
   bind_cols(plover_tagging_df %>% filter(population == "kaikoura"), .) %>% 
@@ -335,13 +349,23 @@ kaikoura <-
          timestamp_local = as.character(timestamp_local),
          date = as.character(date),
          nightEnd = as.character(nightEnd),
-         night = as.character(night))
+         night = as.character(night),
+         sunset = as.character(sunset),
+         sunrise = as.character(sunrise),
+         dawn = as.character(dawn),
+         dusk = as.character(dusk),
+         nauticalDawn = as.character(nauticalDawn),
+         nauticalDusk = as.character(nauticalDusk))
 
 tagus <- 
   plover_tagging_df %>% 
   filter(population == "tagus") %>% 
   mutate(date = as.Date(timestamp_local, tz = "Europe/Lisbon")) %>%
-  getSunlightTimes(data = ., keep = c("nightEnd", "night"), tz = "Europe/Lisbon") %>% 
+  getSunlightTimes(data = ., keep = c("nightEnd", "night", 
+                                      "sunrise", "sunset", 
+                                      "dawn", "dusk", 
+                                      "nauticalDawn", "nauticalDusk"), 
+                   tz = "Europe/Lisbon") %>% 
   rename(lat_fun = lat,
          lon_fun = lon) %>% 
   bind_cols(plover_tagging_df %>% filter(population == "tagus"), .) %>% 
@@ -352,7 +376,13 @@ tagus <-
          timestamp_local = as.character(timestamp_local),
          date = as.character(date),
          nightEnd = as.character(nightEnd),
-         night = as.character(night))
+         night = as.character(night),
+         sunset = as.character(sunset),
+         sunrise = as.character(sunrise),
+         dawn = as.character(dawn),
+         dusk = as.character(dusk),
+         nauticalDawn = as.character(nauticalDawn),
+         nauticalDusk = as.character(nauticalDusk))
 
 plover_tagging_df <- 
   bind_rows(ceuta, kaikoura, tagus)

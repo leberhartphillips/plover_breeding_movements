@@ -32,5 +32,3 @@ extract_sampling_times <-
     }
     times_list_sub
   }
-
-df = CN0161$tagging

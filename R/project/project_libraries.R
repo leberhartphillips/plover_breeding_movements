@@ -12,7 +12,7 @@ packages_required_in_project <-
     "leaflet.extras2", "leaflet", "RColorBrewer", "adehabitatLT", 
     "lubridate", "RSQLite", "tidyverse", "sf", "ctmm", "readxl", 
     "geosphere", "hms", "mgcv", "mapview", "geosphere", "ctmm", "moveVis", 
-    "move", "scales", "recurse", "suncalc", "dismo", "rgeos", "nestR"
+    "move", "scales", "recurse", "suncalc", "dismo", "rgeos", "nestR", "activity", "bpnreg"#, "Actigraphy"
     #, "rmdformats", "webshot2"
     )
 
@@ -28,3 +28,4 @@ if(length(new.packages)) install.packages(new.packages)
 lapply(packages_required_in_project, require, character.only = TRUE)
 
 # remotes::install_github("picardis/nestR", build_vignettes = TRUE)
+# devtools::install_github("junruidi/actigraphy")

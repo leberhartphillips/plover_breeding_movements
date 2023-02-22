@@ -1,8 +1,8 @@
 library(nestR)
 
-nestR_CN0423 <- 
+nestR_data <- 
   tag_breeding_data_ceuta$tagging %>% 
-  filter(ring == "CN0423") %>% 
+  # filter(ring == "CN0423") %>% 
   mutate(burst = paste(ring, year(timestamp_local), sep = "-")) %>% 
   dplyr::select(burst, timestamp_local, lon, lat) %>% 
   rename(date = timestamp_local,
@@ -10,7 +10,7 @@ nestR_CN0423 <-
          lat = lat)
 
 nestR_CN0423_out <- 
-  find_nests(nestR_CN0423, 
+  find_nests(nestR_CN0423 %>% filter(ring == "CN0423"), 
              buffer = 20, 
              sea_start = "04-01", 
              sea_end = "08-01", 

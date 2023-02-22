@@ -138,7 +138,7 @@ tag_nest_data_tagus <-
                            as.character(`HATCH DATE`)) %>% 
            as.Date(., format = "%Y-%m-%d")) %>%
   dplyr::select("NEST ID", "FEMALE", "MALE", "LAT", "LON", "LAY DATE", end_date, "FATE") %>% 
-  dplyr::rename(ID = "NEST ID",
+  dplyr::rename(family_ID = "NEST ID",
          female = FEMALE,
          male = MALE,
          lat = LAT,
@@ -156,8 +156,8 @@ tag_nest_data_tagus <-
   dplyr::filter(species == "KEPL" & !is.na(lat))
 
 tag_breeding_data_tagus <- 
-  list(nests = tag_nest_data_tagus,
-       tagging = plover_tagging_df %>% dplyr::filter(population == "tagus" & species == "KEPL"))
+  list(nests = tag_nest_data_tagus %>% ungroup(),
+       tagging = plover_tagging_df %>% dplyr::filter(population == "tagus" & species == "KEPL") %>% ungroup())
 
 # # bind ceuta and tagus data
 # tag_nest_data <- 

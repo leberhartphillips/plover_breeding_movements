@@ -605,7 +605,7 @@ tag_breeding_data_ceuta$tagging %>%
   left_join(., tag_breeding_data_ceuta$nests %>% 
               filter(ring == "CA3224" & 
                        year(nest_initiation_date) == 2022) %>% 
-              dplyr::select(ring, lon, lat, nest_initiation_date) %>% distinct(), by = "ring") %>% 
+              dplyr::select(ring, lon, lat, nest_initiation_date, end_date) %>% distinct(), by = "ring") %>% 
   filter(timestamp_local > nest_initiation_date) %>% 
   rename(bird_lat = lat.x,
          bird_lon = lon.x,
@@ -897,9 +897,9 @@ tag_breeding_data_tagus$tagging %>%
            year(timestamp_local) == 2021) %>% 
   left_join(., tag_breeding_data_tagus$nests %>% 
               filter(ring == "P01903") %>% 
-              dplyr::select(ring, lon, lat, nest_initiation_date) %>% distinct(), by = "ring") %>% 
+              dplyr::select(ring, lon, lat, nest_initiation_date, end_date) %>% distinct(), by = "ring") %>% 
   filter(timestamp_local > nest_initiation_date) %>% 
-  filter(timestamp_local < end_of_known_nest) %>% 
+  filter(timestamp_local < end_of_known_nest + 1) %>% 
   rename(bird_lat = lat.x,
          bird_lon = lon.x,
          nest_lat = lat.y,
@@ -909,6 +909,7 @@ tag_breeding_data_tagus$tagging %>%
   mutate(rounded_hour = round(timestamp_local, "hours") %>%
            format(., format = "%H:%M:%S"),
          time_of_day = format(timestamp_local, format = "%H:%M:%S")) %>% 
+  dplyr::select(timestamp_local, dist_from_nest)
   ggplot(.) +
   geom_boxplot(aes(x = hms::as_hms(rounded_hour),
                    y = dist_from_nest, group = rounded_hour))

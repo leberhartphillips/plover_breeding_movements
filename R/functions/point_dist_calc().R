@@ -17,4 +17,3 @@ point_dist_calc <- function(df, fix_sched = 24){
                                         by = c("pkey")))
   return(df)
 }
-df = CN0161_list_sp[[1]]
