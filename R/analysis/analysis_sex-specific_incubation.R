@@ -183,7 +183,7 @@ draw(dist_to_nest_mod, parametric = FALSE)
 
 newdata_seconds_sex <- 
   expand.grid(seconds_of_day = seq(1, 60*60*24),
-              sex = as.factor(c("M", "F")),
+              sex = as.factor(c("F", "M")),
               species = as.factor(c("SNPL", "KEPL")))
 
 dist_to_nest_mod_fits <- 
@@ -203,8 +203,8 @@ dist_to_nest_mod_predicts <-
   arrange(sex)
 
 species_pop_labels <- c(
-  'SNPL' = "Snowy Plover (Bahía de Ceuta, Mexcio)",
-  'KEPL' = "Kentish Plover (Tagus Estuary, Portugal)"
+  'SNPL' = "Snowy Plover\nBahía de Ceuta, Mexcio",
+  'KEPL' = "Kentish Plover\nTagus Estuary, Portugal"
 )
 
 ggplot() +
@@ -232,35 +232,80 @@ ggplot() +
   geom_rect(data = population_sunlighttimes,
             aes(xmin = hms::as_hms(mean_night), xmax = Inf, ymin = 0, ymax = Inf), 
             fill = "#023858", alpha = 0.75) +
-  geom_point(data = all_data,
-              aes(x = as_hms(time_of_day),
-                  y = dist_from_nest + 0.00001, color = sex),
-              # width = 2,
-              alpha = 0.75) +
   geom_ribbon(data = dist_to_nest_mod_predicts, 
-              aes(x = time_of_day2, ymin = lower_trans, ymax = upper_trans, fill = sex), 
-              alpha = 0.3) +
+              aes(x = time_of_day2, ymin = lower_trans, ymax = upper_trans, fill = sex, color = sex), 
+              alpha = 0.8) +
   geom_line(data = dist_to_nest_mod_predicts, 
             aes(x = time_of_day2, y = fit_trans, color = sex)) +
+  geom_jitter(data = all_data,
+              aes(x = as_hms(time_of_day),
+                  y = dist_from_nest + 0.00001, fill = sex),
+              position = position_jitter(width = 60*20, seed = 12356),
+              alpha = 0.5,
+              shape = 21, color = "white", size = 3) +
   scale_x_time(labels = label_time(format = "%H"), 
                name = "hour of day", 
-               expand = c(0.0, 0.0),
-               breaks = as_hms(c('00:00:00', '06:00:00', '12:00:00', '18:00:00'))) +
+               expand = c(-0.01, 0.0),
+               breaks = as_hms(c('01:00:00', '06:00:00', '12:00:00', '18:00:00', '23:00:00'))) +
   scale_y_continuous(trans = 'log10') +
   ylab("distance from nest (m)") +
   facet_grid(species ~ ., labeller = labeller(.rows = species_pop_labels)) +
   luke_theme +
-  theme(legend.position = "top",
+  theme(legend.position = c(0.5, 0.95),
+        legend.direction = "horizontal",
+        legend.title = element_blank(),
+        strip.background = element_blank()) +
         # panel.grid.major = element_line(colour = "grey70", size = 0.25),
-        panel.grid.minor = element_line(colour = "grey70", size = 0.1)) +
+        # panel.grid.minor = element_line(colour = "grey70", size = 0.1)) +
         #legend.position = c(0.15, 0.825),
         #legend.title = element_text(size = 9),
         # axis.title.x = element_blank(),
         # axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
-  scale_colour_manual(values = brewer.pal(8, "Dark2")[c(1, 8)], 
-                      labels = c("Male", "Female")) +
-  scale_fill_manual(values = brewer.pal(8, "Dark2")[c(1, 8)], 
-                      labels = c("Male", "Female"))
+  scale_colour_manual(values = c("white", "white"), 
+                      labels = c("Female", "Male")) +
+  scale_fill_manual(values = brewer.pal(8, "Dark2")[c(2, 1)], 
+                      labels = c("Female", "Male"))# +
+  # geom_hline(yintercept = 10, color = "grey")
+
+# test circlize figure
+sectors = letters[1]
+circos.initialize(sectors, xlim = c(0, 1))
+circos.trackPlotRegion(ylim = c(0, 10100), track.height = 0.9, panel.fun = function(x, y) {
+  # x1 = runif(20)
+  # y1 = x1 + rnorm(20)
+  # or = order(x1)
+  # x1 = x1[or]
+  # y1 = y1[or]
+  # loess.fit = loess(y1 ~ x1)
+  # loess.predict = predict(loess.fit, x1, se = TRUE)
+  d1 = c(dist_to_nest_mod_predicts$fit_trans, dist_to_nest_mod_predicts$seconds_of_day)
+  # d2 = c(loess.predict$fit + loess.predict$se.fit,
+  #        rev(loess.predict$fit - loess.predict$se.fit))
+  circos.polygon(as_hms(all_data$time_of_day), all_data$dist_from_nest + 0.00001, col = "#CCCCCC", border = NA)
+  circos.points(as_hms(all_data$time_of_day), all_data$dist_from_nest + 0.00001, cex = 0.5)
+  # circos.lines(x1, loess.predict$fit)
+})
+circos.clear()
+
+set.seed(123)
+sectors = letters[1:4]
+circos.initialize(sectors, xlim = c(0, 1))
+circos.trackPlotRegion(ylim = c(-3, 3), track.height = 0.9, panel.fun = function(x, y) {
+  x1 = runif(20)
+  y1 = x1 + rnorm(20)
+  or = order(x1)
+  x1 = x1[or]
+  y1 = y1[or]
+  loess.fit = loess(y1 ~ x1)
+  loess.predict = predict(loess.fit, x1, se = TRUE)
+  d1 = c(x1, rev(x1))
+  d2 = c(loess.predict$fit + loess.predict$se.fit,
+         rev(loess.predict$fit - loess.predict$se.fit))
+  circos.polygon(d1, d2, col = "#CCCCCC", border = NA)
+  circos.points(x1, y1, cex = 0.5)
+  circos.lines(x1, loess.predict$fit)
+})
+circos.clear()
 
 male_dist_to_nest_mod <- 
   gam(log(dist_from_nest) ~ s(seconds_of_day, bs = "cc"), data = all_data %>% filter(sex == "M"))
