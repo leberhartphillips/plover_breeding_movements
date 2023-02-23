@@ -3,7 +3,7 @@
 
 #### Females with one daytime fix per day ----
 # the following four females had fixes collected at times of day when they were
-# expected to be on the nest during theit incubation shift. Each female had
+# expected to be on the nest during their incubation shift. Each female had
 # two known nests during the season and the GPS data nicely shows the time taken
 # between breeding attempts
 #### **CA3224 from 2019 (nanoFix 24-hour @ 0600) ----

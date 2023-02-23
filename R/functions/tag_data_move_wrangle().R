@@ -19,11 +19,14 @@ tag_data_move_wrangle <-
     # check the amount of time between fixes. The tracks in move_data have 
     # irregular timestamps and sampling rates. print unique timestamps and 
     # timeLag (might vary due to different tagging schedules and models)
-    sampling_times <- 
-      unique(timestamps(move_object))
-    
+    sampling_times_table <- 
+      table(as_hms(round(timestamps(move_object), "hours")))
+
     sampling_time_lags <- 
       timeLag(move_object, unit = temporal_unit)
+    
+    sampling_time_lags_table <- 
+      table(round(unlist(timeLag(move_object, unit = temporal_unit))))
     
     # use align_move to correct move_data to a uniform time scale and lag 
     # using interpolation
@@ -58,8 +61,9 @@ tag_data_move_wrangle <-
     aligned_move_object_list <- 
       list(raw_move_object = move_object,
            aligned_move_object = aligned_move_object,
-           sampling_times = sampling_times,
+           sampling_times_table = sampling_times_table,
            sampling_time_lags = sampling_time_lags,
+           sampling_time_lags_table = sampling_time_lags_table,
            aligned_sampling_time_lag = aligned_sampling_time_lag,
            number_of_fixes = number_of_fixes,
            sampling_start = sampling_start,
