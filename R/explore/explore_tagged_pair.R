@@ -17,6 +17,15 @@ tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
 tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
                              bird_ring = "CA3340", map_year = 2022)
 
+# subset data to focal birds
+CN0423 <- 
+  lapply(tag_breeding_data_ceuta, function(x) 
+    subset(x, ring %in% c("CN0423")))
+
+CA3340 <- 
+  lapply(tag_breeding_data_ceuta, function(x) 
+    subset(x, ring %in% c("CA3340")))
+
 CN0423_move <- 
   tag_data_move_wrangle(formatted_tag_data = CN0423$tagging, 
                         temporal_res = 1, 

@@ -268,8 +268,8 @@ ggplot() +
                name = "hour of day", 
                expand = c(-0.01, 0.0),
                breaks = as_hms(c('01:00:00', '06:00:00', '12:00:00', '18:00:00', '23:00:00'))) +
-  # scale_y_continuous(trans = 'log10') +
-  ylab("distance from nest (m)") +
+  scale_y_continuous(trans = 'log10') +
+  ylab("distance from nest (log10, m)") +
   facet_grid(species ~ ., labeller = labeller(.rows = species_pop_labels)) +
   luke_theme +
   theme(legend.position = c(0.5, 0.95),

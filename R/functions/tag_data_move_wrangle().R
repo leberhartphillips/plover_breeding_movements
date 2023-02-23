@@ -4,7 +4,10 @@ tag_data_move_wrangle <-
            temporal_unit,
            projection = "+init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0",
            longitude_name, latitude_name,
-           timestamp_name, ind_name){
+           timestamp_name, ind_name, 
+           timezone_local = "America/Mazatlan"){
+    
+    formatted_tag_data[, c(timestamp_name)] <- ymd_hms(formatted_tag_data[, c(timestamp_name)], tz = timezone_local)
     
     # make move object for animation
     move_object <- 
