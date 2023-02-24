@@ -11,8 +11,8 @@ packages_required_in_project <-
     #"standardize", "tidybayes", 
     "leaflet.extras2", "leaflet", "RColorBrewer", "adehabitatLT", 
     "lubridate", "RSQLite", "tidyverse", "sf", "ctmm", "readxl", 
-    "geosphere", "hms", "mgcv", "mapview", "geosphere", "ctmm", "moveVis", 
-    "move", "scales", "recurse", "suncalc", "dismo", "rgeos", "nestR", "activity", "bpnreg", "gratia", "circlize", "lme4"#, "Actigraphy"
+    "geosphere", "hms", "mgcv", "mapview", "geosphere", "ctmm", "moveVis", "broom.mixed",
+    "move", "scales", "recurse", "suncalc", "dismo", "rgeos", "nestR", "activity", "bpnreg", "gratia", "circlize", "lme4", "parameters"#, "Actigraphy"
     #, "rmdformats", "webshot2"
     )
 

@@ -345,7 +345,7 @@ brood_info <-
 #                      "CN0161",
 #                      "CN0138"))
 
-# reduced_2wH <- 
+reduced_2wH <-
   tag_breeding_data_ceuta$tagging %>% 
   filter(ring %in% c("CN0423",
                      "CA3224",
@@ -373,22 +373,11 @@ brood_info <-
                               ifelse(ring %in% c("CN0161") & 
                                        as_hms(rounded_time_hms) %in% c(as_hms("21:00:00"), as_hms("00:00:00"), as_hms("06:00:00"), as_hms("09:00:00")), 1, 0)))) %>% 
   filter(keep == 1) %>% 
-  # filter(as_hms(rounded_time_hms) %in% c(as_hms("22:00:00"), as_hms("10:00:00"), 
-  #                                        as_hms("21:00:00"), as_hms("00:00:00"), as_hms("06:00:00"), as_hms("09:00:00"),
-  #                                        as_hms("23:00:00"), as_hms("06:00:00"))) %>% 
   filter(timestamp_local_ymd > as.Date(paste(year(timestamp_local_ymd), "03-23", sep = "-")) & 
-           timestamp_local_ymd < as.Date(paste(year(timestamp_local_ymd), "08-01", sep = "-"))) %>%
-    filter(ring == "CN0916")
-  
-reduced_2wH %>% 
-  filter(ring == "CN0916")
-
-# snpl_move_aligned_round_full <- 
-#   tag_breeding_data_ceuta$tagging %>% 
-#   mutate(rounded_time_hms = hms::as_hms(round(ymd_hms(timestamp_local, tz = "America/Mazatlan"), "hours")),
-#          timestamp_local_ymd = as.Date(timestamp_local, tz = "America/Mazatlan"))
-  
-  
+           timestamp_local_ymd < as.Date(paste(year(timestamp_local_ymd), "08-01", sep = "-"))) %>% 
+  dplyr::select(ring, code, sex, species, population, lon, lat, 
+                timestamp_local, timestamp_local_ymd, rounded_time_hms, night_fix) %>% 
+  arrange(ring, timestamp_local)
 
 # subset into morning and evening data
 snpl_move_aligned_round_full <- 
@@ -520,7 +509,7 @@ dftraj_snpl_full <-
                 ring = id) %>% 
   mutate(distance_m = distance * 100000) %>% 
   mutate(cum_distance = cumsum(distance_m)) %>% 
-  mutate(rounded_time_hms = hms::as_hms(date),
+  mutate(rounded_time_hms = hms::as_hms(round(ymd_hms(date, tz = "America/Mazatlan"), "hours")),
          rounded_time_ymd = as.Date(date, 
                                     tz = "America/Mazatlan"),
          dataset = "full",
@@ -537,21 +526,10 @@ dftraj_snpl_full <-
          between_nests = ifelse(!is.na(end_date) & family_ID.x == family_ID.y & rounded_time_ymd >= end_date, 1, 
                                 ifelse(is.na(end_date) & family_ID.x == family_ID.y & rounded_time_ymd >= last_observation_alive, 1, 
                                        ifelse(family_ID.x != family_ID.y & rounded_time_ymd <= nest_initiation_date, 1, 0)))) %>% 
-  group_by(ring, rounded_time_ymd) %>% 
-  arrange(ring, rounded_time_ymd, desc(nesting), desc(brooding)) %>% 
-  left_join(., tag_breeding_data_ceuta$tagging %>% dplyr::select(ring, sex) %>% distinct(), by = "ring")
-
-dftraj_snpl_full %>%
-  filter(ring %in% c("CN0161", "CN0423", "CA3340", "CA3224", 
-                     "CN0930", "CN0916", "CN0609", "CN0918")) %>% 
-  # dplyr::select(ring, rounded_time_ymd, year, sex, family_ID.x, family_ID.y,
-  #               min_date, max_date, nest_initiation_date, dataset, distance_m,
-  #               end_date, fate, nesting, brooding, between_nests) %>% 
-  # distinct() %>% 
-  filter(ring == "CN0916")
-  group_by(ring, rounded_time_ymd) %>% summarise(n_obs = n()) %>% arrange(desc(n_obs))
-  slice(c(1)) %>% 
+  group_by(ring, date) %>% 
+  arrange(ring, date, desc(nesting), desc(between_nests)) %>% 
   left_join(., tag_breeding_data_ceuta$tagging %>% dplyr::select(ring, sex) %>% distinct(), by = "ring") %>% 
+  slice(c(1)) %>% 
   ungroup() %>% 
   mutate(status = ifelse(nesting == 0 & is.na(between_nests), "between_nests",#rounded_time_ymd < as.Date(paste(year, "03-23", sep = "-")) |
                          #rounded_time_ymd > as.Date(paste(year, "08-01", sep = "-")) | (nesting == 0 & is.na(between_nests)), "non-breeding",
@@ -559,6 +537,17 @@ dftraj_snpl_full %>%
                                 # ifelse(is.na(min_date), "unknown",
                                 ifelse(between_nests == 1, "between_nests", "unknown"))))
 
+ggplot() +
+  geom_line(data = dftraj_snpl_full %>% filter(ring == "CN0423"), 
+            aes(y = distance_m, x = date, color = status, group = ring)) +
+  facet_wrap(rounded_time_hms ~ .)
+
+dftraj_snpl_full %>% 
+  mutate(status = factor(status, 
+                         levels = c("nesting", "between_nests", "unknown"))) %>% 
+  ggplot() +
+  geom_boxplot(aes(x = status, y = log(distance_m), fill = sex)) +
+  facet_grid(dataset ~ .)
 
 # bind together
 dftraj_snpl_AM_PM <- 
@@ -587,6 +576,10 @@ sex_status_diel_step_length_mod <-
   lmer(log(distance_m) ~ sex * status + dataset + (1|ring), 
        data = dftraj_snpl_AM_PM)
 
+sex_status_step_length_mod <- 
+  lmer(log(distance_m) ~ sex * status + (1|ring), 
+       data = dftraj_snpl_full)
+
 # run tidy bootstrap to obtain model diagnostics
 tidy_sex_status_diel_step_length_mod <-
   tidy(sex_status_diel_step_length_mod, 
@@ -594,17 +587,64 @@ tidy_sex_status_diel_step_length_mod <-
        conf.method = "boot", 
        nsim = 1000)
 
+tidy_sex_status_step_length_mod <-
+  tidy(sex_status_step_length_mod, 
+       conf.int = TRUE, 
+       conf.method = "boot", 
+       nsim = 1000)
+
 tidy_sex_status_diel_step_length_mod
 
-predicted_values<- 
-  modelr::data_grid(data = dftraj_snpl_AM_PM, sex, status, dataset, ring) %>% 
-  modelr::add_predictions(sex_status_diel_step_length_mod)
+model_parameters(sex_status_step_length_mod)
 
+ee <- Effect(c("sex","status"), sex_status_step_length_mod) 
+# Age_Site_Phi_plot <- 
+  ggplot(data = as.data.frame(ee),
+         aes(x = status, y = exp(fit), color = sex)) +
+  geom_errorbar(aes(ymin = exp(lower), ymax = exp(upper)), position = position_dodge(1), 
+                size = 0.3, linetype = "solid", width = 0.1) +
+  geom_point(size = 3, position = position_dodge(1)) +
+  theme_bw() + 
+  luke_theme +
+  theme(legend.position = "top",
+        axis.title.y = element_blank(),
+        axis.text.y  = element_blank()) +
+  ylab("diel step-length (log10, m) (± 95% CI)") +
+  # scale_y_continuous(limits = c(0, 1)) +
+  scale_color_brewer(palette = "Dark2") +
+  annotate(geom = "text", y = 0.73, x = 0.75, angle = 0,
+           label = "N = 12", 
+           color = "grey30", size = 2.5, fontface = 'italic') +
+  annotate(geom = "text", y = 0.25, x = 1.25, angle = 0,
+           label = "N = 66", 
+           color = "grey30", size = 2.5, fontface = 'italic')  +
+  annotate(geom = "text", y = 0.8, x = 1.75, angle = 0,
+           label = "N = 33", 
+           color = "grey30", size = 2.5, fontface = 'italic') +
+  annotate(geom = "text", y = 0.33, x = 2.25, angle = 0,
+           label = "N = 93", 
+           color = "grey30", size = 2.5, fontface = 'italic')
+
+theme_set(theme_bw())
+ggplot(as.data.frame(ee),
+       aes(status,fit,colour=sex,fill=sex))+
+  geom_line()+
+  ## colour=NA suppresses edges of the ribbon
+  geom_ribbon(colour=NA,alpha=0.1,
+              aes(ymin=lower,ymax=upper))+
+  ## add rug plot based on original data
+  geom_rug(data=ee$data,aes(y=NULL),sides="b")
+
+
+predicted_values <- 
+  modelr::data_grid(data = dftraj_snpl_full, sex, status, ring) %>% 
+  modelr::add_predictions(sex_status_step_length_mod)
 
 predicted_values %>% 
-  ggplot(aes(status, pred, color = sex)) +
-  geom_line() +
-  geom_boxplot(data = dftraj_snpl_AM_PM, aes(status, log(distance_m), color = sex)) +
+  ggplot(aes(x = interaction(sex, status), y = exp(pred), color = sex)) +
+  geom_boxplot(aes(fill = sex), alpha = 0.5) +
+  geom_line(aes(group = interaction(ring, sex))) #+
+  # geom_boxplot(data = dftraj_snpl_AM_PM, aes(status, log(distance_m), color = sex)) +
   facet_grid(dataset ~ .)
 
 #### summarise breeding events for pair ----
