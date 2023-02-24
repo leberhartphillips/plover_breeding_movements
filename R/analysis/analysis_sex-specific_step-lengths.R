@@ -11,13 +11,12 @@ function.sources = list.files(path = "R/functions/",
                               ignore.case = TRUE)
 sapply(function.sources, source, .GlobalEnv)
 
-#### assess tagging data ----
-# CN0423 female
-# breeding pair both tagged with nesting and brooding (12-hour @ 1000/2200)
+#### Individuals with at least two nesting attempts and first nest hatched ----
+# CN0423 female (pair), three nests, first and second nests hatched (12-hour @ 1000/2200)
 tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
                              bird_ring = "CN0423", map_year = 2022)
 
-CN0423_move <- 
+F_CN0423_move_2wH <- 
   tag_data_move_wrangle(formatted_tag_data = 
                           lapply(tag_breeding_data_ceuta, 
                                  function(x) subset(x, ring == "CN0423"))$tagging, 
@@ -29,12 +28,17 @@ CN0423_move <-
                         ind_name = "ring",
                         projection = "+init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
 
-# CA3340 male
-# breeding pair both tagged with nesting and brooding (20-min then 12-hour @ 1000/2200)
+F_CN0423_move_2wH <- 
+  F_CN0423_move_2wH$aligned_move_object %>% 
+  as.data.frame() %>% 
+  filter(timestamps > as.Date(paste(year(timestamps), "03-23", sep = "-")) &
+           timestamps < as.Date(paste(year(timestamps), "08-01", sep = "-")))
+
+# CA3340 male (pair), two nests, first nest hatched (20-min then 12-hour @ 1000/2200)
 tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
                              bird_ring = "CA3340", map_year = 2022)
 
-CA3340_move <- 
+M_CA3340_move_2wH <- 
   tag_data_move_wrangle(formatted_tag_data = 
                           lapply(tag_breeding_data_ceuta, 
                                  function(x) subset(x, ring == "CA3340"))$tagging, 
@@ -46,11 +50,27 @@ CA3340_move <-
                         ind_name = "ring",
                         projection = "+init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
 
-# female, two nests, first nest hatched (24-hour @ 0600)
+# CN0161 female, two nests (2nd presumed), first nest hatched (9-hour)
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CN0161", map_year = 2018)
+
+F_CN0161_move_2wH <- 
+  tag_data_move_wrangle(formatted_tag_data = 
+                          lapply(tag_breeding_data_ceuta, 
+                                 function(x) subset(x, ring == "CN0161"))$tagging, 
+                        temporal_res = 1, 
+                        temporal_unit = "hours", 
+                        longitude_name = "lon", 
+                        latitude_name = "lat", 
+                        timestamp_name = "timestamp_local", 
+                        ind_name = "ring",
+                        projection = "+init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
+
+# CA3224 female, two nests, first nest hatched (24-hour @ 0600)
 tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
                              bird_ring = "CA3224", map_year = 2019)
 
-CA3224_move <- 
+F_CA3224_move_2wH <- 
   tag_data_move_wrangle(formatted_tag_data = 
                           lapply(tag_breeding_data_ceuta, 
                                  function(x) subset(x, ring == "CA3224"))$tagging, 
@@ -62,14 +82,14 @@ CA3224_move <-
                         ind_name = "ring",
                         projection = "+init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
 
-# female, two nests, first nest abandoned but started second immediately (hatched) (24-hour @ 0600)
+# CN0930 female, two nests, first nest hatched (20-min then 12-hour @ 1000/2200)
 tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
-                             bird_ring = "CN0130", map_year = 2019)
+                             bird_ring = "CN0930", map_year = 2022)
 
-CN0130_move <- 
+F_CN0930_move_2wH <- 
   tag_data_move_wrangle(formatted_tag_data = 
                           lapply(tag_breeding_data_ceuta, 
-                                 function(x) subset(x, ring == "CN0130"))$tagging, 
+                                 function(x) subset(x, ring == "CN0930"))$tagging, 
                         temporal_res = 1, 
                         temporal_unit = "hours", 
                         longitude_name = "lon", 
@@ -78,11 +98,27 @@ CN0130_move <-
                         ind_name = "ring",
                         projection = "+init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
 
-# female, two nests, first nest hatched (12-hour @ 1000/2200)
+# CN0916 female, two nests, first nest hatched (20-min then 12-hour @ 1000/2200)
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CN0916", map_year = 2022)
+
+F_CN0916_move_2wH <- 
+  tag_data_move_wrangle(formatted_tag_data = 
+                          lapply(tag_breeding_data_ceuta, 
+                                 function(x) subset(x, ring == "CN0916"))$tagging, 
+                        temporal_res = 1, 
+                        temporal_unit = "hours", 
+                        longitude_name = "lon", 
+                        latitude_name = "lat", 
+                        timestamp_name = "timestamp_local", 
+                        ind_name = "ring",
+                        projection = "+init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
+
+# CN0609 female, two nests, first nest hatched (12-hour @ 1000/2200)
 tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
                              bird_ring = "CN0609", map_year = 2022)
 
-CN0609_move <- 
+F_CN0609_move_2wH <- 
   tag_data_move_wrangle(formatted_tag_data = 
                           lapply(tag_breeding_data_ceuta, 
                                  function(x) subset(x, ring == "CN0609"))$tagging, 
@@ -94,11 +130,43 @@ CN0609_move <-
                         ind_name = "ring",
                         projection = "+init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
 
-# male, two nests, first nest hatched with brood care (12-hour @ 1000/2200)
+# CN0318 female, two nests, first nest hatched (24-hour @ 0600)
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CN0318", map_year = 2019)
+
+F_CN0318_move_2wH <- 
+  tag_data_move_wrangle(formatted_tag_data = 
+                          lapply(tag_breeding_data_ceuta, 
+                                 function(x) subset(x, ring == "CN0318"))$tagging, 
+                        temporal_res = 1, 
+                        temporal_unit = "hours", 
+                        longitude_name = "lon", 
+                        latitude_name = "lat", 
+                        timestamp_name = "timestamp_local", 
+                        ind_name = "ring",
+                        projection = "+init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
+
+# CN0422 female, two nests, first nest hatched (24-hour @ 0600)
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CN0422", map_year = 2019)
+
+F_CN0422_move_2wH <- 
+  tag_data_move_wrangle(formatted_tag_data = 
+                          lapply(tag_breeding_data_ceuta, 
+                                 function(x) subset(x, ring == "CN0422"))$tagging, 
+                        temporal_res = 1, 
+                        temporal_unit = "hours", 
+                        longitude_name = "lon", 
+                        latitude_name = "lat", 
+                        timestamp_name = "timestamp_local", 
+                        ind_name = "ring",
+                        projection = "+init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
+
+# CN0918 male, two nests, first nest hatched (12-hour @ 1000/2200)
 tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
                              bird_ring = "CN0918", map_year = 2022)
 
-CN0918_move <- 
+M_CN0918_move_2wH <- 
   tag_data_move_wrangle(formatted_tag_data = 
                           lapply(tag_breeding_data_ceuta, 
                                  function(x) subset(x, ring == "CN0918"))$tagging, 
@@ -110,14 +178,14 @@ CN0918_move <-
                         ind_name = "ring",
                         projection = "+init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
 
-# male, two nests, first nest hatched with brood care (96-hour @ 0000)
+# CN0138 male, two nests, first nest hatched with brood care (24-hour @ 2300)
 tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
-                             bird_ring = "CA3315", map_year = 2018)
+                             bird_ring = "CN0138", map_year = 2019)
 
-CA3315_move <- 
+M_CN0138_move_2wH <- 
   tag_data_move_wrangle(formatted_tag_data = 
                           lapply(tag_breeding_data_ceuta, 
-                                 function(x) subset(x, ring == "CA3315"))$tagging, 
+                                 function(x) subset(x, ring == "CN0138"))$tagging, 
                         temporal_res = 1, 
                         temporal_unit = "hours", 
                         longitude_name = "lon", 
@@ -126,14 +194,66 @@ CA3315_move <-
                         ind_name = "ring",
                         projection = "+init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
 
-# male, two nests, first nest hatched with brood care (24-hour @ 2300)
-tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
-                             bird_ring = "CN0138", map_year = 2019)
 
-CN0138_move <- 
+
+#### Individuals with at least two nesting attempts and first nest failed ----
+# CN0312 female, two nests, first abandoned, second predated (24-hour @ 0600)
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CN0312", map_year = 2019)
+
+F_CN0312_move_2wF <- 
   tag_data_move_wrangle(formatted_tag_data = 
                           lapply(tag_breeding_data_ceuta, 
-                                 function(x) subset(x, ring == "CN0138"))$tagging, 
+                                 function(x) subset(x, ring == "CN0312"))$tagging, 
+                        temporal_res = 1, 
+                        temporal_unit = "hours", 
+                        longitude_name = "lon", 
+                        latitude_name = "lat", 
+                        timestamp_name = "timestamp_local", 
+                        ind_name = "ring",
+                        projection = "+init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
+
+# CN0130 female, two nests, first nest abandoned but started second immediately (hatched) (24-hour @ 0600)
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CN0130", map_year = 2019)
+
+F_CN0130_move_2wF <- 
+  tag_data_move_wrangle(formatted_tag_data = 
+                          lapply(tag_breeding_data_ceuta, 
+                                 function(x) subset(x, ring == "CN0130"))$tagging, 
+                        temporal_res = 1, 
+                        temporal_unit = "hours", 
+                        longitude_name = "lon", 
+                        latitude_name = "lat", 
+                        timestamp_name = "timestamp_local", 
+                        ind_name = "ring",
+                        projection = "+init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
+
+# CN0937 female, two nests, first nest predated (PinPoint 20-min then 12-hour @ 1000/2200)
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CN0937", map_year = 2022)
+
+F_CN0937_move_2wF <- 
+  tag_data_move_wrangle(formatted_tag_data = 
+                          lapply(tag_breeding_data_ceuta, 
+                                 function(x) subset(x, ring == "CN0937"))$tagging, 
+                        temporal_res = 1, 
+                        temporal_unit = "hours", 
+                        longitude_name = "lon", 
+                        latitude_name = "lat", 
+                        timestamp_name = "timestamp_local", 
+                        ind_name = "ring",
+                        projection = "+init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
+
+#### Individuals with one nesting attempt and hatched ----
+# male, one nest hatched with brood care (96-hour @ 0000)
+tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
+                             bird_ring = "CA3315", map_year = 2018)
+
+M_CA3315_move_1wH <- 
+  tag_data_move_wrangle(formatted_tag_data = 
+                          lapply(tag_breeding_data_ceuta, 
+                                 function(x) subset(x, ring == "CA3315"))$tagging, 
                         temporal_res = 1, 
                         temporal_unit = "hours", 
                         longitude_name = "lon", 
@@ -194,7 +314,8 @@ CN0118_move <-
 nest_info <- 
   tag_breeding_data_ceuta$nests %>% 
   # filter(year(nest_initiation_date) == 2022 & cap_date > as.Date("2022-04-19")) %>% 
-  dplyr::select(ring, family_ID, nest_initiation_date, end_date, last_observation_alive, fate) %>% 
+  dplyr::select(ring, family_ID, nest_initiation_date, 
+                end_date, last_observation_alive, fate) %>% 
   distinct() %>% 
   mutate(year = year(nest_initiation_date))
 
@@ -209,18 +330,76 @@ brood_info <-
   mutate(year = year(min_date))
 
 #### make trajectories for each bird ----
-snpl_move_aligned_round_full <- 
+
+# dftraj_snpl_AM_PM <- 
+#   bind_rows(dftraj_snpl_AM, dftraj_snpl_PM) %>% 
+#   filter(ring %in% c("CN0423",
+#                      "CA3224",
+#                      "CN0422",
+#                      "CN0930",
+#                      "CN0318",
+#                      "CN0609",
+#                      "CN0918",
+#                      "CN0916",
+#                      "CA3340",
+#                      "CN0161",
+#                      "CN0138"))
+
+# reduced_2wH <- 
   tag_breeding_data_ceuta$tagging %>% 
+  filter(ring %in% c("CN0423",
+                     "CA3224",
+                     "CN0422",
+                     "CN0930",
+                     "CN0318",
+                     "CN0609",
+                     "CN0918",
+                     "CN0916",
+                     "CA3340",
+                     "CN0161",
+                     "CN0138")) %>% 
   mutate(rounded_time_hms = hms::as_hms(round(ymd_hms(timestamp_local, tz = "America/Mazatlan"), "hours")),
-         timestamp_local_ymd = as.Date(timestamp_local, tz = "America/Mazatlan"))
+         timestamp_local_ymd = as.Date(timestamp_local, tz = "America/Mazatlan")) %>% 
+  mutate(remove = ifelse(ring == "CA3224" & year(timestamp_local_ymd) == 2022, 1, 0)) %>% 
+  filter(remove == 0) %>% 
+  dplyr::select(-remove) %>% 
+  mutate(diff_time = hms::as_hms(ymd_hms(timestamp_local, tz = "America/Mazatlan")) - rounded_time_hms) %>% 
+  filter(diff_time < 1000 & diff_time > -1000) %>% 
+  mutate(keep = ifelse(ring %in% c("CN0423", "CA3340", "CA3224", 
+                                   "CN0930", "CN0916", "CN0609", "CN0918") & 
+                         as_hms(rounded_time_hms) %in% c(as_hms("22:00:00"), as_hms("10:00:00")), 1, 
+                       ifelse(ring %in% c("CN0138", "CN0422", "CN0318") & 
+                                as_hms(rounded_time_hms) %in% c(as_hms("23:00:00"), as_hms("06:00:00")), 1, 
+                              ifelse(ring %in% c("CN0161") & 
+                                       as_hms(rounded_time_hms) %in% c(as_hms("21:00:00"), as_hms("00:00:00"), as_hms("06:00:00"), as_hms("09:00:00")), 1, 0)))) %>% 
+  filter(keep == 1) %>% 
+  # filter(as_hms(rounded_time_hms) %in% c(as_hms("22:00:00"), as_hms("10:00:00"), 
+  #                                        as_hms("21:00:00"), as_hms("00:00:00"), as_hms("06:00:00"), as_hms("09:00:00"),
+  #                                        as_hms("23:00:00"), as_hms("06:00:00"))) %>% 
+  filter(timestamp_local_ymd > as.Date(paste(year(timestamp_local_ymd), "03-23", sep = "-")) & 
+           timestamp_local_ymd < as.Date(paste(year(timestamp_local_ymd), "08-01", sep = "-"))) %>%
+    filter(ring == "CN0916")
+  
+reduced_2wH %>% 
+  filter(ring == "CN0916")
+
+# snpl_move_aligned_round_full <- 
+#   tag_breeding_data_ceuta$tagging %>% 
+#   mutate(rounded_time_hms = hms::as_hms(round(ymd_hms(timestamp_local, tz = "America/Mazatlan"), "hours")),
+#          timestamp_local_ymd = as.Date(timestamp_local, tz = "America/Mazatlan"))
+  
+  
 
 # subset into morning and evening data
+snpl_move_aligned_round_full <- 
+  reduced_2wH
+
 snpl_move_aligned_round_AM <- 
-  snpl_move_aligned_round_full %>% 
+  reduced_2wH %>% 
   filter(night_fix == 0)
 
 snpl_move_aligned_round_PM <- 
-  snpl_move_aligned_round_full %>% 
+  reduced_2wH %>% 
   filter(night_fix == 1)
 
 # specify coordinate columns
@@ -275,23 +454,26 @@ dftraj_snpl_AM <-
                           ifelse(is.na(end_date) & 
                                    rounded_time_ymd >= nest_initiation_date & 
                                    rounded_time_ymd <= last_observation_alive, 1, 0)),
-         brooding = ifelse(rounded_time_ymd >= min_date & rounded_time_ymd <= max_date, 1, 0)) %>% 
+         brooding = ifelse(rounded_time_ymd >= min_date & rounded_time_ymd <= max_date, 1, 0),
+         between_nests = ifelse(!is.na(end_date) & family_ID.x == family_ID.y & rounded_time_ymd >= end_date, 1, 
+                                ifelse(is.na(end_date) & family_ID.x == family_ID.y & rounded_time_ymd >= last_observation_alive, 1, 
+                                       ifelse(family_ID.x != family_ID.y & rounded_time_ymd <= nest_initiation_date, 1, 0)))) %>% 
   group_by(ring, rounded_time_ymd) %>% 
   arrange(ring, rounded_time_ymd, desc(nesting), desc(brooding)) %>%
   slice(1) %>% 
   distinct() %>% 
   left_join(., tag_breeding_data_ceuta$tagging %>% dplyr::select(ring, sex) %>% distinct(), by = "ring") %>% 
   ungroup() %>% 
-  mutate(status = ifelse(rounded_time_ymd < as.Date(paste(year, "03-23", sep = "-")) |
-                           rounded_time_ymd > as.Date(paste(year, "08-01", sep = "-")), "non-breeding",
+  mutate(status = ifelse(nesting == 0 & is.na(between_nests), "between_nests",#rounded_time_ymd < as.Date(paste(year, "03-23", sep = "-")) |
+                         #rounded_time_ymd > as.Date(paste(year, "08-01", sep = "-")) | (nesting == 0 & is.na(between_nests)), "non-breeding",
                          ifelse(nesting == 1, "nesting", 
-                                ifelse(is.na(min_date), "unknown",
-                                       ifelse(brooding == 1, "brooding", "unknown"))))) #%>% filter(is.na(status)) %>% 
+                                # ifelse(is.na(min_date), "unknown",
+                                ifelse(between_nests == 1, "between_nests", "unknown")))) #%>% filter(is.na(status)) %>% 
   # dplyr::select(ring, rounded_time_ymd, year, sex,#family_ID.x, family_ID.y,
   #               min_date, max_date, nest_initiation_date,
   #               end_date, fate, nesting, brooding, status)
   
-dftraj_snpl_PM <- 
+dftraj_snpl_PM <-
   ld(ltraj_snpl_PM) %>% 
   dplyr::rename(distance = dist,
                 dispersion = R2n,
@@ -313,29 +495,117 @@ dftraj_snpl_PM <-
                           ifelse(is.na(end_date) & 
                                    rounded_time_ymd >= nest_initiation_date & 
                                    rounded_time_ymd <= last_observation_alive, 1, 0)),
-         brooding = ifelse(rounded_time_ymd >= min_date & rounded_time_ymd <= max_date, 1, 0)) %>% 
+         brooding = ifelse(rounded_time_ymd >= min_date & rounded_time_ymd <= max_date, 1, 0),
+         between_nests = ifelse(!is.na(end_date) & family_ID.x == family_ID.y & rounded_time_ymd >= end_date, 1, 
+                                ifelse(is.na(end_date) & family_ID.x == family_ID.y & rounded_time_ymd >= last_observation_alive, 1, 
+                                       ifelse(family_ID.x != family_ID.y & rounded_time_ymd <= nest_initiation_date, 1, 0)))) %>% 
   group_by(ring, rounded_time_ymd) %>% 
   arrange(ring, rounded_time_ymd, desc(nesting), desc(brooding)) %>%
   slice(1) %>% 
   distinct() %>% 
   left_join(., tag_breeding_data_ceuta$tagging %>% dplyr::select(ring, sex) %>% distinct(), by = "ring") %>% 
   ungroup() %>% 
-  mutate(status = ifelse(rounded_time_ymd < as.Date(paste(year, "03-23", sep = "-")) |
-                           rounded_time_ymd > as.Date(paste(year, "08-01", sep = "-")), "non-breeding",
+  mutate(status = ifelse(nesting == 0 & is.na(between_nests), "between_nests",#rounded_time_ymd < as.Date(paste(year, "03-23", sep = "-")) |
+                           #rounded_time_ymd > as.Date(paste(year, "08-01", sep = "-")) | (nesting == 0 & is.na(between_nests)), "non-breeding",
                          ifelse(nesting == 1, "nesting", 
-                                ifelse(is.na(min_date), "unknown",
-                                       ifelse(brooding == 1, "brooding", "unknown")))))
+                                # ifelse(is.na(min_date), "unknown",
+                                ifelse(between_nests == 1, "between_nests", "unknown"))))
+
+dftraj_snpl_full <-
+  ld(ltraj_snpl_full) %>% 
+  dplyr::rename(distance = dist,
+                dispersion = R2n,
+                cardinal_angle = abs.angle,
+                relative_angle = rel.angle,
+                ring = id) %>% 
+  mutate(distance_m = distance * 100000) %>% 
+  mutate(cum_distance = cumsum(distance_m)) %>% 
+  mutate(rounded_time_hms = hms::as_hms(date),
+         rounded_time_ymd = as.Date(date, 
+                                    tz = "America/Mazatlan"),
+         dataset = "full",
+         year = year(rounded_time_ymd)) %>%
+  left_join(., brood_info, by = c("ring", "year")) %>% 
+  left_join(., nest_info, by = c("ring", "year")) %>% 
+  mutate(nesting = ifelse(!is.na(end_date) & 
+                            rounded_time_ymd >= nest_initiation_date & 
+                            rounded_time_ymd <= end_date, 1, 
+                          ifelse(is.na(end_date) & 
+                                   rounded_time_ymd >= nest_initiation_date & 
+                                   rounded_time_ymd <= last_observation_alive, 1, 0)),
+         brooding = ifelse(rounded_time_ymd >= min_date & rounded_time_ymd <= max_date, 1, 0),
+         between_nests = ifelse(!is.na(end_date) & family_ID.x == family_ID.y & rounded_time_ymd >= end_date, 1, 
+                                ifelse(is.na(end_date) & family_ID.x == family_ID.y & rounded_time_ymd >= last_observation_alive, 1, 
+                                       ifelse(family_ID.x != family_ID.y & rounded_time_ymd <= nest_initiation_date, 1, 0)))) %>% 
+  group_by(ring, rounded_time_ymd) %>% 
+  arrange(ring, rounded_time_ymd, desc(nesting), desc(brooding)) %>% 
+  left_join(., tag_breeding_data_ceuta$tagging %>% dplyr::select(ring, sex) %>% distinct(), by = "ring")
+
+dftraj_snpl_full %>%
+  filter(ring %in% c("CN0161", "CN0423", "CA3340", "CA3224", 
+                     "CN0930", "CN0916", "CN0609", "CN0918")) %>% 
+  # dplyr::select(ring, rounded_time_ymd, year, sex, family_ID.x, family_ID.y,
+  #               min_date, max_date, nest_initiation_date, dataset, distance_m,
+  #               end_date, fate, nesting, brooding, between_nests) %>% 
+  # distinct() %>% 
+  filter(ring == "CN0916")
+  group_by(ring, rounded_time_ymd) %>% summarise(n_obs = n()) %>% arrange(desc(n_obs))
+  slice(c(1)) %>% 
+  left_join(., tag_breeding_data_ceuta$tagging %>% dplyr::select(ring, sex) %>% distinct(), by = "ring") %>% 
+  ungroup() %>% 
+  mutate(status = ifelse(nesting == 0 & is.na(between_nests), "between_nests",#rounded_time_ymd < as.Date(paste(year, "03-23", sep = "-")) |
+                         #rounded_time_ymd > as.Date(paste(year, "08-01", sep = "-")) | (nesting == 0 & is.na(between_nests)), "non-breeding",
+                         ifelse(nesting == 1, "nesting", 
+                                # ifelse(is.na(min_date), "unknown",
+                                ifelse(between_nests == 1, "between_nests", "unknown"))))
+
 
 # bind together
 dftraj_snpl_AM_PM <- 
-  bind_rows(dftraj_snpl_AM, dftraj_snpl_PM)
+  bind_rows(dftraj_snpl_AM, dftraj_snpl_PM) %>% 
+  filter(ring %in% c("CN0423",
+                     "CA3224",
+                     "CN0422",
+                     "CN0930",
+                     "CN0318",
+                     "CN0609",
+                     "CN0918",
+                     "CN0916",
+                     "CA3340",
+                     "CN0161",
+                     "CN0138"))
 
 dftraj_snpl_AM_PM %>% 
-  mutate(status = )
+  mutate(status = factor(status, 
+                         levels = c("nesting", "between_nests", 
+                                    "non-breeding", "unknown"))) %>% 
   ggplot() +
-  geom_boxplot(aes(x = status, y = log(distance_m), fill = sex)) +
+  geom_boxplot(aes(x = status, y = distance_m, fill = sex)) +
   facet_grid(dataset ~ .)
-  
+
+sex_status_diel_step_length_mod <- 
+  lmer(log(distance_m) ~ sex * status + dataset + (1|ring), 
+       data = dftraj_snpl_AM_PM)
+
+# run tidy bootstrap to obtain model diagnostics
+tidy_sex_status_diel_step_length_mod <-
+  tidy(sex_status_diel_step_length_mod, 
+       conf.int = TRUE, 
+       conf.method = "boot", 
+       nsim = 1000)
+
+tidy_sex_status_diel_step_length_mod
+
+predicted_values<- 
+  modelr::data_grid(data = dftraj_snpl_AM_PM, sex, status, dataset, ring) %>% 
+  modelr::add_predictions(sex_status_diel_step_length_mod)
+
+
+predicted_values %>% 
+  ggplot(aes(status, pred, color = sex)) +
+  geom_line() +
+  geom_boxplot(data = dftraj_snpl_AM_PM, aes(status, log(distance_m), color = sex)) +
+  facet_grid(dataset ~ .)
 
 #### summarise breeding events for pair ----
 # extract data for each focal bird
@@ -487,32 +757,37 @@ ltraj_snpl_pair_PM <-
            proj4string = CRS("+init=epsg:4326"))
 
 # convert to dataframes
-# dftraj_snpl_pair_full <- 
-#   ld(ltraj_snpl_pair_full) %>% 
-#   dplyr::rename(distance = dist,
-#                 dispersion = R2n,
-#                 cardinal_angle = abs.angle,
-#                 relative_angle = rel.angle,
-#                 ring = id) %>% 
-#   mutate(distance_m = distance * 100000) %>% 
-#   group_by(ring) %>% 
-#   mutate(cum_distance = cumsum(distance_m)) %>% 
-#   mutate(rounded_time_hms = hms::as_hms(date),
-#          rounded_time_ymd = as.Date(date, 
-#                                     tz = "America/Mazatlan"),
-#          dataset = "full") %>% 
-#   left_join(., snpl_pair_brood_info, by = "ring") %>% 
-#   left_join(., snpl_pair_nest_info, by = "ring") %>% 
-#   mutate(nesting = ifelse(rounded_time_ymd >= nest_initiation_date & rounded_time_ymd <= end_date, 1, 0),
-#          brooding = ifelse(rounded_time_ymd >= min_date & rounded_time_ymd <= max_date, 1, 0)) %>% 
-#   group_by(ring, date) %>% 
-#   arrange(ring, date, desc(nesting), desc(brooding)) %>%
-#   slice(c(1,3)) %>%
-#   dplyr::select(ring, rounded_time_ymd, family_ID.x, family_ID.y,
-#                 min_date, max_date, nest_initiation_date,
-#                 end_date, fate, nesting, brooding) %>%
-#   distinct() %>% 
-#   left_join(., snpl_pair$tagging %>% dplyr::select(ring, sex) %>% distinct(), by = "ring") 
+dftraj_snpl_pair_full <-
+  ld(ltraj_snpl_pair_full) %>%
+  dplyr::rename(distance = dist,
+                dispersion = R2n,
+                cardinal_angle = abs.angle,
+                relative_angle = rel.angle,
+                ring = id) %>% 
+  mutate(distance_m = distance * 100000) %>% 
+  group_by(ring) %>% 
+  mutate(cum_distance = cumsum(distance_m)) %>% 
+  mutate(rounded_time_hms = hms::as_hms(date),
+         rounded_time_ymd = as.Date(date, 
+                                    tz = "America/Mazatlan"),
+         dataset = "full",
+         year = year(rounded_time_ymd)) %>%
+  left_join(., brood_info, by = c("ring", "year")) %>% 
+  left_join(., nest_info, by = c("ring", "year")) %>% 
+  mutate(nesting = ifelse(rounded_time_ymd >= nest_initiation_date & rounded_time_ymd < end_date, 1, 0),
+         # brooding = ifelse(rounded_time_ymd >= min_date & rounded_time_ymd <= max_date, 1, 0),
+         between_nests = ifelse(family_ID.x == family_ID.y & rounded_time_ymd >= end_date, 1, 
+                                ifelse(family_ID.x != family_ID.y & rounded_time_ymd <= nest_initiation_date, 1, 0))) %>% 
+  # arrange(rounded_time_ymd)
+  group_by(ring, rounded_time_ymd) %>%
+  arrange(ring, rounded_time_ymd, desc(nesting), desc(between_nests)) %>%
+  slice(c(1, 3)) %>%
+  # dplyr::select(ring, rounded_time_ymd, family_ID.x, family_ID.y,
+  #               min_date, max_date, nest_initiation_date,
+  #               end_date, fate, nesting, #brooding, 
+  #               between_nests) %>%
+  distinct() %>% 
+  left_join(., snpl_pair$tagging %>% dplyr::select(ring, sex) %>% distinct(), by = "ring") #%>% arrange(desc(between_nests))
 
 dftraj_snpl_pair_AM <-
   ld(ltraj_snpl_pair_AM) %>% 
@@ -527,21 +802,26 @@ dftraj_snpl_pair_AM <-
   mutate(rounded_time_hms = hms::as_hms(date),
          rounded_time_ymd = as.Date(date, 
                                     tz = "America/Mazatlan"),
-         dataset = "split") %>% 
-  left_join(., snpl_pair_brood_info, by = "ring") %>% 
-  left_join(., snpl_pair_nest_info, by = "ring") %>% 
-  mutate(nesting = ifelse(rounded_time_ymd >= nest_initiation_date & rounded_time_ymd <= end_date, 1, 0),
-         brooding = ifelse(rounded_time_ymd >= min_date & rounded_time_ymd <= max_date, 1, 0)) %>% 
-  group_by(ring, rounded_time_ymd) %>% 
-  arrange(ring, rounded_time_ymd, desc(nesting), desc(brooding)) %>%
-  slice(1) %>% 
-  # dplyr::select(ring, rounded_time_ymd, family_ID.x, family_ID.y, 
-  #               min_date, max_date, nest_initiation_date, 
-  #               end_date, fate, nesting, brooding) %>% 
+         dataset = "AM",
+         year = year(rounded_time_ymd)) %>%
+  left_join(., brood_info, by = c("ring", "year")) %>% 
+  left_join(., nest_info, by = c("ring", "year")) %>% 
+  mutate(nesting = ifelse(rounded_time_ymd >= nest_initiation_date & rounded_time_ymd < end_date, 1, 0),
+         # brooding = ifelse(rounded_time_ymd >= min_date & rounded_time_ymd <= max_date, 1, 0),
+         between_nests = ifelse(family_ID.x == family_ID.y & rounded_time_ymd >= end_date, 1, 
+                                ifelse(family_ID.x != family_ID.y & rounded_time_ymd <= nest_initiation_date, 1, 0))) %>% 
+  # arrange(rounded_time_ymd)
+  group_by(ring, rounded_time_ymd) %>%
+  arrange(ring, rounded_time_ymd, desc(nesting), desc(between_nests)) %>%
+  slice(1) %>%
+  # dplyr::select(ring, rounded_time_ymd, family_ID.x, family_ID.y,
+  #               min_date, max_date, nest_initiation_date,
+  #               end_date, fate, nesting, #brooding, 
+  #               between_nests) %>%
   distinct() %>% 
-  left_join(., snpl_pair$tagging %>% dplyr::select(ring, sex) %>% distinct(), by = "ring")
+  left_join(., snpl_pair$tagging %>% dplyr::select(ring, sex) %>% distinct(), by = "ring") #%>% arrange(desc(between_nests))
 
-dftraj_snpl_pair_PM <- 
+dftraj_snpl_pair_PM <-
   ld(ltraj_snpl_pair_PM) %>% 
   dplyr::rename(distance = dist,
                 dispersion = R2n,
@@ -554,27 +834,47 @@ dftraj_snpl_pair_PM <-
   mutate(rounded_time_hms = hms::as_hms(date),
          rounded_time_ymd = as.Date(date, 
                                     tz = "America/Mazatlan"),
-         dataset = "split") %>% 
-  left_join(., snpl_pair_brood_info, by = "ring") %>% 
-  left_join(., snpl_pair_nest_info, by = "ring") %>% 
-  mutate(nesting = ifelse(rounded_time_ymd >= nest_initiation_date & rounded_time_ymd <= end_date, 1, 0),
-         brooding = ifelse(rounded_time_ymd >= min_date & rounded_time_ymd <= max_date, 1, 0)) %>% 
-  group_by(ring, rounded_time_ymd) %>% 
-  arrange(ring, rounded_time_ymd, desc(nesting), desc(brooding)) %>%
-  slice(1) %>% 
-  # dplyr::select(ring, rounded_time_ymd, family_ID.x, family_ID.y, 
-  #               min_date, max_date, nest_initiation_date, 
-  #               end_date, fate, nesting, brooding) %>% 
+         dataset = "PM",
+         year = year(rounded_time_ymd)) %>%
+  left_join(., brood_info, by = c("ring", "year")) %>% 
+  left_join(., nest_info, by = c("ring", "year")) %>% 
+  mutate(nesting = ifelse(rounded_time_ymd >= nest_initiation_date & rounded_time_ymd < end_date, 1, 0),
+        # brooding = ifelse(rounded_time_ymd >= min_date & rounded_time_ymd <= max_date, 1, 0),
+         between_nests = ifelse(family_ID.x == family_ID.y & rounded_time_ymd >= end_date, 1, 
+                                ifelse(family_ID.x != family_ID.y & rounded_time_ymd <= nest_initiation_date, 1, 0))) %>% 
+    # arrange(rounded_time_ymd)
+  group_by(ring, rounded_time_ymd) %>%
+  arrange(ring, rounded_time_ymd, desc(nesting), desc(between_nests)) %>%
+  slice(1) %>%
+  # dplyr::select(ring, rounded_time_ymd, family_ID.x, family_ID.y,
+  #               min_date, max_date, nest_initiation_date,
+  #               end_date, fate, nesting, #brooding, 
+  #               between_nests) %>%
   distinct() %>% 
-  left_join(., snpl_pair$tagging %>% dplyr::select(ring, sex) %>% distinct(), by = "ring")
+  left_join(., snpl_pair$tagging %>% dplyr::select(ring, sex) %>% distinct(), by = "ring") #%>% arrange(desc(between_nests))
 
 # bind together
 dftraj_snpl_pair <- 
-  bind_rows(#dftraj_snpl_pair_full, 
+  bind_rows(dftraj_snpl_pair_full, 
             dftraj_snpl_pair_AM, dftraj_snpl_pair_PM) %>% 
   ungroup() %>% 
-  mutate(status = ifelse(nesting == 1, "nesting", 
-                         ifelse(brooding == 1, "brooding", "unknown")))
+  mutate(status = ifelse(rounded_time_ymd < as.Date(paste(year, "03-23", sep = "-")) |
+                           rounded_time_ymd > as.Date(paste(year, "08-01", sep = "-")), "non-breeding",
+                         ifelse(nesting == 1, "nesting", 
+                                # ifelse(is.na(min_date), "unknown",
+                                       ifelse(between_nests == 1, "between_nests", "unknown"))))
+
+# inspect status-, sex-, and time-specific step-length histograms
+dftraj_snpl_pair %>% 
+  mutate(status = factor(status, 
+                         levels = c("nesting", "between_nests", 
+                                    "unknown", "non-breeding")),
+         dataset = factor(dataset, c("AM", "PM", "full"))) %>% 
+  ggplot() +
+  geom_boxplot(aes(x = status, y = log(distance_m), fill = sex)) +
+  facet_grid(dataset ~ .)
+
+table(dftraj_snpl_pair$status, dftraj_snpl_pair$sex)
 
 # inspect status-, sex-, and time-specific step-length histograms
 dftraj_snpl_pair %>% 

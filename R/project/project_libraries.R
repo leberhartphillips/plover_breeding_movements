@@ -12,7 +12,7 @@ packages_required_in_project <-
     "leaflet.extras2", "leaflet", "RColorBrewer", "adehabitatLT", 
     "lubridate", "RSQLite", "tidyverse", "sf", "ctmm", "readxl", 
     "geosphere", "hms", "mgcv", "mapview", "geosphere", "ctmm", "moveVis", 
-    "move", "scales", "recurse", "suncalc", "dismo", "rgeos", "nestR", "activity", "bpnreg", "gratia", "circlize"#, "Actigraphy"
+    "move", "scales", "recurse", "suncalc", "dismo", "rgeos", "nestR", "activity", "bpnreg", "gratia", "circlize", "lme4"#, "Actigraphy"
     #, "rmdformats", "webshot2"
     )
 

@@ -31,7 +31,7 @@ tagging_data_ceuta <-
   dplyr::filter(code.x == code.y) %>% 
   dplyr::select(-code.y) %>% 
   dplyr::rename(code = code.x) %>% 
-  dplyr::mutate(time_diff = first_fix - date) %>% 
+  dplyr::mutate(time_diff = as.numeric(first_fix - date)) %>% 
   dplyr::filter(time_diff > -1) %>%
   dplyr::arrange(ring, time_diff) %>% 
   dplyr::group_by(ring, tag_ID) %>% 
@@ -123,9 +123,29 @@ tag_resight_data_ceuta <-
   dplyr::select(-c(resight_date, time, obs_lon, obs_lat, distance, degree)) %>% 
   st_drop_geometry()
 
+# add nest info of 2nd nest for female CN0161 discovered by nestR
+CN0161_nest2_2018 <- 
+  data.frame(species = "SNPL",
+             ring = "CN0161",
+             tag_ID = "PP48669",
+             code = "MX.RW|YX.LX",
+             sex = "F",
+             first_fix = as.Date("2018-04-26"),
+             last_fix = as.Date("2018-06-10"),
+             deploy_nest_ID = "2018_C_301",
+             cap_date = as.Date("2018-04-26"),
+             time_diff = 0,
+             family_ID = "2018_H_nestR_1",
+             nest_initiation_date = as.Date("2018-05-15"),
+             end_date = as.Date("2018-06-10"),
+             last_observation_alive = as.Date("2018-06-10"),
+             fate = "Hatch",
+             lon = -106.973,
+             lat = 23.93627)
+
 # bind all ceuta breeding and tagging data into a single list
 tag_breeding_data_ceuta <- 
-  list(nests = tag_nest_data_ceuta,
+  list(nests = bind_rows(tag_nest_data_ceuta, CN0161_nest2_2018),
        broods = tag_brood_data_ceuta,
        resights = tag_resight_data_ceuta,
        tagging = plover_tagging_df %>% dplyr::filter(population == "ceuta" & species == "SNPL"))
