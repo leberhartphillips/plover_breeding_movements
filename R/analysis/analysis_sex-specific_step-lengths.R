@@ -549,6 +549,21 @@ dftraj_snpl_full %>%
   geom_boxplot(aes(x = status, y = log(distance_m), fill = sex)) +
   facet_grid(dataset ~ .)
 
+dftraj_snpl_full %>% 
+  filter(status == "between_nests") %>% 
+  group_by(ring, sex) %>% 
+  dplyr::summarise(min_date = min(date)) %>%
+  left_join(dftraj_snpl_full %>% filter(status == "between_nests") %>% dplyr::select(ring, distance_m, date),. ) %>% 
+  group_by(ring) %>% 
+  mutate(cum_distance = cumsum(distance_m),
+         date_diff = date - min_date) %>%
+  mutate(date_diff = round(((as.numeric(date_diff)/60)/60/24))) %>% 
+  # remove all NA rows
+  filter(!is.na(cum_distance)) %>% 
+  ggplot() +
+  geom_line(aes(x = date_diff, y = cum_distance, group = ring, color = sex),
+            alpha = 1)
+
 # bind together
 dftraj_snpl_AM_PM <- 
   bind_rows(dftraj_snpl_AM, dftraj_snpl_PM) %>% 
