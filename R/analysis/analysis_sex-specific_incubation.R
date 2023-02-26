@@ -294,16 +294,17 @@ population_sunlighttimes %>%
 
 gettime(CM1858_dist_to_nest$sunrise[1], scale = "radian") * 180/pi
 gettime(CM1858_dist_to_nest$sunset[1], scale = "radian") * 180/pi
-
+# "#be9c2e""#016392"
 # test circlize figure
 sectors = letters[1]
-circos.initialize(sectors, xlim = c(0, 60*60*24))
-circos.trackPlotRegion(ylim = c(0, log(10500)), 
-                       track.height = 0.8, 
+circos.par("gap.degree" = 0, "cell.padding" = c(0, 0, 0, 0), "start.degree" = 90)
+circos.initialize(sectors, xlim = c(0, 60*60*24), )
+circos.trackPlotRegion(ylim = c(0, log(15000)), 
+                       track.height = 0.8, bg.border = NA, 
                        panel.fun = function(x, y) {
-  draw.sector(start.degree = gettime(CM1858_dist_to_nest$sunrise[1], scale = "radian") * 180/pi, 
-              end.degree = gettime(CM1858_dist_to_nest$sunset[1], scale = "radian") * 180/pi, 
-              col = alpha("#0570b0", 0.75), border = NA)
+  draw.sector(start.degree = gettime(CM1858_dist_to_nest$sunrise[1], scale = "radian") * 180/pi + 57, 
+              end.degree = gettime(CM1858_dist_to_nest$sunset[1], scale = "radian") * 180/pi + 57, 
+              col = alpha("grey70", 0.75), border = NA)
   F_d1 = c(filter(dist_to_nest_mod_predicts, sex == "F" & species == "SNPL") %>% pull(seconds_of_day),
          filter(dist_to_nest_mod_predicts, sex == "F" & species == "SNPL") %>% pull(seconds_of_day) %>% rev())
   F_d2 = c(filter(dist_to_nest_mod_predicts, sex == "F" & species == "SNPL") %>% pull(upper),
@@ -312,11 +313,11 @@ circos.trackPlotRegion(ylim = c(0, log(10500)),
            filter(dist_to_nest_mod_predicts, sex == "M" & species == "SNPL") %>% pull(seconds_of_day) %>% rev())
   M_d2 = c(filter(dist_to_nest_mod_predicts, sex == "M" & species == "SNPL") %>% pull(upper),
            filter(dist_to_nest_mod_predicts, sex == "M" & species == "SNPL") %>% pull(lower) %>% rev())
-  circos.polygon(F_d1, F_d2, col = alpha("#D95F02", 0.5), border = NA)
+  circos.polygon(F_d1, F_d2, col = alpha("#be9c2e", 0.5), border = NA)
   circos.lines(filter(dist_to_nest_mod_predicts, sex == "F" & species == "SNPL") %>% pull(seconds_of_day),
                filter(dist_to_nest_mod_predicts, sex == "F" & species == "SNPL") %>% pull(fit),
                col = "white")
-  circos.polygon(M_d1, M_d2, col = alpha("#1B9E77", 0.5), border = NA)
+  circos.polygon(M_d1, M_d2, col = alpha("#016392", 0.5), border = NA)
   circos.lines(filter(dist_to_nest_mod_predicts, sex == "M" & species == "SNPL") %>% pull(seconds_of_day),
                filter(dist_to_nest_mod_predicts, sex == "M" & species == "SNPL") %>% pull(fit),
                col = "white")
@@ -338,14 +339,15 @@ circos.trackPlotRegion(ylim = c(0, log(10500)),
                 cex = 1,
                 col = alpha("#1B9E77", 0.5),
                 pch = 19)
-  circos.axis(major.at = c(0, 60*60*1, 60*60*2, 60*60*3, 60*60*4, 60*60*5, 60*60*6,
+  circos.xaxis(major.at = c(0, 60*60*1, 60*60*2, 60*60*3, 60*60*4, 60*60*5, 60*60*6,
                            60*60*7, 60*60*8, 60*60*9, 60*60*10, 60*60*11, 60*60*12,
                            60*60*13, 60*60*14, 60*60*15, 60*60*16, 60*60*17,
                            60*60*18, 60*60*19, 60*60*20, 60*60*21, 60*60*22,
                            60*60*23, 60*60*24),
               labels = c("Midnight", as.character(c(1:11)), "Noon", as.character(c(13:23))),
               major.tick.length = 0.5, minor.ticks = 0)
-  # circos.yaxis()
+  circos.yaxis(at = c(0, log(10), log(100), log(1000), log(10000)),
+               labels = c("0", "10", "100", "1000", "10000"))
   
 
 })

@@ -1,0 +1,33 @@
+---
+title: "Maximizing behavioural inferences while minimizing tag weight in small-bodied animals"
+author: "Luke Eberhart-Hertel, Medardo Cruz-López, and Clemens Küpper"
+format: html
+editor: visual
+---
+
+## Introduction
+
+The rise in recent technological developments for animal tracking has provided exciting advances in the field of movement ecology, with countless studies documenting never-before seen behaviours of elusive wildlife and record-breaking migrations of globetrotting animals dwelling in remote corners of our planet. For example, BIG ANIMAL example 1, BIG ANIMAL example 2, etc. Although these studies have broken new ground in methodological approaches for decomposing between- and among-individual variation in space-use, such investigations have been limited to large-bodied species capable of safely wearing devices equipped with large enough batteries able to withstand the high sampling-rate required to converge complex individual-based hierarchical models. To-date, the vast majority of animal species are still too small for the technologies needed to appropriately feed these data-hungry analytical methods (TABLE of body size histograms for different clades). Here, we provide field-tested insights on how to maximize inference of individual breeding behaviour in small-bodied animals while minimizing tag weight and energy usage. Our aim is offer movement ecologists guidance on how to schedule the sampling interval of their devices to optimally collect animal locations for individual-based investigations on breeding behaviour when limited to archival GPS tags weighing 1g.
+
+## Analyses
+
+### Diel shifts in sex-roles during incubation
+
+'Distance to nest' \~ 'sex' + 'species' + 'time of day' + (1\|ring)
+
+Demonstrate across multiple species that males are more likely to be close to the nest during the night and females are more likely to be close to the nest during the day. Rationale: find diel times when nest attendance is highest or lowest so that the sampling interval captures these two periods.
+
+### Sex-specific movement traits after hatch 
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
