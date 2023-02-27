@@ -31,13 +31,13 @@ P01902_dist_to_nest <-
                     tag_and_breeding_data = tag_breeding_data_tagus, 
                     local_time_zone = "Europe/Lisbon", 
                     focal_year = 2021, focal_nest_ID = "BC02") 
-P01902_dist_to_nest %>% 
-  ggplot(.) +
-  geom_boxplot(aes(x = hms::as_hms(rounded_hour),
-                   y = dist_from_nest, group = rounded_hour))
-
-ggplot(data = P01902_dist_to_nest) +
-  geom_histogram(aes(log(dist_from_nest)))
+# P01902_dist_to_nest %>% 
+#   ggplot(.) +
+#   geom_boxplot(aes(x = hms::as_hms(rounded_hour),
+#                    y = dist_from_nest, group = rounded_hour))
+# 
+# ggplot(data = P01902_dist_to_nest) +
+#   geom_histogram(aes(log(dist_from_nest)))
 
 # Female SNPL CM1858
 CM1858_dist_to_nest <- 
@@ -45,13 +45,13 @@ CM1858_dist_to_nest <-
                     tag_and_breeding_data = tag_breeding_data_ceuta, 
                     local_time_zone = "America/Mazatlan", 
                     focal_year = 2022, cut_time = "2022-06-13 07:00:00") 
-CM1858_dist_to_nest %>% 
-  ggplot(.) +
-  geom_boxplot(aes(x = hms::as_hms(rounded_hour),
-                   y = dist_from_nest, group = rounded_hour))
-
-ggplot(data = CM1858_dist_to_nest) +
-  geom_histogram(aes(log(dist_from_nest)))
+# CM1858_dist_to_nest %>% 
+#   ggplot(.) +
+#   geom_boxplot(aes(x = hms::as_hms(rounded_hour),
+#                    y = dist_from_nest, group = rounded_hour))
+# 
+# ggplot(data = CM1858_dist_to_nest) +
+#   geom_histogram(aes(log(dist_from_nest)))
 
 # Female SNPL CA3224
 CA3224_dist_to_nest <- 
@@ -59,13 +59,13 @@ CA3224_dist_to_nest <-
                     tag_and_breeding_data = tag_breeding_data_ceuta, 
                     local_time_zone = "America/Mazatlan", 
                     focal_year = 2022, cut_time = "2022-04-21 07:00:00")
-CA3224_dist_to_nest %>% 
-  ggplot(.) +
-  geom_boxplot(aes(x = hms::as_hms(rounded_hour),
-                   y = dist_from_nest, group = rounded_hour))
-
-ggplot(data = CA3224_dist_to_nest) +
-  geom_histogram(aes(log(dist_from_nest)))
+# CA3224_dist_to_nest %>% 
+#   ggplot(.) +
+#   geom_boxplot(aes(x = hms::as_hms(rounded_hour),
+#                    y = dist_from_nest, group = rounded_hour))
+# 
+# ggplot(data = CA3224_dist_to_nest) +
+#   geom_histogram(aes(log(dist_from_nest)))
 
 # Female SNPL CN0937
 CN0937_dist_to_nest <- 
@@ -73,13 +73,13 @@ CN0937_dist_to_nest <-
                     tag_and_breeding_data = tag_breeding_data_ceuta, 
                     local_time_zone = "America/Mazatlan", 
                     focal_year = 2022, cut_time = "2022-05-06 07:00:00") 
-CN0937_dist_to_nest %>% 
-  ggplot(.) +
-  geom_boxplot(aes(x = hms::as_hms(rounded_hour),
-                   y = dist_from_nest, group = rounded_hour))
-
-ggplot(data = CN0937_dist_to_nest) +
-  geom_histogram(aes(log(dist_from_nest)))
+# CN0937_dist_to_nest %>% 
+#   ggplot(.) +
+#   geom_boxplot(aes(x = hms::as_hms(rounded_hour),
+#                    y = dist_from_nest, group = rounded_hour))
+# 
+# ggplot(data = CN0937_dist_to_nest) +
+#   geom_histogram(aes(log(dist_from_nest)))
 
 # Male SNPL CA3340 from 2022 (PinPoint 20-min then 12-hour @ 1000/2200) perfect circadian incubation pattern
 CA3340_dist_to_nest <- 
@@ -87,13 +87,13 @@ CA3340_dist_to_nest <-
                     tag_and_breeding_data = tag_breeding_data_ceuta, 
                     local_time_zone = "America/Mazatlan", 
                     focal_year = 2022, cut_time = "2022-04-22 07:00:00") 
-CA3340_dist_to_nest %>% 
-  ggplot(.) +
-  geom_boxplot(aes(x = hms::as_hms(rounded_hour),
-                   y = dist_from_nest, group = rounded_hour))
-
-ggplot(data = CA3340_dist_to_nest) +
-  geom_histogram(aes(log(dist_from_nest)))
+# CA3340_dist_to_nest %>% 
+#   ggplot(.) +
+#   geom_boxplot(aes(x = hms::as_hms(rounded_hour),
+#                    y = dist_from_nest, group = rounded_hour))
+# 
+# ggplot(data = CA3340_dist_to_nest) +
+#   geom_histogram(aes(log(dist_from_nest)))
 
 # Male SNPL CN0066 from 2022 (PinPoint 20-min) decent circadian incubation pattern, but reduced sample
 CN0066_dist_to_nest <- 
@@ -101,10 +101,10 @@ CN0066_dist_to_nest <-
                     tag_and_breeding_data = tag_breeding_data_ceuta, 
                     local_time_zone = "America/Mazatlan", 
                     focal_year = 2022, cut_time = "2022-05-03 07:00:00") 
-CN0066_dist_to_nest %>% 
-  ggplot(.) +
-  geom_boxplot(aes(x = hms::as_hms(rounded_hour),
-                   y = dist_from_nest, group = rounded_hour))
+# CN0066_dist_to_nest %>% 
+#   ggplot(.) +
+#   geom_boxplot(aes(x = hms::as_hms(rounded_hour),
+#                    y = dist_from_nest, group = rounded_hour))
 
 # Male KEPL D59946 great circadian incubation pattern
 D59946_dist_to_nest <- 
@@ -112,10 +112,10 @@ D59946_dist_to_nest <-
                     tag_and_breeding_data = tag_breeding_data_tagus, 
                     local_time_zone = "Europe/Lisbon", 
                     focal_year = 2021, focal_nest_ID = "BC06") 
-D59946_dist_to_nest %>% 
-  ggplot(.) +
-  geom_boxplot(aes(x = hms::as_hms(rounded_hour),
-                   y = dist_from_nest, group = rounded_hour))
+# D59946_dist_to_nest %>% 
+#   ggplot(.) +
+#   geom_boxplot(aes(x = hms::as_hms(rounded_hour),
+#                    y = dist_from_nest, group = rounded_hour))
 
 # Male KEPL P01903 decent circadian incubation pattern
 P01903_dist_to_nest <- 
@@ -123,10 +123,10 @@ P01903_dist_to_nest <-
                     tag_and_breeding_data = tag_breeding_data_tagus, 
                     local_time_zone = "Europe/Lisbon", 
                     focal_year = 2021, focal_nest_ID = "BC03") 
-P01903_dist_to_nest %>% 
-  ggplot(.) +
-  geom_boxplot(aes(x = hms::as_hms(rounded_hour),
-                   y = dist_from_nest, group = rounded_hour))
+# P01903_dist_to_nest %>% 
+#   ggplot(.) +
+#   geom_boxplot(aes(x = hms::as_hms(rounded_hour),
+#                    y = dist_from_nest, group = rounded_hour))
 
 # bind all datasets together and select columns of interest
 tagus_data <- 
@@ -182,7 +182,6 @@ population_sunlighttimes <-
 
 # fit a GAMM
 # distance from nest was log transformed modeled as a Gaussian distribution
-# 
 dist_to_nest_mod <- 
   gam(log(dist_from_nest) ~ sex + species +
         s(seconds_of_day, by = interaction(sex, species), bs = "cc") + 
@@ -191,11 +190,8 @@ dist_to_nest_mod <-
 
 draw(dist_to_nest_mod, parametric = FALSE)
 
-hist(log(all_data$dist_from_nest))
 ggplot(data = all_data) +
   geom_histogram(aes(log(dist_from_nest)), bins = 15)
-
-exp(5)
 
 newdata_seconds_sex <- 
   expand.grid(seconds_of_day = seq(1, 60*60*24),
@@ -224,30 +220,54 @@ species_pop_labels <- c(
 )
 
 ggplot() +
+  # geom_rect(data = population_sunlighttimes,
+  #           aes(xmin = 0, xmax = hms::as_hms(mean_nightEnd), ymin = 0, ymax = Inf),
+  #           fill = "#023858", alpha = 0.75) +
+  # geom_rect(data = population_sunlighttimes,
+  #           aes(xmin = hms::as_hms(mean_nightEnd), xmax = hms::as_hms(mean_nauticalDawn), ymin = 0, ymax = Inf),
+  #           fill = "#045a8d", alpha = 0.75) +
+  # geom_rect(data = population_sunlighttimes,
+  #           aes(xmin = hms::as_hms(mean_nauticalDawn), xmax = hms::as_hms(mean_dawn), ymin = 0, ymax = Inf),
+  #           fill = "#0570b0", alpha = 0.75) +
+  # geom_rect(data = population_sunlighttimes,
+  #           aes(xmin = hms::as_hms(mean_dawn), xmax = hms::as_hms(mean_sunrise), ymin = 0, ymax = Inf),
+  #           fill = "#3690c0", alpha = 0.75) +
+  # geom_rect(data = population_sunlighttimes,
+  #           aes(xmin = hms::as_hms(mean_sunset), xmax = hms::as_hms(mean_dusk), ymin = 0, ymax = Inf),
+  #           fill = "#3690c0", alpha = 0.75) +
+  # geom_rect(data = population_sunlighttimes,
+  #           aes(xmin = hms::as_hms(mean_dusk), xmax = hms::as_hms(mean_nauticalDusk), ymin = 0, ymax = Inf),
+  #           fill = "#0570b0", alpha = 0.75) +
+  # geom_rect(data = population_sunlighttimes,
+  #           aes(xmin = hms::as_hms(mean_nauticalDusk), xmax = hms::as_hms(mean_night), ymin = 0, ymax = Inf),
+  #           fill = "#045a8d", alpha = 0.75) +
+  # geom_rect(data = population_sunlighttimes,
+  #           aes(xmin = hms::as_hms(mean_night), xmax = Inf, ymin = 0, ymax = Inf), 
+  #           fill = "#023858", alpha = 0.75) +
   geom_rect(data = population_sunlighttimes,
             aes(xmin = 0, xmax = hms::as_hms(mean_nightEnd), ymin = 0, ymax = Inf),
-            fill = "#023858", alpha = 0.75) +
+            fill = "grey50", alpha = 0.75) +
   geom_rect(data = population_sunlighttimes,
             aes(xmin = hms::as_hms(mean_nightEnd), xmax = hms::as_hms(mean_nauticalDawn), ymin = 0, ymax = Inf),
-            fill = "#045a8d", alpha = 0.75) +
+            fill = "grey60", alpha = 0.75) +
   geom_rect(data = population_sunlighttimes,
             aes(xmin = hms::as_hms(mean_nauticalDawn), xmax = hms::as_hms(mean_dawn), ymin = 0, ymax = Inf),
-            fill = "#0570b0", alpha = 0.75) +
+            fill = "grey70", alpha = 0.75) +
   geom_rect(data = population_sunlighttimes,
             aes(xmin = hms::as_hms(mean_dawn), xmax = hms::as_hms(mean_sunrise), ymin = 0, ymax = Inf),
-            fill = "#3690c0", alpha = 0.75) +
+            fill = "grey80", alpha = 0.75) +
   geom_rect(data = population_sunlighttimes,
             aes(xmin = hms::as_hms(mean_sunset), xmax = hms::as_hms(mean_dusk), ymin = 0, ymax = Inf),
-            fill = "#3690c0", alpha = 0.75) +
+            fill = "grey80", alpha = 0.75) +
   geom_rect(data = population_sunlighttimes,
             aes(xmin = hms::as_hms(mean_dusk), xmax = hms::as_hms(mean_nauticalDusk), ymin = 0, ymax = Inf),
-            fill = "#0570b0", alpha = 0.75) +
+            fill = "grey70", alpha = 0.75) +
   geom_rect(data = population_sunlighttimes,
             aes(xmin = hms::as_hms(mean_nauticalDusk), xmax = hms::as_hms(mean_night), ymin = 0, ymax = Inf),
-            fill = "#045a8d", alpha = 0.75) +
+            fill = "grey60", alpha = 0.75) +
   geom_rect(data = population_sunlighttimes,
             aes(xmin = hms::as_hms(mean_night), xmax = Inf, ymin = 0, ymax = Inf), 
-            fill = "#023858", alpha = 0.75) +
+            fill = "grey50", alpha = 0.75) +
   # geom_ribbon(data = dist_to_nest_mod_predicts,
   #             aes(x = time_of_day2, ymin = lower_trans, ymax = upper_trans, fill = sex, color = sex),
   #             alpha = 0.8) +
@@ -268,7 +288,7 @@ ggplot() +
                name = "hour of day", 
                expand = c(-0.01, 0.0),
                breaks = as_hms(c('01:00:00', '06:00:00', '12:00:00', '18:00:00', '23:00:00'))) +
-  scale_y_continuous(trans = 'log10') +
+  scale_y_continuous(trans = 'log10', ) +
   ylab("distance from nest (log10, m)") +
   facet_grid(species ~ ., labeller = labeller(.rows = species_pop_labels)) +
   luke_theme +
@@ -284,79 +304,98 @@ ggplot() +
         # axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
   scale_colour_manual(values = c("white", "white"), 
                       labels = c("Female", "Male")) +
-  scale_fill_manual(values = brewer.pal(8, "Dark2")[c(2, 1)], 
+  scale_fill_manual(values = sex_pal, 
                       labels = c("Female", "Male"))
 
+sec = 11
+90 - sec/60 * 360
+
+90 - 23671/60/24 * 360
+hour = 6
+min = 34
+90 - hour/12 * 360 - min/60 * 360/12
+
 population_sunlighttimes %>% 
-  filter(species == "SNPL") %>% 
-  mutate(mean_sunrise = as_hms(mean_sunrise)) %>% ymd_hms()), scale = "radian")) %>% 
+  # filter(species == "SNPL") %>%
+  mutate(mean_sunrise = as_hms(mean_sunrise),
+         mean_sunset = as_hms(mean_sunset)) #%>%
+  mutate(sunrise_hour = as.numeric(str_sub(mean_sunrise, 1, 2)),
+         sunrise_min = as.numeric(str_sub(mean_sunrise, 4, 5))) %>% 
+  mutate(sunrise_degrees =  90 - sunrise_hour/(60*60*24) * 360 - sunrise_min/60 * 360/(60*60*24))
+  
   pull(mean_sunrise)
 
-gettime(CM1858_dist_to_nest$sunrise[1], scale = "radian") * 180/pi
+hms2rad(h = "6h 34m 31s") * 180/pi
+
+gettime(CM1858_dist_to_nest$sunrise[1], scale = "radian") %>% 
+  set_units("radians") %>% 
+  set_units("degrees") %>% 
+  as.numeric()
+
 gettime(CM1858_dist_to_nest$sunset[1], scale = "radian") * 180/pi
 # "#be9c2e""#016392"
 # test circlize figure
 {
-sectors = letters[1]
-circos.par("gap.degree" = 0, "cell.padding" = c(0, 0, 0, 0), "start.degree" = 90)
-circos.initialize(sectors, xlim = c(0, 60*60*24), )
-circos.trackPlotRegion(ylim = c(0, log(20000)), 
-                       track.height = 0.8, bg.border = NA, 
-                       panel.fun = function(x, y) {
-  draw.sector(start.degree = gettime(CM1858_dist_to_nest$sunrise[1], scale = "radian") * 180/pi + 57, 
-              end.degree = gettime(CM1858_dist_to_nest$sunset[1], scale = "radian") * 180/pi + 57, 
-              col = alpha("grey70", 0.75), border = NA, rou2 = 0.99, rou1 = 0.15)
-  draw.sector(0, 360, rou1 = 0.2, lwd = 1, lty = 1, border = alpha("grey70", 0.75))
-  draw.sector(0, 360, rou1 = 0.38, lwd = 1, lty = 1, border = alpha("grey70", 0.75))
-  draw.sector(0, 360, rou1 = 0.56, lwd = 1, lty = 1, border = alpha("grey70", 0.75))
-  draw.sector(0, 360, rou1 = 0.75,  lwd = 1, lty = 1, border = alpha("grey70", 0.75))
-  draw.sector(0, 360, rou1 = 0.935, lwd = 1, lty = 1, border = alpha("grey70", 0.75))                       
-  F_d1 = c(filter(dist_to_nest_mod_predicts, sex == "F" & species == "SNPL") %>% pull(seconds_of_day),
-         filter(dist_to_nest_mod_predicts, sex == "F" & species == "SNPL") %>% pull(seconds_of_day) %>% rev())
-  F_d2 = c(filter(dist_to_nest_mod_predicts, sex == "F" & species == "SNPL") %>% pull(upper),
-         filter(dist_to_nest_mod_predicts, sex == "F" & species == "SNPL") %>% pull(lower) %>% rev())
-  M_d1 = c(filter(dist_to_nest_mod_predicts, sex == "M" & species == "SNPL") %>% pull(seconds_of_day),
-           filter(dist_to_nest_mod_predicts, sex == "M" & species == "SNPL") %>% pull(seconds_of_day) %>% rev())
-  M_d2 = c(filter(dist_to_nest_mod_predicts, sex == "M" & species == "SNPL") %>% pull(upper),
-           filter(dist_to_nest_mod_predicts, sex == "M" & species == "SNPL") %>% pull(lower) %>% rev())
-  circos.polygon(F_d1, F_d2, col = alpha("#be9c2e", 0.5), border = NA)
-  circos.lines(filter(dist_to_nest_mod_predicts, sex == "F" & species == "SNPL") %>% pull(seconds_of_day),
-               filter(dist_to_nest_mod_predicts, sex == "F" & species == "SNPL") %>% pull(fit),
-               col = "white")
-  circos.polygon(M_d1, M_d2, col = alpha("#016392", 0.5), border = NA)
-  circos.lines(filter(dist_to_nest_mod_predicts, sex == "M" & species == "SNPL") %>% pull(seconds_of_day),
-               filter(dist_to_nest_mod_predicts, sex == "M" & species == "SNPL") %>% pull(fit),
-               col = "white")
-  circos.points(filter(all_data, sex == "F" & species == "SNPL") %>%
-                  pull(time_of_day) %>%
-                  as_hms(),
-                filter(all_data, sex == "F" & species == "SNPL") %>%
-                  mutate(dist_from_nest = log(dist_from_nest) + 0.0001) %>%
-                           pull(dist_from_nest),
-                cex = 1,
-                col = alpha("#be9c2e", 0.85),
-                pch = 19)
-  circos.points(filter(all_data, sex == "M" & species == "SNPL") %>%
-                  pull(time_of_day) %>%
-                  as_hms(),
-                filter(all_data, sex == "M" & species == "SNPL") %>%
-                  mutate(dist_from_nest = log(dist_from_nest) + 0.0001) %>%
-                  pull(dist_from_nest),
-                cex = 1,
-                col = alpha("#016392", 0.85),
-                pch = 19)
-  circos.xaxis(major.at = c(0, 60*60*1, 60*60*2, 60*60*3, 60*60*4, 60*60*5, 60*60*6,
-                           60*60*7, 60*60*8, 60*60*9, 60*60*10, 60*60*11, 60*60*12,
-                           60*60*13, 60*60*14, 60*60*15, 60*60*16, 60*60*17,
-                           60*60*18, 60*60*19, 60*60*20, 60*60*21, 60*60*22,
-                           60*60*23, 60*60*24),
-              labels = c("Midnight", as.character(c(1:11)), "Noon", as.character(c(13:23))),
-              major.tick.length = 0.5, minor.ticks = 0)
-  circos.yaxis(at = c(0, log(10), log(100), log(1000), log(10000)),
-               labels = c("0 m", "10 m", "100 m", "1000 m", "10000 m"))
-
-})
-circos.clear()
+  sectors = letters[1]
+  circos.par(gap.degree = 0, cell.padding = c(0, 0, 0, 0), start.degree = 90)
+  circos.initialize(sectors, xlim = c(0, 60*60*24))
+  circos.trackPlotRegion(ylim = c(0, log(20000)), 
+                         track.height = 0.8, bg.border = NA, 
+                         panel.fun = function(x, y) {
+    draw.sector(start.degree = hms2rad(h = "6h 21m 18s") * 180/pi + 57,
+                end.degree = hms2rad(h = "19h 56m 53s") * 180/pi + 57,
+                col = alpha("grey70", 0.75), border = NA, rou2 = 0.99, rou1 = 0.15)
+    # draw.sector(0, 360, rou1 = 0.2, lwd = 1, lty = 1, border = alpha("grey70", 0.75))
+    # draw.sector(0, 360, rou1 = 0.38, lwd = 1, lty = 1, border = alpha("grey70", 0.75))
+    # draw.sector(0, 360, rou1 = 0.56, lwd = 1, lty = 1, border = alpha("grey70", 0.75))
+    # draw.sector(0, 360, rou1 = 0.75,  lwd = 1, lty = 1, border = alpha("grey70", 0.75))
+    # draw.sector(0, 360, rou1 = 0.935, lwd = 1, lty = 1, border = alpha("grey70", 0.75))                       
+    # F_d1 = c(filter(dist_to_nest_mod_predicts, sex == "F" & species == "SNPL") %>% pull(seconds_of_day),
+    #        filter(dist_to_nest_mod_predicts, sex == "F" & species == "SNPL") %>% pull(seconds_of_day) %>% rev())
+    # F_d2 = c(filter(dist_to_nest_mod_predicts, sex == "F" & species == "SNPL") %>% pull(upper),
+    #        filter(dist_to_nest_mod_predicts, sex == "F" & species == "SNPL") %>% pull(lower) %>% rev())
+    # M_d1 = c(filter(dist_to_nest_mod_predicts, sex == "M" & species == "SNPL") %>% pull(seconds_of_day),
+    #          filter(dist_to_nest_mod_predicts, sex == "M" & species == "SNPL") %>% pull(seconds_of_day) %>% rev())
+    # M_d2 = c(filter(dist_to_nest_mod_predicts, sex == "M" & species == "SNPL") %>% pull(upper),
+    #          filter(dist_to_nest_mod_predicts, sex == "M" & species == "SNPL") %>% pull(lower) %>% rev())
+    # circos.polygon(F_d1, F_d2, col = alpha("#be9c2e", 0.5), border = NA)
+    # circos.lines(filter(dist_to_nest_mod_predicts, sex == "F" & species == "SNPL") %>% pull(seconds_of_day),
+    #              filter(dist_to_nest_mod_predicts, sex == "F" & species == "SNPL") %>% pull(fit),
+    #              col = "white")
+    # circos.polygon(M_d1, M_d2, col = alpha("#016392", 0.5), border = NA)
+    # circos.lines(filter(dist_to_nest_mod_predicts, sex == "M" & species == "SNPL") %>% pull(seconds_of_day),
+    #              filter(dist_to_nest_mod_predicts, sex == "M" & species == "SNPL") %>% pull(fit),
+    #              col = "white")
+    # circos.points(filter(all_data, sex == "F" & species == "SNPL") %>%
+    #                 pull(time_of_day) %>%
+    #                 as_hms(),
+    #               filter(all_data, sex == "F" & species == "SNPL") %>%
+    #                 mutate(dist_from_nest = log(dist_from_nest) + 0.0001) %>%
+    #                          pull(dist_from_nest),
+    #               cex = 1,
+    #               col = alpha("#be9c2e", 0.85),
+    #               pch = 19)
+    # circos.points(filter(all_data, sex == "M" & species == "SNPL") %>%
+    #                 pull(time_of_day) %>%
+    #                 as_hms(),
+    #               filter(all_data, sex == "M" & species == "SNPL") %>%
+    #                 mutate(dist_from_nest = log(dist_from_nest) + 0.0001) %>%
+    #                 pull(dist_from_nest),
+    #               cex = 1,
+    #               col = alpha("#016392", 0.85),
+    #               pch = 19)
+    circos.xaxis(major.at = c(0, 60*60*1, 60*60*2, 60*60*3, 60*60*4, 60*60*5, 60*60*6,
+                             60*60*7, 60*60*8, 60*60*9, 60*60*10, 60*60*11, 60*60*12,
+                             60*60*13, 60*60*14, 60*60*15, 60*60*16, 60*60*17,
+                             60*60*18, 60*60*19, 60*60*20, 60*60*21, 60*60*22,
+                             60*60*23, 60*60*24),
+                labels = c("Midnight", as.character(c(1:11)), "Noon", as.character(c(13:23))),
+                major.tick.length = 0.5, minor.ticks = 0)
+    circos.yaxis(at = c(0, log(10), log(100), log(1000), log(10000)),
+                 labels = c("0 m", "10 m", "100 m", "1000 m", "10000 m"))
+  
+  })
+  circos.clear()
 }
 
 "#00FF0080"

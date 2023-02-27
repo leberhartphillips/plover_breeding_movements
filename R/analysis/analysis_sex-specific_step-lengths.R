@@ -553,42 +553,61 @@ dftraj_snpl_full %>%
   geom_boxplot(aes(x = status, y = log(distance_m), fill = sex)) +
   facet_grid(dataset ~ .)
 
-# net squared displacement (NSD)
-dftraj_snpl_full_between_cum <- 
-  dftraj_snpl_full %>% 
+ggplot(data = dftraj_snpl_full) +
+  geom_histogram(aes(log(distance_m))) +
+  facet_grid(status ~ sex)
+
+dftraj_snpl_full %>% 
   filter(status == "between_nests") %>% 
-  # pull(ring2) %>% unique()
+  dplyr::select(ring, sex) %>% distinct()
+
+dftraj_snpl_full_between_cum %>% 
+  dplyr::select(ring, sex) %>% distinct()
+
+dftraj_snpl_full_between_cum <-
+  dftraj_snpl_full %>% 
+  ungroup() %>% 
+  filter(status == "between_nests") %>% 
+  # dplyr::select(ring, sex) %>% distinct()
   group_by(ring, sex) %>% 
   dplyr::summarise(min_date = min(date),
                    max_date = max(date)) %>%
   left_join(dftraj_snpl_full %>% filter(status == "between_nests") %>% dplyr::select(ring, distance_m, date),. ) %>% 
+  filter(ring %!in% c("CN0138","CN0318")) %>% 
   group_by(ring) %>% 
   mutate(cum_distance = cumsum(distance_m),
          date_diff = date - min_date) %>%
   mutate(date_diff = round(((as.numeric(date_diff)/60)/60/24))) %>% 
   # remove all NA rows
-  filter(!is.na(cum_distance)) #%>% #filter(ring == "CN0423") %>%
-  ggplot(dftraj_snpl_full_between_cum) +
+  filter(!is.na(cum_distance) | !is.na(date_diff)) #filter(ring == "CN0318") %>%
+
+ggplot(dftraj_snpl_full_between_cum) +
   geom_line(aes(x = date_diff, y = cum_distance, group = ring, color = sex),
             alpha = 1) +
   scale_x_continuous(limits = c(0, 50)) +
   scale_y_continuous(limits = c(0, 65000))
   
-# M2 Black Coucals: strong effect of age, no interaction with sex
 mod_cum_dist <- 
   lmer(log(cum_distance) ~ poly(date_diff,3) * sex + (1|ring),
        data = dftraj_snpl_full_between_cum)
+
+mod_step_dist <- 
+  lmer(distance_m ~ status * sex + (1|ring),
+       data = dftraj_snpl_full %>% filter(ring %!in% c("CN0138","CN0318")))
 
 # mod_cum_dist <- 
 #   lmer(cum_distance ~ 1 + poly(date_diff,2):sex + (1|ring),
 #        data = dftraj_snpl_full_between_cum)
 
 plot(mod_cum_dist)
-
+plot(mod_step_dist)
 
 # effect-size plots
 coefplot::coefplot(mod_cum_dist)
 plot(allEffects(mod_cum_dist))
+
+coefplot::coefplot(mod_step_dist)
+plot(allEffects(mod_step_dist))
 
 # extract fitted values
 mod_cum_dist_fits <- 
@@ -597,6 +616,12 @@ mod_cum_dist_fits <-
                                                 max(dftraj_snpl_full_between_cum$date_diff), 0.5),
                                       sex = c("F", "M")))) %>% 
   filter((sex == "F" & fit < log(59425)) | sex == "M")
+
+# extract fitted values
+mod_step_dist_fits <- 
+  as.data.frame(effect(term = "status * sex", mod = mod_step_dist, 
+                       xlevels = list(status = c("nesting", "between_nests"),
+                                      sex = c("F", "M"))))
 
   dftraj_snpl_full_between_cum %>% ungroup() %>% filter(sex == "F") %>% summarise(log(max(cum_distance))) %>% pull()
 # mod_cum_dist_fits <- 
@@ -615,23 +640,61 @@ ggplot() +
   luke_theme +
   geom_line(data = dftraj_snpl_full_between_cum, 
             aes(x = date_diff, y = log(cum_distance), group = ring, color = sex),
-            alpha = 0.2) +
+            alpha = 0.5) +
   geom_line(data = mod_cum_dist_fits, aes(x = date_diff, y = fit, color = sex),
             lwd = 0.5) +
   geom_ribbon(data = mod_cum_dist_fits, aes(x = date_diff, ymax = upper, ymin = lower, fill = sex),
-              lwd = 1, alpha = 0.25) #+
-  scale_y_continuous(limits = c(0, 65000))
+              lwd = 1, alpha = 0.25) +
+  scale_y_continuous(breaks = c(0, log(10), log(100), log(1000), log(10000), log(100000)),
+                     labels = c("0", "10", "100", "1000", "10000", "100000")) +
+  # scale_y_continuous(limits = c(0, 65000))
   # facet_grid(species ~ ., 
   #            labeller = labeller(species = species.labs)) +
-  ylab(expression(paste("Distance moved between 12-hour fixes (log10)" %+-%  "95% CI", sep = ""))) +
-  xlab("Days since nest hatched") #+
-  scale_color_manual(values = plot_palette_sex,
-                     name = "Sex",
-                     breaks = c("Female", "Male"),
+  ylab(expression(paste("Cumulative distance moved between 12-hour fixes (log10)" %+-%  "95% CI", sep = ""))) +
+  xlab("Days since nest hatched") +
+  scale_color_manual(values = sex_pal,
+                     # breaks = c("Female", "Male"),
                      labels = c("Female", "Male")) +
-  scale_fill_manual(values = plot_palette_sex,
-                    name = "Sex",
-                    breaks = c("Female", "Male"),
+  scale_fill_manual(values = sex_pal,
+                    # breaks = c("Female", "Male"),
+                    labels = c("Female", "Male"))
+
+# ggplot(data = filter(estimates_age_site, parameter == "Phi"),
+#        aes(x = site, y = distance_m, color = sex)) +
+#   geom_errorbar(aes(ymin = lcl, ymax = ucl), position = position_dodge(1), 
+#                 size = 0.3, linetype = "solid", width = 0.1) +
+#   geom_point(size = 3, position = position_dodge(1))
+
+ggplot() +
+  luke_theme +
+  geom_errorbar(data = mod_step_dist_fits,
+                aes(x = status, ymin = lower, ymax = upper, color = sex), 
+                position = position_dodge(1), 
+                size = 0.3, linetype = "solid", width = 0.1) +
+  geom_point(data = dftraj_snpl_full %>% filter(ring %!in% c("CN0138","CN0318")),
+             aes(x = status, y = distance_m, color = sex), 
+             size = 3, position = position_dodge(1)) +
+  scale_y_continuous(limits = c(0, 6000))
+  
+  geom_line(data = dftraj_snpl_full_between_cum, 
+            aes(x = date_diff, y = log(cum_distance), group = ring, color = sex),
+            alpha = 0.5) +
+  geom_line(data = mod_cum_dist_fits, aes(x = date_diff, y = fit, color = sex),
+            lwd = 0.5) +
+  geom_ribbon(data = mod_cum_dist_fits, aes(x = date_diff, ymax = upper, ymin = lower, fill = sex),
+              lwd = 1, alpha = 0.25) +
+  scale_y_continuous(breaks = c(0, log(10), log(100), log(1000), log(10000)),
+                     labels = c("0", "10", "100", "1000", "10000")) +
+  # scale_y_continuous(limits = c(0, 65000))
+  # facet_grid(species ~ ., 
+  #            labeller = labeller(species = species.labs)) +
+  ylab(expression(paste("Cumulative distance moved between 12-hour fixes (log10)" %+-%  "95% CI", sep = ""))) +
+  xlab("Days since nest hatched") +
+  scale_color_manual(values = sex_pal,
+                     # breaks = c("Female", "Male"),
+                     labels = c("Female", "Male")) +
+  scale_fill_manual(values = sex_pal,
+                    # breaks = c("Female", "Male"),
                     labels = c("Female", "Male"))
 
 # CN0609, CN0161, CN0422, CN0423

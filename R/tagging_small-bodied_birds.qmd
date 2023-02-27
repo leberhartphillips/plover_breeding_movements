@@ -11,13 +11,19 @@ The rise in recent technological developments for animal tracking has provided e
 
 ## Analyses
 
-### Diel shifts in sex-roles during incubation
+### Diel movement rhythms correspond to sex-roles during incubation
+
+To evaluate the diel movements of nesting males and females, we reduced individual bursts to periods of nesting confirmed through monitoring breeding activity in the field. GPS data collected within the 24-hours after tag deployment were excluded from this analysis to minimize behavioural biases associated with capture, and handling. We also excluded bursts that had less than two fixes per day spaced at least 12 hours apart as we wanted to adequately assess variation associated with the circadian cycle. Furthermore, this sample did not include multiple bursts from the same nest (e.g., both parents tagged) and therefore each burst can be considered an independent observation. We analysed sex differences using a generalized additive mixed model fitted with the mgcv R package (REF). The log-transformed distance an individual was from its nest at a given fix was modelled as the response, with sex and species as fixed effects and time-of-day fitted as a continuous cyclic cubic regression spline. Individual identity was included as a random effect to account for repeated measures over time.
+
+```{r}
+
+```
 
 'Distance to nest' \~ 'sex' + 'species' + 'time of day' + (1\|ring)
 
 Demonstrate across multiple species that males are more likely to be close to the nest during the night and females are more likely to be close to the nest during the day. Rationale: find diel times when nest attendance is highest or lowest so that the sampling interval captures these two periods.
 
-### Sex-specific movement traits after hatch 
+### Sex-specific movement traits after hatch
 
 ```{r}
 1 + 1
