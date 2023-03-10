@@ -17,6 +17,10 @@ tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
 tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
                              bird_ring = "CA3340", map_year = 2022)
 
+ceuta_list$Broods %>% filter(ID == "SNPL_2022_C_2")
+ceuta_list$Resights %>% filter(code == "OX.RM|OX.LX" & year == 2022)
+
+
 # subset data to focal birds
 CN0423 <- 
   lapply(tag_breeding_data_ceuta, function(x) 
@@ -248,20 +252,20 @@ timestamp_labels <- c(
 
 ggplot() +
   geom_point(data = dftraj_snpl_pair %>% filter(dataset == "full"),
-             aes(x = rounded_time_ymd, y = distance_m, 
+             aes(x = rounded_time_ymd, y = distance_m,
                  group = ring, color = ring), alpha = 0.5) +
   geom_line(data = dftraj_snpl_pair %>% filter(dataset == "full"),
-            aes(x = rounded_time_ymd, y = distance_m, 
+            aes(x = rounded_time_ymd, y = distance_m,
                 group = ring, color = ring), alpha = 0.5) +
-  geom_point(data = dftraj_snpl_pair %>% filter(dataset == "split"),
-             aes(x = rounded_time_ymd, y = distance_m, 
-                 group = ring, color = ring)) +
-  geom_line(data = dftraj_snpl_pair %>% filter(dataset == "split"),
-            aes(x = rounded_time_ymd, y = distance_m, 
-                group = ring, color = ring)) +
-  facet_grid(rounded_time_hms ~ ., 
-             # ring ~ ., 
-             labeller = labeller(.rows = timestamp_labels)) +
+  # geom_point(data = dftraj_snpl_pair %>% filter(dataset == "split"),
+  #            aes(x = rounded_time_ymd, y = distance_m, 
+  #                group = ring, color = ring)) +
+  # geom_line(data = dftraj_snpl_pair %>% filter(dataset == "split"),
+  #           aes(x = rounded_time_ymd, y = distance_m, 
+  #               group = ring, color = ring)) +
+  # facet_grid(rounded_time_hms ~ ., 
+  #            # ring ~ ., 
+  #            labeller = labeller(.rows = timestamp_labels)) +
   scale_color_manual(labels = c("male", "female"), values = c("blue", "red")) +
   scale_x_date(date_labels = "%B-%d", 
                expand = c(0.01, 0.01), 

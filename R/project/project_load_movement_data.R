@@ -8,6 +8,135 @@ function.sources = list.files(path = "R/functions/",
 sapply(function.sources, source, .GlobalEnv)
 
 ##### data import ----
+# KEPL husum ----
+PP50635_husum_T009761 <- 
+  import_plover_tag_spatial(data_loc = "data/KEPL/PinPoint 50635 KP m my_nry 2021-06-30 21-44-30.txt",
+                            tag_ID = "PP50635_T009761", projection = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
+                            collect_time_zone = "UTC", tag_model = "PinPoint-10", n_slice = 0, local_time_zone = "Europe/Berlin",
+                            bird_ID = "T009761", bird_code = "MY-NRY", bird_sex = "M", species = "KEPL", population = "husum")
+
+PP50640_husum_T009763 <- 
+  import_plover_tag_spatial(data_loc = "data/KEPL/PinPoint 50640 KP f my_pry 2021-06-30 20-49-54.txt",
+                            tag_ID = "PP50640_T009763", projection = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
+                            collect_time_zone = "UTC", tag_model = "PinPoint-10", n_slice = 0, local_time_zone = "Europe/Berlin",
+                            bird_ID = "T009763", bird_code = "MY-PRY", bird_sex = "F", species = "KEPL", population = "husum")
+
+PP50639_husum_T009764 <- 
+  import_plover_tag_spatial(data_loc = "data/KEPL/PinPoint 50639 KP f my_gry 2021-06-30 18-53-20.txt",
+                            tag_ID = "PP50639_T009764", projection = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
+                            collect_time_zone = "UTC", tag_model = "PinPoint-10", n_slice = 0, local_time_zone = "Europe/Berlin",
+                            bird_ID = "T009764", bird_code = "MY-GRY", bird_sex = "F", species = "KEPL", population = "husum")
+
+PP50641_husum_T009787 <- 
+  import_plover_tag_spatial(data_loc = "data/KEPL/PinPoint 50641 KP f mr_gny 2022-07-09 11-55-38.txt",
+                            tag_ID = "PP50641_T009787", projection = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
+                            collect_time_zone = "UTC", tag_model = "PinPoint-10", n_slice = 0, local_time_zone = "Europe/Berlin",
+                            bird_ID = "T009787", bird_code = "MR-GNY", bird_sex = "F", species = "KEPL", population = "husum")
+
+PP51262_husum_T009785 <- 
+  import_plover_tag_spatial(data_loc = "data/KEPL/PinPoint 51262 KP f mr_ggy 2022-07-01 22-40-44.txt",
+                            tag_ID = "PP51262_T009785", projection = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
+                            collect_time_zone = "UTC", tag_model = "PinPoint-10", n_slice = 0, local_time_zone = "Europe/Berlin",
+                            bird_ID = "T009785", bird_code = "MR-GGY", bird_sex = "F", species = "KEPL", population = "husum")
+
+PP50641_husum_T009784 <- 
+  import_plover_tag_spatial(data_loc = "data/KEPL/PinPoint 50641 KP m mp_ryy 2022-06-10 07-50-49.txt",
+                            tag_ID = "PP50641_T009784", projection = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
+                            collect_time_zone = "UTC", tag_model = "PinPoint-10", n_slice = 0, local_time_zone = "Europe/Berlin",
+                            bird_ID = "T009784", bird_code = "MP-RYY", bird_sex = "M", species = "KEPL", population = "husum")
+
+PP50641_husum_T009778 <- 
+  import_plover_tag_spatial(data_loc = "data/KEPL/PinPoint 50641 KP m mp_rpy 2022-06-01 22-37-48.txt",
+                            tag_ID = "PP50641_T009778", projection = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
+                            collect_time_zone = "UTC", tag_model = "PinPoint-10", n_slice = 0, local_time_zone = "Europe/Berlin",
+                            bird_ID = "T009778", bird_code = "MP-RPY", bird_sex = "M", species = "KEPL", population = "husum")
+
+PP50635_husum_T009779 <- 
+  import_plover_tag_spatial(data_loc = "data/KEPL/PinPoint 50635 KP m mp_rry 2022-06-01 18-09-31.txt",
+                            tag_ID = "PP50635_T009779", projection = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
+                            collect_time_zone = "UTC", tag_model = "PinPoint-10", n_slice = 0, local_time_zone = "Europe/Berlin",
+                            bird_ID = "T009779", bird_code = "MP-RRY", bird_sex = "M", species = "KEPL", population = "husum")
+
+PP51007_husum_T009777 <- 
+  import_plover_tag_spatial(data_loc = "data/KEPL/PinPoint 51007 KP f mp_rny 2022-05-31 12-49-05.txt",
+                            tag_ID = "PP51007_T009777", projection = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
+                            collect_time_zone = "UTC", tag_model = "PinPoint-10", n_slice = 0, local_time_zone = "Europe/Berlin",
+                            bird_ID = "T009777", bird_code = "MP-RNY", bird_sex = "F", species = "KEPL", population = "husum")
+
+PP51007_husum_T009773 <- 
+  import_plover_tag_spatial(data_loc = "data/KEPL/PinPoint 51007 KP m mp_rgy 2022-05-24 05-59-41.txt",
+                            tag_ID = "PP51007_T009773", projection = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
+                            collect_time_zone = "UTC", tag_model = "PinPoint-10", n_slice = 0, local_time_zone = "Europe/Berlin",
+                            bird_ID = "T009773", bird_code = "MP-RGY", bird_sex = "M", species = "KEPL", population = "husum")
+
+PP51004_husum_T009770 <- 
+  import_plover_tag_spatial(data_loc = "data/KEPL/PinPoint 51004 KP m mp_nry 2022-05-21 05-35-57.txt",
+                            tag_ID = "PP51004_T009770", projection = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
+                            collect_time_zone = "UTC", tag_model = "PinPoint-10", n_slice = 0, local_time_zone = "Europe/Berlin",
+                            bird_ID = "T009770", bird_code = "MP-NRY", bird_sex = "M", species = "KEPL", population = "husum")
+
+PP51009_husum_T009772 <- 
+  import_plover_tag_spatial(data_loc = "data/KEPL/PinPoint 51009 KP f mp_pry 2022-05-20 12-54-16.txt",
+                            tag_ID = "PP51009_T009772", projection = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
+                            collect_time_zone = "UTC", tag_model = "PinPoint-10", n_slice = 0, local_time_zone = "Europe/Berlin",
+                            bird_ID = "T009772", bird_code = "MP-PRY", bird_sex = "F", species = "KEPL", population = "husum")
+
+PP50637_husum_T009768 <- 
+  import_plover_tag_spatial(data_loc = "data/KEPL/PinPoint 50637 KP f mn_rny 2022-05-18 16-07-49.txt",
+                            tag_ID = "PP50637_T009768", projection = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
+                            collect_time_zone = "UTC", tag_model = "PinPoint-10", n_slice = 0, local_time_zone = "Europe/Berlin",
+                            bird_ID = "T009768", bird_code = "MN-RNY", bird_sex = "F", species = "KEPL", population = "husum")
+
+PP50634_husum_T009766 <- 
+  import_plover_tag_spatial(data_loc = "data/KEPL/PinPoint 50634 KP f mn_pry 2022-05-16 13-23-43.txt",
+                            tag_ID = "PP50634_T009766", projection = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
+                            collect_time_zone = "UTC", tag_model = "PinPoint-10", n_slice = 0, local_time_zone = "Europe/Berlin",
+                            bird_ID = "T009766", bird_code = "MN-PRY", bird_sex = "F", species = "KEPL", population = "husum")
+
+PP50635_husum_T009769 <- 
+  import_plover_tag_spatial(data_loc = "data/KEPL/PinPoint 50635 KP m mn_rpy 2022-05-15 15-34-13.txt",
+                            tag_ID = "PP50634_T009769", projection = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
+                            collect_time_zone = "UTC", tag_model = "PinPoint-10", n_slice = 0, local_time_zone = "Europe/Berlin",
+                            bird_ID = "T009769", bird_code = "MN-RPY", bird_sex = "M", species = "KEPL", population = "husum")
+
+# CRPL husum ----
+PP50641_husum_T009083 <- 
+  import_plover_tag_spatial(data_loc = "data/CRPL/PinPoint 50641 RP f gnn_grm 2022-07-03 11-04-01.txt",
+                            tag_ID = "PP50641_T009083", projection = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
+                            collect_time_zone = "UTC", tag_model = "PinPoint-10", n_slice = 0, local_time_zone = "Europe/Berlin",
+                            bird_ID = "T009083", bird_code = "GNN-GRM", bird_sex = "F", species = "CRPL", population = "husum")
+
+PP50641_husum_T009714 <- 
+  import_plover_tag_spatial(data_loc = "data/CRPL/PinPoint 50641 RP f ggr_wnm 2022-06-06 09-08-30.txt",
+                            tag_ID = "PP50641_T009714", projection = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
+                            collect_time_zone = "UTC", tag_model = "PinPoint-10", n_slice = 0, local_time_zone = "Europe/Berlin",
+                            bird_ID = "T009714", bird_code = "GGR-WNM", bird_sex = "F", species = "CRPL", population = "husum")
+
+PP50641_husum_T009158 <- 
+  import_plover_tag_spatial(data_loc = "data/CRPL/PinPoint 50641 RP f nrn_wwm 2022-05-10 14-05-21.txt",
+                            tag_ID = "PP50641_T009158", projection = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
+                            collect_time_zone = "UTC", tag_model = "PinPoint-10", n_slice = 0, local_time_zone = "Europe/Berlin",
+                            bird_ID = "T009158", bird_code = "NRN-WWM", bird_sex = "F", species = "CRPL", population = "husum")
+
+PP50641_husum_T009077 <- 
+  import_plover_tag_spatial(data_loc = "data/CRPL/PinPoint 50641 RP m ggn_nwm 2021-06-30 15-45-27.txt",
+                            tag_ID = "PP50641_T009077", projection = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
+                            collect_time_zone = "UTC", tag_model = "PinPoint-10", n_slice = 0, local_time_zone = "Europe/Berlin",
+                            bird_ID = "T009077", bird_code = "GGN-NWM", bird_sex = "M", species = "CRPL", population = "husum")
+
+PP50641_husum_T009671 <- 
+  import_plover_tag_spatial(data_loc = "data/CRPL/PinPoint 50641 RP m wgn_gnm 2022-05-24 05-43-10.txt",
+                            tag_ID = "PP50641_T009671", projection = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
+                            collect_time_zone = "UTC", tag_model = "PinPoint-10", n_slice = 0, local_time_zone = "Europe/Berlin",
+                            bird_ID = "T009671", bird_code = "WGN-GNM", bird_sex = "M", species = "CRPL", population = "husum")
+
+PP50637_husum_T009765 <- 
+  import_plover_tag_spatial(data_loc = "data/CRPL/PinPoint 50637 RP f wwr_gnm 2021-06-30 17-26-50.txt",
+                            tag_ID = "PP50637_T009765", projection = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
+                            collect_time_zone = "UTC", tag_model = "PinPoint-10", n_slice = 0, local_time_zone = "Europe/Berlin",
+                            bird_ID = "T009765", bird_code = "WWR-GNM", bird_sex = "F", species = "CRPL", population = "husum")
+
+# KEPL tagus ----
 NF21050_tagus <- 
   import_plover_tag_spatial(data_loc = "data/KEPL/Tag21050/Obs160721_062557_Tag21050.pos",
                                 tag_ID = "NF21050", projection = "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0",
@@ -299,9 +428,43 @@ plover_tagging_df <-
             NF55831_tagus, NF55808_tagus, NF55719_tagus, NF21200_tagus,
             NF55584b_tagus, NF55584a_tagus, NF21050_tagus, NFTag55843_nz,
             NFTag20865_nz, NFTag21146_nz, NFTag55687_nz, NFTag55660_nz,
-            NFTag55795_nz) %>% 
+            NFTag55795_nz, 
+            PP50637_husum_T009765, PP50641_husum_T009671, PP50641_husum_T009077,
+            PP50641_husum_T009158, PP50641_husum_T009714, PP50641_husum_T009083,
+            PP50635_husum_T009769, PP50634_husum_T009766, PP50637_husum_T009768,
+            PP51009_husum_T009772, PP51004_husum_T009770, PP51007_husum_T009773,
+            PP51007_husum_T009777, PP50635_husum_T009779, PP50641_husum_T009778,
+            PP50641_husum_T009784, PP51262_husum_T009785, PP50641_husum_T009787,
+            PP50639_husum_T009764, PP50640_husum_T009763, PP50635_husum_T009761) %>% 
   sfc_as_cols(., names = c("lon", "lat")) %>% 
   st_drop_geometry()
+
+husum <- 
+  plover_tagging_df %>% 
+  filter(population == "husum") %>% 
+  mutate(date = as.Date(timestamp_local, tz = "Europe/Berlin")) %>%
+  getSunlightTimes(data = ., keep = c("nightEnd", "night", 
+                                      "sunrise", "sunset", 
+                                      "dawn", "dusk", 
+                                      "nauticalDawn", "nauticalDusk"), 
+                   tz = "Europe/Berlin") %>% 
+  rename(lat_fun = lat,
+         lon_fun = lon) %>% 
+  bind_cols(plover_tagging_df %>% filter(population == "husum"), .) %>% 
+  mutate(timestamp_local = ymd_hms(timestamp_local, tz = "Europe/Berlin")) %>% 
+  filter(lat_fun == lat | lon_fun == lon) %>% 
+  dplyr::select(-c(lat_fun, lon_fun)) %>% 
+  mutate(night_fix = ifelse(timestamp_local < nightEnd | timestamp_local > night, 1, 0),
+         timestamp_local = as.character(timestamp_local),
+         date = as.character(date),
+         nightEnd = as.character(nightEnd),
+         night = as.character(night),
+         sunset = as.character(sunset),
+         sunrise = as.character(sunrise),
+         dawn = as.character(dawn),
+         dusk = as.character(dusk),
+         nauticalDawn = as.character(nauticalDawn),
+         nauticalDusk = as.character(nauticalDusk))
 
 ceuta <- 
   plover_tagging_df %>% 
@@ -385,7 +548,7 @@ tagus <-
          nauticalDusk = as.character(nauticalDusk))
 
 plover_tagging_df <- 
-  bind_rows(ceuta, kaikoura, tagus)
+  bind_rows(ceuta, kaikoura, tagus, husum)
 
 plover_tagging_sf <- 
   rbind(NF21163_ceuta, NF21065_ceuta, NF20996_ceuta, NF21117_ceuta, 

@@ -54,3 +54,5 @@ ceuta_list <- list(Nests = dbReadTable(CeutaCLOSED, "Nests") %>%
 # import data from Afonso and wrangle
 tagus_list <- list(Nests = read_xlsx(path = "data/breeding_data/Tagus/Tagged_KP_breeding.xlsx", sheet = "nests"),
                    Broods = read_xlsx(path = "data/breeding_data/Tagus/Broodcare_AR.xlsx", sheet = "summary"))
+
+husum_list <- list(Nests = read_xlsx(path = "data/KEPL/Short term deployments 2021 and 2022 basic data BHK for Luke.xlsx", col_types = "guess"))

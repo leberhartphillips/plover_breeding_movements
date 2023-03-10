@@ -179,6 +179,41 @@ tag_breeding_data_tagus <-
   list(nests = tag_nest_data_tagus %>% ungroup(),
        tagging = plover_tagging_df %>% dplyr::filter(population == "tagus" & species == "KEPL") %>% ungroup())
 
+#### Husum breeding data ----
+# wrangle the nest information associated with each known nesting attempt of tagged birds
+tag_nest_data_husum <-
+  husum_list$Nests  %>% 
+  `colnames<-` (tolower(names(.))) %>% 
+  rename(code = `bird id`,
+         ring = `ring no`,
+         tag_ID = `tag id`,
+         family_ID = `nest id`,
+         lat = nest_north,
+         lon = nest_east) %>% 
+  dplyr::select(code, ring, tag_ID, family_ID, lat, lon, 
+                start_date, start_timeutc, end_date_real, end_time_real_utc) %>% 
+  mutate(start_date = as.Date(start_date),
+         start_timeutc = as_hms(start_timeutc),
+         end_date_real = as.Date(as.numeric(end_date_real), origin = "1900-01-01"),
+         end_time_real_utc = seconds_to_period(as.numeric(end_time_real_utc) * 24 * 60 * 60)) %>%
+  mutate(end_time_real_utc = paste(str_pad(end_time_real_utc@hour, width = 2, side = "left", pad = "0"), 
+                                   str_pad(minute(end_time_real_utc), width = 2, side = "left", pad = "0"), sep = ":")) %>% 
+  mutate(end_time_real_utc = ifelse(str_detect(end_time_real_utc, "NA"), NA, end_time_real_utc)) %>% 
+  # make a timestamp column
+  mutate(end_timestamp_utc = paste(as.character(end_date_real), paste(as.character(end_time_real_utc), "00", sep = ":"), sep = " "),
+         start_timestamp_utc = paste(as.character(start_date), as.character(start_timeutc), sep = " ")) %>% 
+  mutate(end_timestamp_utc = ifelse(str_detect(end_timestamp_utc, "NA"), NA, end_timestamp_utc),
+         start_timestamp_utc = ifelse(str_detect(start_timestamp_utc, "NA"), NA, start_timestamp_utc)) %>% 
+  mutate(end_timestamp_utc = ymd_hms(as.character(end_timestamp_utc), 
+                                     tz = "Europe/Berlin"),
+         start_timestamp_utc = ymd_hms(as.character(start_timestamp_utc), 
+                                     tz = "Europe/Berlin")) %>% 
+  dplyr::select(-c(start_date, start_timeutc, end_date_real, end_time_real_utc))
+
+tag_breeding_data_husum <- 
+  list(nests = tag_nest_data_husum,
+       tagging = plover_tagging_df %>% dplyr::filter(population == "husum" & species == "KEPL") %>% ungroup())
+
 # # bind ceuta and tagus data
 # tag_nest_data <- 
 #   tag_nest_data_ceuta %>% 

@@ -16,3 +16,7 @@ luke_theme <-
   )
 
 mapviewOptions(basemaps = c("Esri.WorldImagery"))
+
+sex_pal <- 
+  c(pull(ggthemes_data$wsj$palettes$colors6[3,2]), 
+    pull(ggthemes_data$wsj$palettes$colors6[2,2]))

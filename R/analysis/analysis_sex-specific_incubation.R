@@ -30,7 +30,7 @@ P01902_dist_to_nest <-
   bird_to_nest_dist(bird_ring = "P01902", 
                     tag_and_breeding_data = tag_breeding_data_tagus, 
                     local_time_zone = "Europe/Lisbon", 
-                    focal_year = 2021, focal_nest_ID = "BC02") 
+                    focal_year = 2021, focal_nest_ID = "BC02")
 # P01902_dist_to_nest %>% 
 #   ggplot(.) +
 #   geom_boxplot(aes(x = hms::as_hms(rounded_hour),
@@ -187,6 +187,8 @@ dist_to_nest_mod <-
         s(seconds_of_day, by = interaction(sex, species), bs = "cc") + 
         s(ring, bs = 're'), 
       data = all_data)
+
+acf(resid(dist_to_nest_mod), type ="p")
 
 draw(dist_to_nest_mod, parametric = FALSE)
 

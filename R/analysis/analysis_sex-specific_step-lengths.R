@@ -85,6 +85,7 @@ F_CA3224_move_2wH <-
 # CN0930 female, two nests, first nest hatched (20-min then 12-hour @ 1000/2200)
 tag_and_breeding_data_mapper(tag_and_breeding_data = tag_breeding_data_ceuta,
                              bird_ring = "CN0930", map_year = 2022)
+ceuta_list$Nests %>% filter(ID == "SNPL_2022_B_1")
 
 F_CN0930_move_2wH <- 
   tag_data_move_wrangle(formatted_tag_data = 
@@ -573,7 +574,7 @@ dftraj_snpl_full_between_cum <-
   dplyr::summarise(min_date = min(date),
                    max_date = max(date)) %>%
   left_join(dftraj_snpl_full %>% filter(status == "between_nests") %>% dplyr::select(ring, distance_m, date),. ) %>% 
-  filter(ring %!in% c("CN0138","CN0318")) %>% 
+  filter(ring %!in% c("CN0138","CN0318", "CN0916")) %>% 
   group_by(ring) %>% 
   mutate(cum_distance = cumsum(distance_m),
          date_diff = date - min_date) %>%
@@ -594,6 +595,8 @@ mod_cum_dist <-
 mod_step_dist <- 
   lmer(distance_m ~ status * sex + (1|ring),
        data = dftraj_snpl_full %>% filter(ring %!in% c("CN0138","CN0318")))
+summary(mod_step_dist)
+parameters(mod_step_dist)
 
 # mod_cum_dist <- 
 #   lmer(cum_distance ~ 1 + poly(date_diff,2):sex + (1|ring),
@@ -671,9 +674,9 @@ ggplot() +
                 aes(x = status, ymin = lower, ymax = upper, color = sex), 
                 position = position_dodge(1), 
                 size = 0.3, linetype = "solid", width = 0.1) +
-  geom_point(data = dftraj_snpl_full %>% filter(ring %!in% c("CN0138","CN0318")),
-             aes(x = status, y = distance_m, color = sex), 
-             size = 3, position = position_dodge(1)) +
+  # geom_point(data = dftraj_snpl_full %>% filter(ring %!in% c("CN0138","CN0318")),
+  #            aes(x = status, y = distance_m, color = sex), 
+  #            size = 3, position = position_dodge(1)) +
   scale_y_continuous(limits = c(0, 6000))
   
   geom_line(data = dftraj_snpl_full_between_cum, 

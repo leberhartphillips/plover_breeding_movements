@@ -1,7 +1,7 @@
 bird_to_nest_dist <- function(bird_ring, 
                               focal_nest_ID = NULL, 
                               tag_and_breeding_data,
-                              local_time_zone,
+                              local_time_zone, population = NULL,
                               focal_year, cut_time = NULL){
   
   
@@ -25,7 +25,8 @@ bird_to_nest_dist <- function(bird_ring,
                format(., format = "%H:%M:%S"),
              time_of_day = format(timestamp_local, format = "%H:%M:%S"),
              timestamp_local = as.character(timestamp_local))
-  } else{
+  } 
+  else{
     tag_and_breeding_data$tagging %>% 
       mutate(timestamp_local = ymd_hms(timestamp_local, tz = local_time_zone)) %>% 
       filter(ring == bird_ring & 
